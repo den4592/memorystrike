@@ -216,13 +216,14 @@ select {
 /*random-topics*/
 .random-topics {
   min-height: 100vh;
+  margin-top: 2rem;
 }
 
 .back-btn {
   color: rgb(158, 37, 224);
   font-size: 2rem;
   position: absolute;
-  top: 2rem;
+  top: 4rem;
 }
 
 .back-btn:hover {
@@ -361,6 +362,10 @@ header > .container {
 }
 
 /*modal*/
+.ReactModal__Overlay {
+  z-index: 999;
+}
+
 .modal-close-btn:hover {
   cursor: pointer;
   opacity: 0.3;

@@ -20,8 +20,8 @@ export const Form = () => {
   const answerText = document.querySelector(".answer-text");
 
   useEffect(() => {
-    setTopicsCount(topics.length);
     if (localStorage.length > 0) {
+      setTopicsCount(topics.length);
       setIsDisabled(false);
       let lstorageItems = localStorage.getItem("topics");
       let parsedItems = JSON.parse(lstorageItems);
@@ -33,6 +33,7 @@ export const Form = () => {
   useDidMountEffect(() => {
     setTopicsCount(topics.length);
     if (topics.length > 0) {
+      setIsDisabled(false);
       document.querySelector(".reset-btn").classList.add("enabled");
       document.querySelector(".mix-btn").classList.add("enabled");
       localStorage.setItem("topics", JSON.stringify(topics));

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Rights } from "./Rights";
+import { Header } from "./Header";
 
 export const RandomTopics = () => {
   const locations = useLocation();
@@ -88,6 +89,7 @@ export const RandomTopics = () => {
 
   return (
     <section className="section3 section">
+      <Header />
       <div className="container d-flex">
         <div className="random-topics">
           <Link to="/" onClick={resetValues}>

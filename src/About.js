@@ -41,7 +41,7 @@ export const About = () => {
   }, [modalIsOpen]);
 
   return (
-    <div className="modal">
+    <div className="modal-container">
       <i className="fa-solid fa-circle-question about-btn" onClick={openModal}></i>
       <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal} style={customStyles} contentLabel="Example Modal">
         <i className="fa-solid fa-xmark modal-close-btn" onClick={closeModal} style={{ color: "red", fontSize: "1.5rem" }}></i>
