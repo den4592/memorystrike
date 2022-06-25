@@ -25,6 +25,9 @@ export const Form = () => {
       setIsDisabled(false);
       let lstorageItems = localStorage.getItem("topics");
       let parsedItems = JSON.parse(lstorageItems);
+      if (parsedItems == null) {
+        return;
+      }
       localStorage.setItem("topics", JSON.stringify(parsedItems));
       setTopics(parsedItems);
     }
@@ -66,7 +69,7 @@ export const Form = () => {
     setTopic("");
     setAnswer("");
     setIsDisabled(true);
-    localStorage.clear();
+    localStorage.removeItem("topics");
     setTopicsCount(0);
   };
 
