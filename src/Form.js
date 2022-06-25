@@ -135,14 +135,14 @@ export const Form = () => {
                   {isDisabled ? (
                     <Link to="/random-topics" state={topics} onClick={(event) => event.preventDefault()} style={{ textDecoration: "none", marginTop: "1rem" }}>
                       <button type="button" className="mix-btn btn">
-                        Mix
+                        Shuffle
                         <i className="fa-solid fa-arrows-turn-right"></i>
                       </button>
                     </Link>
                   ) : (
                     <Link to="/random-topics" state={topics} style={{ textDecoration: "none", marginTop: "1rem" }}>
                       <button type="button" className="mix-btn btn">
-                        Mix
+                        Shuffle
                         <i className="fa-solid fa-arrows-turn-right"></i>
                       </button>
                     </Link>
