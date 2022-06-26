@@ -1,4 +1,5 @@
 import { About } from "./About";
+import logo from "./img/logo.png";
 export const Header = () => {
   /*Dark Mode */
   let darkMode = localStorage.getItem("darkMode");
@@ -31,10 +32,13 @@ export const Header = () => {
     <header>
       <div className="container">
         <div className="header-container">
-          <i className="fa-solid fa-circle-half-stroke dark-mode-toggle" onClick={handleMode}>
-            <span className="mode-text"> Change Mode</span>
-          </i>
-          <About />
+          <img src={logo} alt="" class="logo" />
+          <div className="header-content-container">
+            <i className="fa-solid fa-circle-half-stroke dark-mode-toggle" onClick={handleMode}>
+              <span className="mode-text"> Change Mode</span>
+            </i>
+            <About />
+          </div>
         </div>
       </div>
     </header>

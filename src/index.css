@@ -10,6 +10,11 @@ body {
   font-family: "DM Sans", sans-serif;
 }
 
+.logo {
+  max-width: 60px;
+  max-height: 60px;
+}
+
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: rgb(215, 213, 213);
@@ -336,6 +341,14 @@ select {
 
 header > .container {
   padding: 0;
+}
+
+.header-content-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
 }
 
 .about-btn {
