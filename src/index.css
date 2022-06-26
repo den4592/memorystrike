@@ -221,14 +221,14 @@ select {
 /*random-topics*/
 .random-topics {
   min-height: 100vh;
-  margin-top: 2rem;
+  margin-top: 3rem;
 }
 
 .back-btn {
   color: rgb(158, 37, 224);
   font-size: 2rem;
   position: absolute;
-  top: 4rem;
+  top: 6rem;
 }
 
 .back-btn:hover {
@@ -355,7 +355,6 @@ header > .container {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-
   color: #fff;
   font-size: 1.5rem;
   -webkit-animation: blink 3s linear infinite;
