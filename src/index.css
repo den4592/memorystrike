@@ -310,10 +310,16 @@ select {
   width: 100%;
 }
 
+.contact {
+  text-align: center;
+  color: #fff;
+  padding-top: 1rem;
+}
+
 .rights-text {
   text-align: center;
   color: #fff;
-  padding: 1.5rem 0;
+  padding: 1rem 0;
 }
 
 /*Header*/

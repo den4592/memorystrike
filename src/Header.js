@@ -2,6 +2,8 @@ import { About } from "./About";
 export const Header = () => {
   /*Dark Mode */
   let darkMode = localStorage.getItem("darkMode");
+  if (darkMode == null) {
+  }
 
   const enableDarkMode = () => {
     document.body.classList.add("dark-mode");
