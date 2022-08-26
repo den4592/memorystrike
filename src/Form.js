@@ -124,26 +124,44 @@ export const Form = () => {
                 <option value="answer-x">Answer x</option>
                 <option value="answer-o">Answer o</option>
               </select>
-              <textarea className="answer-text off" placeholder="Answer..." disabled={textAreaIsDisabled} onChange={(e) => setAnswer(e.target.value)}></textarea>
+              <textarea
+                className="answer-text off"
+                placeholder="Answer..."
+                disabled={textAreaIsDisabled}
+                onChange={(e) => setAnswer(e.target.value)}
+              ></textarea>
               <div className="buttons">
                 <button className="add-btn enabled btn" onClick={Add}>
                   Add
                   <i className="fa-solid fa-plus"></i>
                 </button>
                 <div className="disabled-btns d-flex ">
-                  <button className="reset-btn btn" disabled={isDisabled.value} onClick={Reset}>
+                  <button
+                    className="reset-btn btn"
+                    disabled={isDisabled.value}
+                    onClick={Reset}
+                  >
                     Reset
                     <i className="fa-solid fa-rotate"></i>
                   </button>
                   {isDisabled ? (
-                    <Link to="/random-topics" state={topics} onClick={(event) => event.preventDefault()} style={{ textDecoration: "none", marginTop: "1rem" }}>
+                    <Link
+                      to="/random-topics"
+                      state={topics}
+                      onClick={(event) => event.preventDefault()}
+                      style={{ textDecoration: "none", marginTop: "1rem" }}
+                    >
                       <button type="button" className="mix-btn btn">
                         Shuffle
                         <i className="fa-solid fa-arrows-turn-right"></i>
                       </button>
                     </Link>
                   ) : (
-                    <Link to="/random-topics" state={topics} style={{ textDecoration: "none", marginTop: "1rem" }}>
+                    <Link
+                      to="/random-topics"
+                      state={topics}
+                      style={{ textDecoration: "none", marginTop: "1rem" }}
+                    >
                       <button type="button" className="mix-btn btn">
                         Shuffle
                         <i className="fa-solid fa-arrows-turn-right"></i>

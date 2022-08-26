@@ -1,33 +1,10 @@
 import { About } from "./About";
 import logo from "./img/logo.png";
+import { useDarkMode } from "./useDarkMode";
+
 export const Header = () => {
-  /*Dark Mode */
-  let darkMode = localStorage.getItem("darkMode");
-  if (darkMode == null) {
-  }
+  const { changeMode } = useDarkMode();
 
-  const enableDarkMode = () => {
-    document.body.classList.add("dark-mode");
-    localStorage.setItem("darkMode", "enabled");
-  };
-
-  const disableDarkMode = () => {
-    document.body.classList.remove("dark-mode");
-    localStorage.setItem("darkMode", null);
-  };
-
-  if (darkMode === "enabled") {
-    enableDarkMode();
-  }
-
-  const handleMode = () => {
-    darkMode = localStorage.getItem("darkMode");
-    if (darkMode !== "enabled") {
-      enableDarkMode();
-    } else {
-      disableDarkMode();
-    }
-  };
   return (
     <header>
       <div className="container">
@@ -36,7 +13,7 @@ export const Header = () => {
           <div className="header-content-container">
             <i
               className="fa-solid fa-circle-half-stroke dark-mode-toggle"
-              onClick={handleMode}
+              onClick={changeMode}
             >
               <span className="mode-text"> Change Mode</span>
             </i>

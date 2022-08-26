@@ -12,7 +12,10 @@ export const Topics = ({ topics, handleDelete }) => {
               <span className="span-text">Answer:</span>
               <p className="topic-answer-text">{topic.answer}</p>
             </div>
-            <i className="fa-solid fa-trash-can remove-topic topic-item" onClick={() => handleDelete(topic.id)} />
+            <i
+              className="fa-solid fa-trash-can remove-topic topic-item"
+              onClick={() => handleDelete(topic.id)}
+            />
           </li>
         );
       })}

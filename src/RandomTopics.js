@@ -64,13 +64,24 @@ export const RandomTopics = () => {
   const handleToggle = (num) => {
     for (let i = 0; i < itemList.length; i++) {
       if (i === num) {
-        if (document.querySelector(`.topic-answer-text${num}`).hasChildNodes()) {
-          document.querySelector(`.topic-answer-text${num}`).classList.add("topic-answer-text");
-          document.querySelector(`.topic-answer-text${num}`).firstElementChild.remove();
-        } else if (document.querySelector(`.topic-answer-text${num}`).childNodes.length === 0) {
+        if (
+          document.querySelector(`.topic-answer-text${num}`).hasChildNodes()
+        ) {
+          document
+            .querySelector(`.topic-answer-text${num}`)
+            .classList.add("topic-answer-text");
+          document
+            .querySelector(`.topic-answer-text${num}`)
+            .firstElementChild.remove();
+        } else if (
+          document.querySelector(`.topic-answer-text${num}`).childNodes
+            .length === 0
+        ) {
           var onSpan = document.createElement("span");
           onSpan.innerHTML = `${itemList[i][1]}`;
-          document.querySelector(`.topic-answer-text${num}`).appendChild(onSpan);
+          document
+            .querySelector(`.topic-answer-text${num}`)
+            .appendChild(onSpan);
         }
       }
     }
@@ -78,7 +89,10 @@ export const RandomTopics = () => {
   //textarea height resizing
   const tx = document.getElementsByTagName("textarea");
   for (let i = 0; i < tx.length; i++) {
-    tx[i].setAttribute("style", "height:" + tx[i].scrollHeight + "px;overflow-y:hidden;");
+    tx[i].setAttribute(
+      "style",
+      "height:" + tx[i].scrollHeight + "px;overflow-y:hidden;"
+    );
     tx[i].addEventListener("input", OnInput, false);
   }
 
@@ -104,10 +118,17 @@ export const RandomTopics = () => {
                   <div onClick={handleHide} className="covered-topic"></div>
                   <p className="topic-text">{item.topic}</p>
                   <textarea className="topic-textarea"></textarea>
-                  <span className="toggle" onClick={() => handleToggle(index)} id={index}>
+                  <span
+                    className="toggle"
+                    onClick={() => handleToggle(index)}
+                    id={index}
+                  >
                     Answer
                   </span>
-                  <p className={`topic-answer-text${index} topic-answer-text`} id={index}></p>
+                  <p
+                    className={`topic-answer-text${index} topic-answer-text`}
+                    id={index}
+                  ></p>
                 </li>
               );
             })}
