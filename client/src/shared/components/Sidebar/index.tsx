@@ -47,9 +47,9 @@ const Sidebar = () => {
     <>
       <div className={isActive ? "sidebar active" : "sidebar"}>
         {/*Should change to Link to*/}
-        <Link to="/Memory">메모리</Link>
-        <Link to="/Statistics">통계</Link>
-        <Link to="/Ask">물어보기</Link>
+        <Link to="/memory">메모리</Link>
+        <Link to="/statistics">통계</Link>
+        <Link to="/ask">물어보기</Link>
       </div>
       <button
         className="sidebar-toggle"
