@@ -32,7 +32,8 @@ function App() {
 
   return (
     <div>
-      <Router>
+      <Auth></Auth>
+      {/* <Router>
         <Sidebar />
         <div className="main">
           <Switch>
@@ -41,7 +42,7 @@ function App() {
             <Route path="/ask" component={() => <Ask />} />
           </Switch>
         </div>
-      </Router>
+      </Router> */}
     </div>
   );
 }
