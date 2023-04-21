@@ -1,3 +1,10 @@
-div {
-  color: red;
+.main {
+  padding-left: 200px;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    padding-left: 0;
+    transition: 0.3s;
+  }
 }
