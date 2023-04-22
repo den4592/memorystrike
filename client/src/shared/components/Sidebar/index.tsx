@@ -10,7 +10,7 @@ interface SidebarState {
 }
 
 const Sidebar = () => {
-  const [isActive, setIsActive] = useState<SidebarState["isActive"]>(false);
+  const [isActive, setIsActive] = useState<SidebarState["isActive"]>(true);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
   const toggleSidebar = () => {
@@ -33,6 +33,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     const handleResize = () => {
+      setIsActive(false);
       if (window.innerWidth < 768) {
         setIsActive(false);
       } else {

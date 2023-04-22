@@ -1,10 +1,12 @@
 import "./index.scss";
-import { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../shared/context/auth.context";
 import axios from "axios";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
+  const history = useHistory();
   const [toggleValue, setToggleValue] = useState<boolean>(false);
   const [registerValues, setRegisterValues] = useState({
     name: "",
@@ -63,13 +65,39 @@ const Auth = () => {
     switch (value) {
       case "registration":
         console.log(registerValues);
-        let newRegisterObject = { name: "", email: "", password: "" };
-        setRegisterValues(newRegisterObject);
+        axios
+          .post("http://localhost:8080/api/user/signup", {
+            name: registerValues.name,
+            email: registerValues.email,
+            password: registerValues.password,
+          })
+          .then(function (response) {
+            if (response.status === 201) {
+              setIsFocusedSecond(false);
+              setIsFocusedThird(false);
+              setToggleValue(!toggleValue);
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
         break;
       case "login":
         console.log(loginValues);
-        let newLoginObject = { email: "", password: "" };
-        setLoginValues(newLoginObject);
+        axios
+          .post("http://localhost:8080/api/user/login", {
+            email: loginValues.email,
+            password: loginValues.password,
+          })
+          .then(function (response) {
+            console.log(response);
+            if (response.status === 200) {
+              history.push("/memory");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
         break;
     }
   };
@@ -85,6 +113,7 @@ const Auth = () => {
               >
                 <label className="input-label">이름</label>
                 <input
+                  id="name"
                   type="text"
                   value={registerValues.name}
                   onFocus={() => handleFocus(1)}
@@ -104,6 +133,7 @@ const Auth = () => {
               >
                 <label className="input-label">이메일</label>
                 <input
+                  id="email"
                   type="email"
                   value={registerValues.email}
                   onFocus={() => handleFocus(2)}
@@ -121,6 +151,7 @@ const Auth = () => {
               >
                 <label className="input-label">비밀번호</label>
                 <input
+                  id="password"
                   type="password"
                   value={registerValues.password}
                   onFocus={() => handleFocus(3)}
@@ -133,7 +164,7 @@ const Auth = () => {
                   }}
                 />
               </div>
-              <button>회원가입</button>
+              <button className="btn-registration">회원가입</button>
             </form>
           ) : (
             <form onSubmit={(e) => handleSubmit(e, "login")}>
@@ -144,6 +175,7 @@ const Auth = () => {
               >
                 <label className="input-label">이메일</label>
                 <input
+                  id="email"
                   type="email"
                   value={loginValues.email}
                   onFocus={() => handleFocus(2)}
@@ -161,6 +193,7 @@ const Auth = () => {
               >
                 <label className="input-label">비밀번호</label>
                 <input
+                  id="password"
                   type="password"
                   value={loginValues.password}
                   onFocus={() => handleFocus(3)}

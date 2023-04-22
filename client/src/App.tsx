@@ -31,17 +31,17 @@ function App() {
 
   return (
     <div>
-      <Auth></Auth>
-      {/* <Router>
-        <Sidebar />
-        <div className="main">
-          <Switch>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={() => <Auth />} />
+          <div className="main">
+            <Sidebar />
             <Route path="/memory" component={() => <Memory />} />
             <Route path="/statistics" component={() => <Statistics />} />
             <Route path="/ask" component={() => <Ask />} />
-          </Switch>
-        </div>
-      </Router> */}
+          </div>
+        </Switch>
+      </Router>
     </div>
   );
 }
