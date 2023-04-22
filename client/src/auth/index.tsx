@@ -53,7 +53,7 @@ const Auth = () => {
       setIsFocusedSecond(false);
     }
     if (!event.target.value && val === 3) {
-      setIsFocusedSecond(false);
+      setIsFocusedThird(false);
     }
   };
 
@@ -170,7 +170,6 @@ const Auth = () => {
               <button>로그인</button>
             </form>
           )}
-
           <span onClick={handleChangeView}>
             {toggleValue ? "가입하기" : "로그인하기"}
           </span>
