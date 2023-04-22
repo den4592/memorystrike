@@ -1,7 +1,8 @@
 const { validationResult } = require("express-validator");
-
+const mongoose = require("mongoose");
 const Content = require("../models/content");
 const HttpError = require("../models/http-error");
+const User = require("../models/user");
 
 const createContent = async (req, res, next) => {
   const errors = validationResult(req);
@@ -9,18 +10,38 @@ const createContent = async (req, res, next) => {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
 
-  const { title, description } = req.body;
+  const { title, description, creator } = req.body;
 
   const createdContent = new Content({
     title,
     description,
+    creator,
   });
 
+  let user;
+
   try {
-    await createdContent.save();
+    user = await User.findById(creator);
+  } catch (err) {
+    const error = new HttpError("Creating place failed, please try again", 500);
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError("Could not find user for provided id", 404);
+    return next(error);
+  }
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await createdContent.save({ session: sess });
+    user.contents.push(createdContent);
+    await user.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
-      "콘텐츠를 생성할 수 없습니다. 다시 시도해 주세요.",
+      "Creating place failed, please try again.",
       500
     );
     return next(error);
@@ -115,10 +136,15 @@ const deleteContentById = async (req, res, next) => {
   }
 
   try {
-    await content.deleteOne({ id: contentId });
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    // place.remove({ session: sess }); 이거 안해도됨
+    content.creator.contents.pull(content);
+    await content.creator.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
-      "콘텐츠를 삭제할 수 없습니다. 다시 시도해 주세요.",
+      "Something went wrong, could not delete place.",
       500
     );
     return next(error);
