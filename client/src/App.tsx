@@ -28,7 +28,6 @@ function App() {
   }, []);
 
   let routes;
-  console.log(auth);
 
   return (
     <div>

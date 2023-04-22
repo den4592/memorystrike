@@ -1,6 +1,7 @@
 import "./index.scss";
 import { useContext, useState } from "react";
 import { AuthContext } from "../shared/context/auth.context";
+import axios from "axios";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -57,13 +58,18 @@ const Auth = () => {
     }
   };
 
-  const handleSubmit = (value: string) => {
+  const handleSubmit = (e: any, value: string) => {
+    e.preventDefault();
     switch (value) {
       case "registration":
         console.log(registerValues);
+        let newRegisterObject = { name: "", email: "", password: "" };
+        setRegisterValues(newRegisterObject);
         break;
       case "login":
         console.log(loginValues);
+        let newLoginObject = { email: "", password: "" };
+        setLoginValues(newLoginObject);
         break;
     }
   };
@@ -73,7 +79,7 @@ const Auth = () => {
       <div className="auth">
         <div className="auth-container">
           {!toggleValue ? (
-            <form onSubmit={() => handleSubmit("registration")}>
+            <form onSubmit={(e) => handleSubmit(e, "registration")}>
               <div
                 className={`input-container ${isFocusedFirst ? "focused" : ""}`}
               >
@@ -130,7 +136,7 @@ const Auth = () => {
               <button>회원가입</button>
             </form>
           ) : (
-            <form onSubmit={() => handleSubmit("login")}>
+            <form onSubmit={(e) => handleSubmit(e, "login")}>
               <div
                 className={`input-container ${
                   isFocusedSecond ? "focused" : ""
@@ -144,7 +150,7 @@ const Auth = () => {
                   onBlur={(e) => handleBlur(e, 2)}
                   onChange={(e) => {
                     setLoginValues({
-                      ...registerValues,
+                      ...loginValues,
                       email: e.target.value,
                     });
                   }}
@@ -161,7 +167,7 @@ const Auth = () => {
                   onBlur={(e) => handleBlur(e, 3)}
                   onChange={(e) => {
                     setLoginValues({
-                      ...registerValues,
+                      ...loginValues,
                       password: e.target.value,
                     });
                   }}
