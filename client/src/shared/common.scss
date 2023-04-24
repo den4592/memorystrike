@@ -37,10 +37,16 @@ $color-pink: #fbb2fe;
 }
 
 .btn-hover-effect2 {
-  background: $color-blue;
-  background: linear-gradient(0deg, $color-blue 0%, rgb(5, 189, 240) 100%);
-  border: none;
-  &:hover {
-    background: rgb(5, 189, 240);
+  &:disabled {
+    background-color: gray;
+    border: none;
+  }
+  &:enabled {
+    background: $color-blue;
+    background: linear-gradient(0deg, $color-blue 0%, rgb(5, 189, 240) 100%);
+    border: none;
+    &:hover {
+      background: rgb(5, 189, 240);
+    }
   }
 }

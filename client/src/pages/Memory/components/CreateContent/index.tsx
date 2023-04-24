@@ -1,10 +1,20 @@
 import "./index.scss";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const CreateContent = () => {
+  const [topicText, setTopicText] = useState<string>("");
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  const handleChange = useCallback(
+    (val: string) => {
+      setTopicText(val);
+    },
+    [setTopicText]
+  );
+
   return (
     <div className="create-content">
       <p className="create-content-description">
@@ -17,17 +27,24 @@ const CreateContent = () => {
             type="text"
             className="create-content-form__inner-input"
             placeholder="토픽"
+            value={topicText}
+            onChange={(e) => handleChange(e.target.value)}
           />
         </div>
         <div className="create-content-form__inner">
           <input
             type="text"
             className="create-content-form__inner-input"
-            placeholder="설명"
+            placeholder="설명(선택)"
           />
         </div>
         <div className="create-content-form-btn-container">
-          <button className="btn-toggle-create btn-hover-effect2">확인</button>
+          <button
+            className="btn-toggle-create btn-hover-effect2"
+            disabled={topicText ? false : true}
+          >
+            확인
+          </button>
         </div>
       </form>
     </div>
