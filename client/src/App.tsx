@@ -14,6 +14,7 @@ import Sidebar from "./shared/components/Sidebar";
 import Memory from "./pages/Memory";
 import Statistics from "./pages/Statistics";
 import Ask from "./pages/Ask";
+import CreateContent from "./pages/Memory/components/CreateContent";
 
 function App() {
   const auth = useContext(AuthContext);
@@ -34,12 +35,25 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={() => <Auth />} />
-          <div className="main">
-            <Sidebar />
-            <Route path="/memory" component={() => <Memory />} />
-            <Route path="/statistics" component={() => <Statistics />} />
-            <Route path="/ask" component={() => <Ask />} />
-          </div>
+          <>
+            <div className="main">
+              <div className="main-container">
+                <Sidebar />
+                <Route exact path="/memory" component={() => <Memory />} />
+                {/* <Route
+                exact
+                path="/memory/create"
+                component={() => <CreateContent />}
+              /> */}
+                <Route
+                  exact
+                  path="/statistics"
+                  component={() => <Statistics />}
+                />
+                <Route exact path="/ask" component={() => <Ask />} />
+              </div>
+            </div>
+          </>
         </Switch>
       </Router>
     </div>

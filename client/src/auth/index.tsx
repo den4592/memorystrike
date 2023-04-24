@@ -7,6 +7,7 @@ import axios from "axios";
 const Auth = () => {
   const auth = useContext(AuthContext);
   const history = useHistory();
+  const [token, setToken] = useState("");
   const [toggleValue, setToggleValue] = useState<boolean>(false);
   const [registerValues, setRegisterValues] = useState({
     name: "",
@@ -93,6 +94,7 @@ const Auth = () => {
             console.log(response);
             if (response.status === 200) {
               history.push("/memory");
+              setToken(response.data.id);
             }
           })
           .catch(function (error) {
@@ -206,7 +208,7 @@ const Auth = () => {
                   }}
                 />
               </div>
-              <button>로그인</button>
+              <button className="btn-registration">로그인</button>
             </form>
           )}
           <span onClick={handleChangeView}>

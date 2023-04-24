@@ -1,7 +1,10 @@
 import "./index.scss";
+import { useHistory } from "react-router-dom";
 
 const Memory = () => {
-  return <div>Memory</div>;
+  const history = useHistory();
+
+  return <div className="memory-container"></div>;
 };
 
 export default Memory;
