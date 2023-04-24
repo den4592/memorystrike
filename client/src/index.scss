@@ -1,14 +1,19 @@
+@import "./shared/common.scss";
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 .main {
+  min-width: 400px;
   padding-left: 200px;
+  display: flex;
+  justify-content: center;
   &-container {
     width: 100%;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 0 2rem;
   }
 }
 
@@ -16,5 +21,11 @@
   .main {
     padding-left: 0;
     transition: 0.3s;
+  }
+}
+
+input {
+  &:focus {
+    outline: 3px solid $color-blue;
   }
 }

@@ -1,0 +1,37 @@
+@import "../../../../shared/common.scss";
+.create-content {
+  width: 70%;
+  min-width: 400px;
+  margin: 0 auto;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  border-radius: 4px;
+  padding: 2rem;
+  &-description {
+    color: #bcbcbc;
+    text-align: center;
+    padding-bottom: 10px;
+  }
+
+  &-form {
+    &__inner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &-input {
+        width: 100%;
+        margin: 10px 0;
+        background-color: #ebebeb;
+        border: none;
+        padding: 10px;
+      }
+    }
+    &-btn-container {
+      padding-top: 10px;
+      display: flex;
+      justify-content: end;
+    }
+  }
+}

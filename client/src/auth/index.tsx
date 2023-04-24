@@ -117,6 +117,7 @@ const Auth = () => {
                 <input
                   id="name"
                   type="text"
+                  className="auth-input"
                   value={registerValues.name}
                   onFocus={() => handleFocus(1)}
                   onBlur={(e) => handleBlur(e, 1)}
@@ -137,6 +138,7 @@ const Auth = () => {
                 <input
                   id="email"
                   type="email"
+                  className="auth-input"
                   value={registerValues.email}
                   onFocus={() => handleFocus(2)}
                   onBlur={(e) => handleBlur(e, 2)}
@@ -155,6 +157,7 @@ const Auth = () => {
                 <input
                   id="password"
                   type="password"
+                  className="auth-input"
                   value={registerValues.password}
                   onFocus={() => handleFocus(3)}
                   onBlur={(e) => handleBlur(e, 3)}
@@ -179,6 +182,7 @@ const Auth = () => {
                 <input
                   id="email"
                   type="email"
+                  className="auth-input"
                   value={loginValues.email}
                   onFocus={() => handleFocus(2)}
                   onBlur={(e) => handleBlur(e, 2)}
@@ -197,6 +201,7 @@ const Auth = () => {
                 <input
                   id="password"
                   type="password"
+                  className="auth-input"
                   value={loginValues.password}
                   onFocus={() => handleFocus(3)}
                   onBlur={(e) => handleBlur(e, 3)}
