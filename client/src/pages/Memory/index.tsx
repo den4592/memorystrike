@@ -1,9 +1,18 @@
 import "./index.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CreateContent from "./components/CreateContent";
+import axios from "axios";
 
 const Memory = () => {
   const [toggle, setToggle] = useState<boolean>(false);
+  const [updateContents, setUpdateContents] = useState<boolean>(false);
+  let userId = window.localStorage.getItem("token");
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/contents/user/${userId}`)
+      .then((res) => console.log(res.data));
+  }, [updateContents]);
 
   return (
     <div className="memory">
@@ -16,7 +25,14 @@ const Memory = () => {
         </button>
       </div>
 
-      {toggle ? <CreateContent /> : ""}
+      {toggle ? (
+        <CreateContent
+          updateContents={updateContents}
+          setUpdateContents={setUpdateContents}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

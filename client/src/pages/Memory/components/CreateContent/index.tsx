@@ -1,13 +1,20 @@
 import "./index.scss";
-import { useState, useCallback, useContext } from "react";
-import { AuthContext } from "../../../../shared/context/auth.context";
+import { useState, useCallback, useEffect, memo, useContext } from "react";
 import axios from "axios";
+import ContentCard from "../ContentCard";
 
-const CreateContent = () => {
+interface CreateContentProps {
+  updateContents: boolean;
+  setUpdateContents: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const CreateContent = ({
+  updateContents,
+  setUpdateContents,
+}: CreateContentProps) => {
   const [topicText, setTopicText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
-  const auth = useContext(AuthContext);
-  console.log(auth.token);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
@@ -21,6 +28,7 @@ const CreateContent = () => {
         if (response.status === 200) {
           setTopicText("");
           setDescriptionText("");
+          setUpdateContents(!updateContents);
         }
       })
       .catch(function (error) {
@@ -62,8 +70,9 @@ const CreateContent = () => {
           </button>
         </div>
       </form>
+      <ContentCard />
     </div>
   );
 };
 
-export default CreateContent;
+export default memo(CreateContent);
