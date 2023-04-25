@@ -20,12 +20,13 @@ const getUsers = async (req, res, next) => {
 
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
+  console.log(errors);
   if (!errors.isEmpty()) {
     return next(
       new HttpError("Invalid inputs passed, please check your data.", 422)
     );
   }
-
+  console.log(req.body);
   const { name, email, password } = req.body;
 
   let existingUser;
@@ -89,7 +90,7 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ message: "Logged in!" });
+  res.json({ token: existingUser.id });
 };
 
 exports.getUsers = getUsers;

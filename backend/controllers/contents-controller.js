@@ -10,10 +10,10 @@ const createContent = async (req, res, next) => {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
 
-  const { title, description, creator } = req.body;
+  const { topic, description, creator } = req.body;
 
   const createdContent = new Content({
-    title,
+    topic,
     description,
     creator,
   });
