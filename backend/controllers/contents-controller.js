@@ -15,7 +15,6 @@ const createContent = async (req, res, next) => {
   const createdContent = new Content({
     topic,
     description,
-    creator,
   });
 
   let user;
@@ -36,7 +35,7 @@ const createContent = async (req, res, next) => {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await createdContent.save({ session: sess });
-    user.contents.push(createdContent);
+    user.contents.push(createdContent.toObject({ getters: true }));
     await user.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
