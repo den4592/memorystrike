@@ -14,48 +14,46 @@ import Sidebar from "./shared/components/Sidebar";
 import Memory from "./pages/Memory";
 import Statistics from "./pages/Statistics";
 import Ask from "./pages/Ask";
-import CreateContent from "./pages/Memory/components/CreateContent";
 
 function App() {
-  const auth = useContext(AuthContext);
+  const auth: any = useContext(AuthContext);
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
-  const login = useCallback(() => {
-    setisLoggedIn(true);
-  }, []);
+  // const login = useCallback(() => {
+  //   setisLoggedIn(true);
+  // }, []);
 
-  const logout = useCallback(() => {
-    setisLoggedIn(false);
-  }, []);
+  // const logout = useCallback(() => {
+  //   setisLoggedIn(false);
+  // }, []);
 
   let routes;
 
   return (
     <div>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={() => <Auth />} />
-          <>
-            <div className="main">
-              <div className="main-container">
-                <Sidebar />
-                <Route exact path="/memory" component={() => <Memory />} />
-                {/* <Route
-                exact
-                path="/memory/create"
-                component={() => <CreateContent />}
-              /> */}
-                <Route
-                  exact
-                  path="/statistics"
-                  component={() => <Statistics />}
-                />
-                <Route exact path="/ask" component={() => <Ask />} />
+      <AuthContext.Provider
+        value={(auth.token, auth.isLoggedIn, auth.login, auth.logout)}
+      >
+        <Router>
+          <Switch>
+            <Route exact path="/" component={() => <Auth />} />
+            <>
+              <div className="main">
+                <div className="main-container">
+                  <Sidebar />
+                  <Route exact path="/memory" component={() => <Memory />} />
+                  <Route
+                    exact
+                    path="/statistics"
+                    component={() => <Statistics />}
+                  />
+                  <Route exact path="/ask" component={() => <Ask />} />
+                </div>
               </div>
-            </div>
-          </>
-        </Switch>
-      </Router>
+            </>
+          </Switch>
+        </Router>
+      </AuthContext.Provider>
     </div>
   );
 }

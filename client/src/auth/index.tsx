@@ -93,8 +93,8 @@ const Auth = () => {
           .then(function (response) {
             console.log(response);
             if (response.status === 200) {
+              window.localStorage.setItem("token", response.data.token);
               history.push("/memory");
-              setToken(response.data.id);
             }
           })
           .catch(function (error) {

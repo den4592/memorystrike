@@ -1,19 +1,32 @@
 import "./index.scss";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
+import { AuthContext } from "../../../../shared/context/auth.context";
+import axios from "axios";
 
 const CreateContent = () => {
   const [topicText, setTopicText] = useState<string>("");
-
+  const [descriptionText, setDescriptionText] = useState<string>("");
+  const auth = useContext(AuthContext);
+  console.log(auth.token);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    axios
+      .post("http://localhost:8080/api/contents", {
+        topic: topicText,
+        description: descriptionText,
+        creator: window.localStorage.getItem("token"),
+      })
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 200) {
+          setTopicText("");
+          setDescriptionText("");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
-
-  const handleChange = useCallback(
-    (val: string) => {
-      setTopicText(val);
-    },
-    [setTopicText]
-  );
 
   return (
     <div className="create-content">
@@ -28,7 +41,7 @@ const CreateContent = () => {
             className="create-content-form__inner-input"
             placeholder="토픽"
             value={topicText}
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={(e) => setTopicText(e.target.value)}
           />
         </div>
         <div className="create-content-form__inner">
@@ -36,6 +49,8 @@ const CreateContent = () => {
             type="text"
             className="create-content-form__inner-input"
             placeholder="설명(선택)"
+            value={descriptionText}
+            onChange={(e) => setDescriptionText(e.target.value)}
           />
         </div>
         <div className="create-content-form-btn-container">
