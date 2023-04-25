@@ -5,6 +5,8 @@ const contentsController = require("../controllers/contents-controller");
 
 router.get("/:cid", contentsController.getContentById);
 
+router.get("/user/:uid", contentsController.getContentsByUserId);
+
 router.post("/", [
   check("topic").not().isEmpty(),
   check("description").not().isEmpty(),

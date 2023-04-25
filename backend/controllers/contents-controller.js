@@ -54,7 +54,7 @@ const getContentById = async (req, res, next) => {
   const contentId = req.params.cid;
   let content;
   try {
-    content = await Content.findById(contentId);
+    content = await Content.findAll(contentId);
   } catch (err) {
     const error = new HttpError(
       "콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
@@ -69,6 +69,27 @@ const getContentById = async (req, res, next) => {
   }
 
   res.json({ content: content.toObject({ getters: true }) });
+};
+
+const getContentsByUserId = async (req, res, next) => {
+  const userId = req.params.uid;
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(
+      "사용자를 찾을 수 없습니다. 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError("제공한 id로 사용자를 찾을 수 없습니다.", 404);
+    return next(error);
+  }
+
+  res.json({ user: user.contents.toObject({ getters: true }) });
 };
 
 const updateContentById = async (req, res, next) => {
@@ -117,8 +138,7 @@ const deleteContentById = async (req, res, next) => {
   let content;
 
   try {
-    content = await Content.findById(contentId);
-    console.log(content);
+    content = await Content.findById(contentId).populate("creator");
   } catch (err) {
     const error = new HttpError(
       "콘텐츠를 삭제할 수 없습니다. 다시 시도해 주세요.",
@@ -138,7 +158,7 @@ const deleteContentById = async (req, res, next) => {
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    // place.remove({ session: sess }); 이거 안해도됨
+    await Content.findByIdAndRemove(contentId);
     content.creator.contents.pull(content);
     await content.creator.save({ session: sess });
     await sess.commitTransaction();
@@ -155,5 +175,6 @@ const deleteContentById = async (req, res, next) => {
 
 exports.createContent = createContent;
 exports.getContentById = getContentById;
+exports.getContentsByUserId = getContentsByUserId;
 exports.updateContentById = updateContentById;
 exports.deleteContentById = deleteContentById;
