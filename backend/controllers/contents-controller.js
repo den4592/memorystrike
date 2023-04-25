@@ -88,7 +88,7 @@ const getContentsByUserId = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ user: user.contents.toObject({ getters: true }) });
+  res.json({ contents: user.contents.toObject({ getters: true }) });
 };
 
 const updateContentById = async (req, res, next) => {
