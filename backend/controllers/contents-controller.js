@@ -9,13 +9,20 @@ const createContent = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
-
+  let createdContent;
   const { topic, description, creator } = req.body;
 
-  const createdContent = new Content({
-    topic,
-    description,
-  });
+  if (topic && !description) {
+    createdContent = new Content({
+      topic,
+    });
+  }
+  if (topic && description) {
+    createdContent = new Content({
+      topic,
+      description,
+    });
+  }
 
   let user;
 
