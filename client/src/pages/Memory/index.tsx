@@ -2,17 +2,26 @@ import "./index.scss";
 import { useState, useEffect } from "react";
 import CreateContent from "./components/CreateContent";
 import axios from "axios";
+import ContentCard from "../Memory/components/ContentCard";
 
 const Memory = () => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [updateContents, setUpdateContents] = useState<boolean>(false);
+  const [contents, setContents] = useState([]);
+
   let userId = window.localStorage.getItem("token");
 
   useEffect(() => {
     axios
       .get(`http://localhost:8080/api/contents/user/${userId}`)
-      .then((res) => console.log(res.data));
-  }, [updateContents]);
+      .then((res) => {
+        setContents(res.data.contents);
+      });
+  }, [updateContents, userId]);
+
+  useEffect(() => {
+    console.log(contents);
+  }, [contents]);
 
   return (
     <div className="memory">
@@ -33,6 +42,19 @@ const Memory = () => {
       ) : (
         ""
       )}
+
+      <div className="memory-contents">
+        {contents?.map((content: any) => {
+          return (
+            <ContentCard
+              key={content.id}
+              topic={content.topic}
+              description={content.description}
+              time={content.createdAt}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

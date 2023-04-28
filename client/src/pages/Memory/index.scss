@@ -7,4 +7,11 @@
     justify-content: end;
     padding: 1rem 0;
   }
+  &-contents {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
 }
