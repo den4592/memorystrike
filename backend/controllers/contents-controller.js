@@ -15,12 +15,14 @@ const createContent = async (req, res, next) => {
   if (topic && !description) {
     createdContent = new Content({
       topic,
+      creator,
     });
   }
   if (topic && description) {
     createdContent = new Content({
       topic,
       description,
+      creator,
     });
   }
 
@@ -140,11 +142,12 @@ const updateContentById = async (req, res, next) => {
 };
 
 const deleteContentById = async (req, res, next) => {
-  const contentId = req.params.cid;
+  const contentId = req.body.contentId;
+  const userId = req.body.userId;
   let content;
 
   try {
-    content = await Content.findById(contentId).populate("creator");
+    content = await Content.findById(contentId);
   } catch (err) {
     const error = new HttpError(
       "콘텐츠를 삭제할 수 없습니다. 다시 시도해 주세요.",
@@ -162,12 +165,12 @@ const deleteContentById = async (req, res, next) => {
   }
 
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
+    await User.updateOne(
+      { _id: userId },
+      { $pull: { contents: { id: contentId } } }
+    );
     await Content.findByIdAndRemove(contentId);
-    content.creator.contents.pull(content);
-    await content.creator.save({ session: sess });
-    await sess.commitTransaction();
+    // await user.contents.save({ session: sess });
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not delete place.",
