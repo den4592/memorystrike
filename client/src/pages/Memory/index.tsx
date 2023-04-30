@@ -19,10 +19,6 @@ const Memory = () => {
       });
   }, [updateContents, userId]);
 
-  useEffect(() => {
-    console.log(contents);
-  }, [contents]);
-
   return (
     <div className="memory">
       <div className="memory-utils-container">
@@ -47,10 +43,13 @@ const Memory = () => {
         {contents?.map((content: any) => {
           return (
             <ContentCard
+              id={content.id}
               key={content.id}
               topic={content.topic}
               description={content.description}
               time={content.createdAt}
+              updateContents={updateContents}
+              setUpdateContents={setUpdateContents}
             />
           );
         })}

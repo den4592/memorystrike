@@ -14,6 +14,7 @@ import Sidebar from "./shared/components/Sidebar";
 import Memory from "./pages/Memory";
 import Statistics from "./pages/Statistics";
 import Ask from "./pages/Ask";
+import Content from "./pages/Memory/components/Content";
 
 function App() {
   const auth: any = useContext(AuthContext);
@@ -42,6 +43,11 @@ function App() {
                 <div className="main-container">
                   <Sidebar />
                   <Route exact path="/memory" component={() => <Memory />} />
+                  <Route
+                    exact
+                    path="/memory/content/:contentId"
+                    component={() => <Content />}
+                  />
                   <Route
                     exact
                     path="/statistics"
