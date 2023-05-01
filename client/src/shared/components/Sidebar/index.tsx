@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { FaBars } from "react-icons/fa";
 import { Router, Link } from "react-router-dom";
 import "./index.scss";
@@ -17,6 +17,15 @@ const Sidebar = () => {
     setIsActive(!isActive);
   };
 
+  const handleResize = useCallback(() => {
+    setIsActive(false);
+    if (window.innerWidth < 768) {
+      setIsActive(false);
+    } else {
+      setIsActive(true);
+    }
+  }, [setIsActive]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -32,22 +41,14 @@ const Sidebar = () => {
   }, [toggleRef]);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsActive(false);
-      if (window.innerWidth < 768) {
-        setIsActive(false);
-      } else {
-        setIsActive(true);
-      }
-    };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [handleResize]);
 
   return (
     <>
       <div className={isActive ? "sidebar active" : "sidebar"}>
-        {/*Should change to Link to*/}
         <Link to="/memory">메모리</Link>
         <Link to="/statistics">통계</Link>
         <Link to="/ask">물어보기</Link>
