@@ -15,9 +15,13 @@ const Memory = () => {
     axios
       .get(`http://localhost:8080/api/contents/user/${userId}`)
       .then((res) => {
-        setContents(res.data.contents);
+        setContents(res.data[0].contents);
       });
   }, [updateContents, userId]);
+
+  useEffect(() => {
+    console.log(contents);
+  }, [contents]);
 
   return (
     <div className="memory">
