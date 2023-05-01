@@ -97,7 +97,17 @@ const getContentsByUserId = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ contents: user.contents.toObject({ getters: true }) });
+  res.json(
+    await User.aggregate([
+      {
+        $project: {
+          contents: {
+            $sortArray: { input: "$contents", sortBy: { createdAt: -1 } },
+          },
+        },
+      },
+    ])
+  );
 };
 
 const updateContentById = async (req, res, next) => {
