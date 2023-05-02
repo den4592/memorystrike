@@ -32,7 +32,7 @@ function App() {
   let routes;
 
   return (
-    <div>
+    <div className="App">
       <AuthContext.Provider
         value={(auth.token, auth.isLoggedIn, auth.login, auth.logout)}
       >
