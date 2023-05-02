@@ -58,7 +58,7 @@ const ContentCard = ({
         >
           <DeleteContent />
         </div>
-        <Link to={`/memory/content/${id}`}>
+        <Link to={{ pathname: `/memory/content/${id}`, state: { topic } }}>
           <div className="content-card-options-arrow">
             <ArrowToBracket />
           </div>
