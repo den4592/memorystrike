@@ -1,5 +1,6 @@
 import { useState, useCallback, useContext } from "react";
 import "./index.scss";
+import "./reset.css";
 import {
   BrowserRouter as Router,
   Route,

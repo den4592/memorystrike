@@ -10,8 +10,8 @@ const Content = () => {
   const { state } = useLocation<stateType>();
 
   return (
-    <div>
-      <h1>{state.topic}</h1>
+    <div className="content">
+      <h1 className="content-title">{state.topic}</h1>
     </div>
   );
 };
