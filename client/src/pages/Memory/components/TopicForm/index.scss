@@ -1,0 +1,32 @@
+@import "../../../../shared/common.scss";
+
+.topic-form {
+  margin: 50px 0;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  &-container {
+    &-label {
+      display: block;
+      padding: 20px 0;
+    }
+    &-input {
+      padding: 10px;
+      max-width: 100%;
+      min-width: 100%;
+      min-height: 30px;
+      height: 50px;
+      max-height: 100px;
+      overflow-y: scroll;
+      &:nth-child(4) {
+        height: 100px;
+        min-height: 60px;
+        max-height: 300px;
+      }
+    }
+    &-btn {
+      text-align: right;
+      margin-top: 20px;
+    }
+  }
+}
