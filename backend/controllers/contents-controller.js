@@ -10,17 +10,17 @@ const createContent = async (req, res, next) => {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
   let createdContent;
-  const { topic, description, creator } = req.body;
+  const { content, description, creator } = req.body;
 
-  if (topic && !description) {
+  if (content && !description) {
     createdContent = new Content({
-      topic,
+      content,
       creator,
     });
   }
-  if (topic && description) {
+  if (content && description) {
     createdContent = new Content({
-      topic,
+      content,
       description,
       creator,
     });

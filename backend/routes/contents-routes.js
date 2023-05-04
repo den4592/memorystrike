@@ -8,7 +8,7 @@ router.get("/:cid", contentsController.getContentById);
 router.get("/user/:uid", contentsController.getContentsByUserId);
 
 router.post("/", [
-  check("topic").not().isEmpty(),
+  check("content").not().isEmpty(),
   contentsController.createContent,
 ]);
 
