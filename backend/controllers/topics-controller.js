@@ -56,4 +56,28 @@ const createTopic = async (req, res, next) => {
   res.status(200).json({ user: user });
 };
 
+const getTopics = async (req, res, next) => {
+  const userId = req.params.uid;
+  const contentId = req.params.cid;
+  let user;
+  let content;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(
+      "사용자를 찾을 수 없습니다. 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError("제공한 id로 사용자를 찾을 수 없습니다.", 404);
+    return next(error);
+  }
+
+  res.json(await User.aggregate([{ $project: { "contents.topics": 1 } }]));
+};
+
 exports.createTopic = createTopic;
+exports.getTopics = getTopics;
