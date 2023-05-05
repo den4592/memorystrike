@@ -34,9 +34,6 @@ const createTopic = async (req, res, next) => {
   }
 
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-
     await User.updateOne(
       {
         _id: creator,
@@ -44,12 +41,10 @@ const createTopic = async (req, res, next) => {
       },
       {
         $push: {
-          "contents.0.$.topics": createdTopic,
+          "contents.$.topics": createdTopic,
         },
       }
     );
-
-    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
       "Creating place failed, please try again.",
