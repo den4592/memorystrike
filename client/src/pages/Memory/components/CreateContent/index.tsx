@@ -11,21 +11,21 @@ const CreateContent = ({
   updateContents,
   setUpdateContents,
 }: CreateContentProps) => {
-  const [topicText, setTopicText] = useState<string>("");
+  const [contentText, setContentText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
       .post("http://localhost:8080/api/contents", {
-        topic: topicText,
+        content: contentText,
         description: descriptionText,
         creator: window.localStorage.getItem("token"),
       })
       .then(function (response) {
         console.log(response);
         if (response.status === 200) {
-          setTopicText("");
+          setContentText("");
           setDescriptionText("");
           setUpdateContents(!updateContents);
         }
@@ -47,8 +47,8 @@ const CreateContent = ({
             type="text"
             className="create-content-form__inner-input"
             placeholder="토픽"
-            value={topicText}
-            onChange={(e) => setTopicText(e.target.value)}
+            value={contentText}
+            onChange={(e) => setContentText(e.target.value)}
           />
         </div>
         <div className="create-content-form__inner">
@@ -63,7 +63,7 @@ const CreateContent = ({
         <div className="create-content-form-btn-container">
           <button
             className="btn-toggle-create btn-hover-effect2"
-            disabled={topicText ? false : true}
+            disabled={contentText ? false : true}
           >
             확인
           </button>

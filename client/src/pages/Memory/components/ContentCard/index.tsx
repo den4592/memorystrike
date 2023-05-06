@@ -8,7 +8,7 @@ import ArrowToBracket from "../../../../assets/svgs/arrow-right-to-bracket-solid
 
 interface ContentCardProps {
   id: string;
-  topic: string;
+  content: string;
   description: string;
   time: string;
   updateContents: boolean;
@@ -17,7 +17,7 @@ interface ContentCardProps {
 
 const ContentCard = ({
   id,
-  topic,
+  content,
   description,
   time,
   updateContents,
@@ -40,7 +40,7 @@ const ContentCard = ({
   return (
     <div className="content-card">
       <p className="content-card-topic-label content-card-text">토픽</p>
-      <p className="content-card-topic-text ">{topic}</p>
+      <p className="content-card-topic-text ">{content}</p>
       <p className="content-card-description-label content-card-text">설명</p>
       <p className="content-card-description-text ">
         {description ? description : "-"}
@@ -58,7 +58,12 @@ const ContentCard = ({
         >
           <DeleteContent />
         </div>
-        <Link to={{ pathname: `/memory/content/${id}`, state: { topic } }}>
+        <Link
+          to={{
+            pathname: `/memory/content/${id}`,
+            state: { content: content, userId: userId, contentId: id },
+          }}
+        >
           <div className="content-card-options-arrow">
             <ArrowToBracket />
           </div>

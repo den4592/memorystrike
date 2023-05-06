@@ -47,9 +47,9 @@ const Memory = () => {
         {contents?.map((content: any) => {
           return (
             <ContentCard
-              id={content.id}
-              key={content.id}
-              topic={content.topic}
+              id={content._id}
+              key={content._id}
+              content={content.content}
               description={content.description}
               time={content.createdAt}
               updateContents={updateContents}

@@ -1,19 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./index.scss";
+import axios from "axios";
 
-const TopicForm = () => {
-  const [topic, setTopic] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+interface TopicFormProps {
+  userId: string;
+  contentId: string;
+  setTopics: React.Dispatch<any>;
+}
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+const TopicForm = ({ userId, contentId, setTopics }: TopicFormProps) => {
+  const [topicText, setTopicText] = useState<string>("");
+  const [descriptionText, setDescriptionText] = useState<string>("");
+  const [updateTopics, setUpdateTopics] = useState<boolean>(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (topic === "" || description === "") {
+    if (topicText === "" || descriptionText === "") {
       alert("필수 항목들을 입력해 주세요.");
       return;
     }
-
-    //TODO : createTopic API
+    axios
+      .post(`http://localhost:8080/api/topics`, {
+        topic: topicText,
+        description: descriptionText,
+        id: contentId,
+        creator: userId,
+      })
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 200) {
+          setTopicText("");
+          setDescriptionText("");
+          setUpdateTopics(!updateTopics);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/topics/${userId}/${contentId}`)
+      .then((res) => {
+        setTopics(res.data[0].contents[0].topics);
+      });
+  }, [contentId, userId, updateTopics, setTopics]);
 
   return (
     <div className="topic-form">
@@ -24,8 +56,8 @@ const TopicForm = () => {
         <textarea
           id="topic"
           className="topic-form-container-input"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
+          value={topicText}
+          onChange={(e) => setTopicText(e.target.value)}
         />
         <label htmlFor="description" className="topic-form-container-label">
           설명 / 정답
@@ -33,8 +65,8 @@ const TopicForm = () => {
         <textarea
           id="description"
           className="topic-form-container-input"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={descriptionText}
+          onChange={(e) => setDescriptionText(e.target.value)}
         />
         <div className="topic-form-container-btn">
           <button className="btn-toggle-create btn-hover-effect3">
