@@ -116,39 +116,26 @@ const updateContentById = async (req, res, next) => {
     throw new HttpError("콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.", 422);
   }
 
-  const { title, description } = req.body;
+  const { content, description, creator } = req.body;
   const contentId = req.params.cid;
-  let content;
+  const user = await User.findById(creator);
 
   //content update
-  try {
-    content = await Content.findById(contentId);
-    if (title) {
-      content.title = title;
-    }
-    if (description) {
-      content.description = description;
-    }
-  } catch (err) {
-    const error = new HttpError(
-      "콘텐츠를 업데이트 할 수 없습니다. 다시 시도해 주세요.",
-      500
-    );
-    return next(error);
-  }
 
-  //saving updated content
-  try {
-    await content.save();
-  } catch (err) {
-    const error = new HttpError(
-      "콘텐츠를 업데이트 할 수 없습니다. 다시 시도해 주세요.",
-      500
-    );
-    return next(error);
-  }
+  await User.updateOne(
+    {
+      _id: creator,
+      "contents._id": contentId,
+    },
+    {
+      $set: {
+        "contents.$.content": content,
+        "contents.$.description": description,
+      },
+    }
+  );
 
-  res.status(200).json({ content: content.toObject({ getters: true }) });
+  res.status(200).json({ user: user });
 };
 
 const deleteContentById = async (req, res, next) => {
