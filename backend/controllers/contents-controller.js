@@ -121,7 +121,6 @@ const updateContentById = async (req, res, next) => {
   const user = await User.findById(creator);
 
   //content update
-
   await User.updateOne(
     {
       _id: creator,
@@ -139,7 +138,7 @@ const updateContentById = async (req, res, next) => {
 };
 
 const deleteContentById = async (req, res, next) => {
-  const contentId = req.body.contentId;
+  const contentId = req.body.id;
   const userId = req.body.userId;
   let content;
 
