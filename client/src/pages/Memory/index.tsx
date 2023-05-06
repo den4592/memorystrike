@@ -51,7 +51,7 @@ const Memory = () => {
               key={content._id}
               content={content.content}
               description={content.description}
-              time={content.createdAt}
+              time={content.updatedAt}
               updateContents={updateContents}
               setUpdateContents={setUpdateContents}
             />

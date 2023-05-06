@@ -40,12 +40,14 @@ const TopicForm = ({ userId, contentId, setTopics }: TopicFormProps) => {
   };
 
   useEffect(() => {
+    console.log(contentId);
     axios
       .get(`http://localhost:8080/api/topics/${userId}/${contentId}`)
       .then((res) => {
+        console.log(res.data[0].contents[0].topics);
         setTopics(res.data[0].contents[0].topics);
       });
-  }, [contentId, userId, updateTopics, setTopics]);
+  }, [contentId, setTopics, userId]);
 
   return (
     <div className="topic-form">
