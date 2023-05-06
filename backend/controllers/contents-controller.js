@@ -143,7 +143,7 @@ const deleteContentById = async (req, res, next) => {
   let content;
 
   try {
-    content = await Content.findById(contentId);
+    content = await User.findById(userId);
   } catch (err) {
     const error = new HttpError(
       "콘텐츠를 삭제할 수 없습니다. 다시 시도해 주세요.",
@@ -163,9 +163,9 @@ const deleteContentById = async (req, res, next) => {
   try {
     await User.updateOne(
       { _id: userId },
-      { $pull: { contents: { id: contentId } } }
+      { $pull: { contents: { _id: contentId } } }
     );
-    await Content.findByIdAndRemove(contentId);
+
     // await user.contents.save({ session: sess });
   } catch (err) {
     const error = new HttpError(
