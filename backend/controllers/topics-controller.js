@@ -60,7 +60,7 @@ const getTopics = async (req, res, next) => {
   const userId = req.params.uid;
   const contentId = req.params.cid;
   let user;
-  let content;
+
   try {
     user = await User.findById(userId);
   } catch (err) {
@@ -76,7 +76,12 @@ const getTopics = async (req, res, next) => {
     return next(error);
   }
 
-  res.json(await User.aggregate([{ $project: { "contents.topics": 1 } }]));
+  res.json(
+    await User.find(
+      { _id: userId },
+      { contents: { $elemMatch: { _id: contentId } } }
+    )
+  );
 };
 
 exports.createTopic = createTopic;

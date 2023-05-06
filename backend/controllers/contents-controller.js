@@ -102,7 +102,7 @@ const getContentsByUserId = async (req, res, next) => {
       {
         $project: {
           contents: {
-            $sortArray: { input: "$contents", sortBy: { createdAt: -1 } },
+            $sortArray: { input: "$contents", sortBy: { updatedAt: -1 } },
           },
         },
       },
