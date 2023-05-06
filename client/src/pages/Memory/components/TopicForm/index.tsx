@@ -47,7 +47,7 @@ const TopicForm = ({ userId, contentId, setTopics }: TopicFormProps) => {
         console.log(res.data[0].contents[0].topics);
         setTopics(res.data[0].contents[0].topics);
       });
-  }, [contentId, setTopics, userId]);
+  }, [contentId, setTopics, userId, updateTopics]);
 
   return (
     <div className="topic-form">
