@@ -9,8 +9,8 @@ const createContent = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
-  let createdContent;
   const { content, description, creator } = req.body;
+  let createdContent;
 
   if (content && !description) {
     createdContent = new Content({
@@ -25,6 +25,8 @@ const createContent = async (req, res, next) => {
       creator,
     });
   }
+
+  console.log(createdContent);
 
   let user;
 
@@ -41,12 +43,10 @@ const createContent = async (req, res, next) => {
   }
 
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await createdContent.save({ session: sess });
-    user.contents.push(createdContent.toObject({ getters: true }));
-    await user.save({ session: sess });
-    await sess.commitTransaction();
+    await User.updateOne(
+      { _id: creator },
+      { $push: { contents: createdContent } }
+    );
   } catch (err) {
     const error = new HttpError(
       "Creating place failed, please try again.",
@@ -55,7 +55,7 @@ const createContent = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ content: createdContent });
+  res.status(200).json({ user: user });
 };
 
 const getContentById = async (req, res, next) => {
