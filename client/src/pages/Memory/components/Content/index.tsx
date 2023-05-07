@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./index.scss";
 import { useLocation } from "react-router-dom";
 import TopicForm from "../TopicForm";
+import BackIcon from "../../../../assets/svgs/back.svg";
 
 interface stateType {
   [x: string]: any;
@@ -11,8 +12,16 @@ const Content = () => {
   const [topics, setTopics] = useState<any>([]);
   const { state } = useLocation<stateType>();
 
+  const handleBack = () => {
+    window.history.back();
+  };
+
   return (
     <div className="content">
+      <div className="content-back" onClick={handleBack}>
+        <BackIcon />
+      </div>
+
       <h1 className="content-title">{state.content}</h1>
       <TopicForm
         userId={state.userId}
