@@ -11,6 +11,11 @@ const Memory = () => {
 
   let userId = window.localStorage.getItem("token");
 
+  const createFromDefaultContent = () => {
+    window.scrollTo(0, 0);
+    setToggle(true);
+  };
+
   useEffect(() => {
     axios
       .get(`http://localhost:8080/api/contents/user/${userId}`)
@@ -57,6 +62,12 @@ const Memory = () => {
             />
           );
         })}
+        <div
+          className="memory-contents-default"
+          onClick={createFromDefaultContent}
+        >
+          <p className="memory-contents-default-title">콘텐츠 추가하기</p>
+        </div>
       </div>
     </div>
   );
