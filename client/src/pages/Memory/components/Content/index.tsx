@@ -3,6 +3,7 @@ import "./index.scss";
 import { useLocation } from "react-router-dom";
 import TopicForm from "../TopicForm";
 import BackIcon from "../../../../assets/svgs/back.svg";
+import TopicCard from "../TopicCard";
 
 interface stateType {
   [x: string]: any;
@@ -30,12 +31,12 @@ const Content = () => {
       />
       {topics?.map((topic: any) => {
         return (
-          <div key={topic._id}>
-            <p>{topic._id}</p>
-            <p>{topic.topic}</p>
-            <p>{topic.description}</p>
-            <br />
-          </div>
+          <TopicCard
+            key={topic._id}
+            id={topic._id}
+            topic={topic.topic}
+            description={topic.description}
+          />
         );
       })}
     </div>
