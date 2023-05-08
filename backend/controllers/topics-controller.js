@@ -74,5 +74,47 @@ const getTopics = async (req, res, next) => {
   });
 };
 
+const deleteTopicById = async (req, res, next) => {
+  const topicId = req.params.tid;
+
+  let topic;
+
+  try {
+    topic = await Topic.findById(topicId).populate("contentId");
+  } catch (err) {
+    const error = new HttpError(
+      "콘텐츠를 삭제할 수 없습니다. 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!topic) {
+    const error = new HttpError(
+      "제공한 id로 콘텐츠를 삭제할 수 없습니다.",
+      404
+    );
+    return next(error);
+  }
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await Topic.findByIdAndDelete(topicId);
+    topic.contentId.topics.pull(topic);
+    await topic.contentId.save({ session: sess });
+    await sess.commitTransaction();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not delete place.",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ message: "콘텐츠를 성공적으로 삭제하였습니다." });
+};
+
 exports.createTopic = createTopic;
 exports.getTopics = getTopics;
+exports.deleteTopicById = deleteTopicById;

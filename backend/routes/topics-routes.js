@@ -15,6 +15,6 @@ router.post("/", [
 
 // router.post("/:cid", contentsController.updateContentById);
 
-// router.delete("/:cid", contentsController.deleteContentById);
+router.delete("/:tid", topicsController.deleteTopicById);
 
 module.exports = router;
