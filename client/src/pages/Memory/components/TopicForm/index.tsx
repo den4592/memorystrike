@@ -3,12 +3,11 @@ import "./index.scss";
 import axios from "axios";
 
 interface TopicFormProps {
-  userId: string;
   contentId: string;
   setTopics: React.Dispatch<any>;
 }
 
-const TopicForm = ({ userId, contentId, setTopics }: TopicFormProps) => {
+const TopicForm = ({ contentId, setTopics }: TopicFormProps) => {
   const [topicText, setTopicText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
   const [updateTopics, setUpdateTopics] = useState<boolean>(false);
@@ -23,8 +22,7 @@ const TopicForm = ({ userId, contentId, setTopics }: TopicFormProps) => {
       .post(`http://localhost:8080/api/topics`, {
         topic: topicText,
         description: descriptionText,
-        id: contentId,
-        creator: userId,
+        contentId: contentId,
       })
       .then(function (response) {
         console.log(response);
@@ -41,13 +39,10 @@ const TopicForm = ({ userId, contentId, setTopics }: TopicFormProps) => {
 
   useEffect(() => {
     console.log(contentId);
-    axios
-      .get(`http://localhost:8080/api/topics/${userId}/${contentId}`)
-      .then((res) => {
-        console.log(res.data[0].contents[0].topics);
-        setTopics(res.data[0].contents[0].topics);
-      });
-  }, [contentId, setTopics, userId, updateTopics]);
+    axios.get(`http://localhost:8080/api/topics/${contentId}`).then((res) => {
+      setTopics(res.data.topics);
+    });
+  }, [contentId, setTopics, updateTopics]);
 
   return (
     <div className="topic-form">

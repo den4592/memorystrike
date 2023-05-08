@@ -20,7 +20,8 @@ const Memory = () => {
     axios
       .get(`http://localhost:8080/api/contents/user/${userId}`)
       .then((res) => {
-        setContents(res.data[0].contents);
+        console.log(res.data.contents);
+        setContents(res.data.contents);
       });
   }, [updateContents, userId]);
 

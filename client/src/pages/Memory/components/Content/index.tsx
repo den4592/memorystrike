@@ -24,11 +24,7 @@ const Content = () => {
       </div>
 
       <h1 className="content-title">{state.content}</h1>
-      <TopicForm
-        userId={state.userId}
-        contentId={state.contentId}
-        setTopics={setTopics}
-      />
+      <TopicForm contentId={state.contentId} setTopics={setTopics} />
       {topics?.map((topic: any) => {
         return (
           <TopicCard
