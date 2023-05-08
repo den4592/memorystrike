@@ -70,7 +70,12 @@ const getTopics = async (req, res, next) => {
   }
 
   res.json({
-    topics: content.topics.map((topic) => topic.toObject({ getters: true })),
+    topics: content.topics
+      .sort((prev, cur) => {
+        if (prev.createdAt < cur.createdAt) return 1;
+        if (prev.createdAt > cur.createdAt) return -1;
+      })
+      .map((topic) => topic.toObject({ getters: true })),
   });
 };
 
