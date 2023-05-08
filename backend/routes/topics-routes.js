@@ -5,7 +5,7 @@ const topicsController = require("../controllers/topics-controller");
 
 // router.get("/:cid", contentsController.getContentById);
 
-router.get("/:uid/:cid", topicsController.getTopics);
+router.get("/:cid", topicsController.getTopics);
 
 router.post("/", [
   check("topic").not().isEmpty(),
