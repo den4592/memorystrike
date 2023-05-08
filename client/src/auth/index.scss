@@ -92,6 +92,6 @@ span {
 
 .focused .input-label,
 input:not(:placeholder-shown) + .input-label {
-  transform: translateY(-15px) scale(0.8);
+  transform: translateY(-20px) scale(0.8);
   color: #007bff;
 }
