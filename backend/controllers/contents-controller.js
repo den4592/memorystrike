@@ -100,9 +100,12 @@ const getContentsByUserId = async (req, res, next) => {
   }
 
   res.json({
-    contents: user.contents.map((content) =>
-      content.toObject({ getters: true })
-    ),
+    contents: user.contents
+      .sort((prev, cur) => {
+        if (prev.createdAt < cur.createdAt) return 1;
+        if (prev.createdAt > cur.createdAt) return -1;
+      })
+      .map((content) => content.toObject({ getters: true })),
   });
 };
 
