@@ -20,11 +20,13 @@ const Content = () => {
 
   return (
     <div className="content">
-      <div className="content-back" onClick={handleBack}>
-        <BackIcon />
+      <div className="content-header">
+        <div className="content-header-back" onClick={handleBack}>
+          <BackIcon />
+        </div>
       </div>
+      <p className="content-title">콘텐츠 : {state.content}</p>
 
-      <h1 className="content-title">{state.content}</h1>
       <TopicForm
         contentId={state.contentId}
         setTopics={setTopics}

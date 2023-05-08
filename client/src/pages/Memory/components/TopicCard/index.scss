@@ -1,38 +1,41 @@
 @import "../../../../shared/common.scss";
 .topic-card {
   background-color: $color-blue;
-  padding: 50px 30px;
-  margin: 50px 0;
+  padding: 40px 30px;
   border-radius: 10px;
+  margin: 40px 0;
   position: relative;
   &-close {
-    width: 25px;
-    position: absolute;
-    right: 15px;
-    top: 10px;
+    width: 20px;
     fill: #fff;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
     &:hover {
       cursor: pointer;
-      opacity: 0.7;
+      fill: red;
     }
   }
   &-label {
     display: block;
     padding: 10px 0;
-    color: $color-pink;
+    color: $color-yellow;
+    &:nth-child(1) {
+      padding-top: 0px;
+    }
   }
   &-topic {
-    line-height: 2;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    color: $color-yellow;
+    overflow-y: scroll;
+    line-height: 1.4;
+    color: #fff;
+    word-wrap: break-word;
+    padding-bottom: 20px;
   }
   &-description {
-    line-height: 2;
-    padding: 15px;
-    color: $color-yellow;
-    display: flex;
-    align-items: center;
+    color: #fff;
+    width: 100%;
+    line-height: 1.4;
+    word-wrap: break-word;
   }
 }

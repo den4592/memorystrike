@@ -23,12 +23,15 @@ const TopicCard = ({
 
   return (
     <div key={id} className="topic-card">
-      <div className="topic-card-close" onClick={() => handleDelete(id)}>
-        <CloseIcon />
+      <div className="topic-card-header">
+        <label htmlFor="topic-card-topic" className="topic-card-label">
+          주제 / 제목 / 질문
+        </label>
+        <div className="topic-card-close" onClick={() => handleDelete(id)}>
+          <CloseIcon />
+        </div>
       </div>
-      <label htmlFor="topic-card-topic" className="topic-card-label">
-        주제 / 제목 / 질문
-      </label>
+
       <p className="topic-card-topic">{topic}</p>
       <label htmlFor="topic-card-descritpion" className="topic-card-label">
         설명 / 정답

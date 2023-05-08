@@ -52,7 +52,7 @@
     }
     &-delete {
       width: 20px;
-      fill: red;
+      fill: $color-pink;
       &:hover {
         cursor: pointer;
         opacity: 0.7;
@@ -60,7 +60,7 @@
     }
     &-edit {
       width: 20px;
-      fill: $color-pink;
+      fill: $color-yellow;
       &:hover {
         cursor: pointer;
         opacity: 0.7;

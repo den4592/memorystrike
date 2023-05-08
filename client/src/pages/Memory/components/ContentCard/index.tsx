@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import EditContent from "../../../../assets/svgs/edit.svg";
 import Calendar from "../../../../assets/svgs/calendar.svg";
 import DeleteContent from "../../../../assets/svgs/remove.svg";
-import ArrowToBracket from "../../../../assets/svgs/arrow-right-to-bracket-solid.svg";
+import ArrowLink from "../../../../assets/svgs/arrow-link.svg";
 
 interface ContentCardProps {
   id: string;
@@ -57,7 +57,7 @@ const ContentCard = ({
 
   return (
     <div className="content-card">
-      <p className="content-card-label">토픽</p>
+      <p className="content-card-label">콘텐츠</p>
       <div className="content-card-text">
         <p>
           {enableEdit ? (
@@ -120,7 +120,7 @@ const ContentCard = ({
           }}
         >
           <div className="content-card-options-arrow">
-            <ArrowToBracket />
+            <ArrowLink />
           </div>
         </Link>
       </div>
