@@ -10,41 +10,35 @@ const createTopic = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
-  const { topic, description, id, creator } = req.body;
+  const { topic, description, contentId } = req.body;
 
   let createdTopic = new Topic({
     topic,
     description,
-    id,
-    creator,
+    contentId,
   });
 
-  let user;
+  let content;
 
   try {
-    user = await User.findById(creator);
+    content = await Content.findById(contentId);
   } catch (err) {
     const error = new HttpError("Creating place failed, please try again", 500);
     return next(error);
   }
 
-  if (!user) {
+  if (!content) {
     const error = new HttpError("Could not find user for provided id", 404);
     return next(error);
   }
 
   try {
-    await User.updateOne(
-      {
-        _id: creator,
-        "contents._id": id,
-      },
-      {
-        $push: {
-          "contents.$.topics": createdTopic,
-        },
-      }
-    );
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await createdTopic.save({ session: sess });
+    content.topics.push(createdTopic);
+    await content.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
       "Creating place failed, please try again.",
@@ -53,16 +47,15 @@ const createTopic = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ user: user });
+  res.status(200).json({ topic: createdTopic.toObject({ getters: true }) });
 };
 
 const getTopics = async (req, res, next) => {
-  const userId = req.params.uid;
   const contentId = req.params.cid;
-  let user;
+  let content;
 
   try {
-    user = await User.findById(userId);
+    content = await Content.findById(contentId).populate("topics");
   } catch (err) {
     const error = new HttpError(
       "사용자를 찾을 수 없습니다. 다시 시도해 주세요.",
@@ -71,17 +64,14 @@ const getTopics = async (req, res, next) => {
     return next(error);
   }
 
-  if (!user) {
+  if (!content) {
     const error = new HttpError("제공한 id로 사용자를 찾을 수 없습니다.", 404);
     return next(error);
   }
 
-  res.json(
-    await User.find(
-      { _id: userId },
-      { contents: { $elemMatch: { _id: contentId } } }
-    )
-  );
+  res.json({
+    topics: content.topics.map((topic) => topic.toObject({ getters: true })),
+  });
 };
 
 exports.createTopic = createTopic;

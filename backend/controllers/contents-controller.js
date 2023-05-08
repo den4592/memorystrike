@@ -83,7 +83,9 @@ const getContentsByUserId = async (req, res, next) => {
   const userId = req.params.uid;
   let user;
   try {
+    console.log(await User.findById(userId));
     user = await User.findById(userId).populate("contents");
+    console.log(user);
   } catch (err) {
     const error = new HttpError(
       "사용자를 찾을 수 없습니다. 다시 시도해 주세요.",
