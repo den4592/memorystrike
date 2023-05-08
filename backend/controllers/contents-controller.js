@@ -26,8 +26,6 @@ const createContent = async (req, res, next) => {
     });
   }
 
-  console.log(createdContent);
-
   let user;
 
   try {
@@ -43,10 +41,12 @@ const createContent = async (req, res, next) => {
   }
 
   try {
-    await User.updateOne(
-      { _id: creator },
-      { $push: { contents: createdContent } }
-    );
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await createdContent.save({ session: sess });
+    user.contents.push(createdContent);
+    await user.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
       "Creating place failed, please try again.",
