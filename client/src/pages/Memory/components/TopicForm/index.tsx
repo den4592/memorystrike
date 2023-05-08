@@ -5,12 +5,18 @@ import axios from "axios";
 interface TopicFormProps {
   contentId: string;
   setTopics: React.Dispatch<any>;
+  updateTopics: boolean;
+  setUpdateTopics: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TopicForm = ({ contentId, setTopics }: TopicFormProps) => {
+const TopicForm = ({
+  contentId,
+  setTopics,
+  updateTopics,
+  setUpdateTopics,
+}: TopicFormProps) => {
   const [topicText, setTopicText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
-  const [updateTopics, setUpdateTopics] = useState<boolean>(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -11,6 +11,7 @@ interface stateType {
 }
 const Content = () => {
   const [topics, setTopics] = useState<any>([]);
+  const [updateTopics, setUpdateTopics] = useState<boolean>(false);
   const { state } = useLocation<stateType>();
 
   const handleBack = () => {
@@ -24,7 +25,12 @@ const Content = () => {
       </div>
 
       <h1 className="content-title">{state.content}</h1>
-      <TopicForm contentId={state.contentId} setTopics={setTopics} />
+      <TopicForm
+        contentId={state.contentId}
+        setTopics={setTopics}
+        updateTopics={updateTopics}
+        setUpdateTopics={setUpdateTopics}
+      />
       {topics?.map((topic: any) => {
         return (
           <TopicCard
@@ -32,6 +38,8 @@ const Content = () => {
             id={topic._id}
             topic={topic.topic}
             description={topic.description}
+            updateTopics={updateTopics}
+            setUpdateTopics={setUpdateTopics}
           />
         );
       })}
