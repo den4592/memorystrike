@@ -79,6 +79,44 @@ const getTopics = async (req, res, next) => {
   });
 };
 
+const updateTopictById = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError("콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.", 422);
+  }
+
+  const { topic, description } = req.body;
+
+  const topicId = req.params.tid;
+
+  let findedTopic;
+
+  try {
+    findedTopic = await Topic.findById(topicId);
+  } catch (err) {
+    const error = new HttpError(
+      "제공한 id로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  findedTopic.topic = topic;
+  findedTopic.description = description;
+
+  try {
+    await findedTopic.save();
+  } catch (err) {
+    const error = new HttpError(
+      "제공한 id로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ topic: findedTopic.toObject({ getters: true }) });
+};
+
 const deleteTopicById = async (req, res, next) => {
   const topicId = req.params.tid;
 
@@ -122,4 +160,5 @@ const deleteTopicById = async (req, res, next) => {
 
 exports.createTopic = createTopic;
 exports.getTopics = getTopics;
+exports.updateTopictById = updateTopictById;
 exports.deleteTopicById = deleteTopicById;

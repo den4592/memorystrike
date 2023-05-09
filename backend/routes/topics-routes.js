@@ -13,7 +13,7 @@ router.post("/", [
   topicsController.createTopic,
 ]);
 
-// router.post("/:cid", contentsController.updateContentById);
+router.post("/:tid", topicsController.updateTopictById);
 
 router.delete("/:tid", topicsController.deleteTopicById);
 
