@@ -28,6 +28,8 @@ const ContentCard = ({
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [contentText, setContentText] = useState<string>(content);
   const [descriptionText, setDescriptionText] = useState<string>(description);
+  const [prevText, setPrevText] = useState<string>("");
+  const [prevDesc, setPrevDesc] = useState<string>("");
 
   const date = new Date(time).toLocaleString("ko-KR");
 
@@ -42,9 +44,14 @@ const ContentCard = ({
   };
 
   const handleEdit = () => {
-    if (enableEdit === true) {
+    setPrevText(contentText);
+    setPrevDesc(descriptionText);
+    if (
+      enableEdit === true &&
+      (prevText !== contentText || prevDesc !== descriptionText)
+    ) {
       axios
-        .put(`http://localhost:8080/api/contents/${id}`, {
+        .post(`http://localhost:8080/api/contents/${id}`, {
           content: contentText,
           description: descriptionText,
           creator: userId,
@@ -58,7 +65,7 @@ const ContentCard = ({
   return (
     <div className="content-card">
       <p className="content-card-label">콘텐츠</p>
-      <div className="content-card-text">
+      <div className="content-card-text" onClick={() => setEnableEdit(true)}>
         <p>
           {enableEdit ? (
             <input
@@ -73,7 +80,10 @@ const ContentCard = ({
         </p>
       </div>
       <p className="content-card-description-label">설명</p>
-      <div className="content-card-description-text  content-card-text">
+      <div
+        className="content-card-description-text  content-card-text"
+        onClick={() => setEnableEdit(true)}
+      >
         <p>
           {enableEdit ? (
             <input
