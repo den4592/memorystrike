@@ -72,9 +72,7 @@ const TopicForm = ({
           onChange={(e) => setDescriptionText(e.target.value)}
         />
         <div className="topic-form-container-btn">
-          <button className="btn-toggle-create btn-hover-effect3">
-            추가하기
-          </button>
+          <button className="btn">추가하기</button>
         </div>
       </form>
     </div>

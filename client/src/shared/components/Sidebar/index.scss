@@ -1,3 +1,5 @@
+@import "../../common.scss";
+
 .sidebar {
   height: 100%;
   width: 200px;
@@ -5,7 +7,7 @@
   z-index: 1;
   top: 0;
   left: -200px;
-  background-color: #4c75c1;
+  background-color: $color-blue;
   overflow-x: hidden;
   transition: 0.3s;
   &.active {

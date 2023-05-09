@@ -32,10 +32,7 @@ const Memory = () => {
   return (
     <div className="memory">
       <div className="memory-utils-container">
-        <button
-          onClick={() => setToggle(!toggle)}
-          className="btn-toggle-create btn-hover-effect1"
-        >
+        <button onClick={() => setToggle(!toggle)} className="btn">
           콘텐츠 추가
         </button>
       </div>

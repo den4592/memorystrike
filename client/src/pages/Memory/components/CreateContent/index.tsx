@@ -61,10 +61,7 @@ const CreateContent = ({
           />
         </div>
         <div className="create-content-form-btn-container">
-          <button
-            className="btn-toggle-create btn-hover-effect2"
-            disabled={contentText ? false : true}
-          >
+          <button className="btn" disabled={contentText ? false : true}>
             확인
           </button>
         </div>
