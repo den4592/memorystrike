@@ -42,11 +42,12 @@ const createContent = async (req, res, next) => {
 
   try {
     const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await createdContent.save({ session: sess });
-    user.contents.push(createdContent);
-    await user.save({ session: sess });
-    await sess.commitTransaction();
+    await sess.withTransaction(async () => {
+      await createdContent.save();
+      user.contents.push(createdContent);
+      await user.save();
+    });
+    await sess.endSession();
   } catch (err) {
     const error = new HttpError(
       "Creating place failed, please try again.",
@@ -83,9 +84,7 @@ const getContentsByUserId = async (req, res, next) => {
   const userId = req.params.uid;
   let user;
   try {
-    console.log(await User.findById(userId));
     user = await User.findById(userId).populate("contents");
-    console.log(user);
   } catch (err) {
     const error = new HttpError(
       "사용자를 찾을 수 없습니다. 다시 시도해 주세요.",
@@ -172,11 +171,12 @@ const deleteContentById = async (req, res, next) => {
 
   try {
     const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await Content.findByIdAndDelete(contentId);
-    content.creator.contents.pull(content);
-    await content.creator.save({ session: sess });
-    await sess.commitTransaction();
+    sess.withTransaction(async () => {
+      await Content.findByIdAndDelete(contentId);
+      content.creator.contents.pull(content);
+      await content.creator.save();
+    });
+    await sess.endSession();
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not delete place.",
