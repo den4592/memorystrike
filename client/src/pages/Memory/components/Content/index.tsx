@@ -25,7 +25,7 @@ const Content = () => {
           <BackIcon />
         </div>
       </div>
-      <p className="content-title">콘텐츠 : {state.content}</p>
+      <p className="content-title">카테고리 : {state.content}</p>
 
       <TopicForm
         contentId={state.contentId}

@@ -38,15 +38,15 @@ const CreateContent = ({
   return (
     <div className="create-content">
       <p className="create-content-description">
-        "콘텐츠를 생성해주세요. 해당 콘텐츠는 이후 공부/복습 하고자 하는 토픽의
-        제목으로 사용이 됩니다."
+        "카테고리를 생성해주세요. 해당 카테고리는 추후 공부/복습하고자 하는
+        토픽의 목차로 사용이 됩니다."
       </p>
       <form onSubmit={handleSubmit} className="create-content-form">
         <div className="create-content-form__inner">
           <input
             type="text"
             className="create-content-form__inner-input"
-            placeholder="토픽"
+            placeholder="카테고리"
             value={contentText}
             onChange={(e) => setContentText(e.target.value)}
           />

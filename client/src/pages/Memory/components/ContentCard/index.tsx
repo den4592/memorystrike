@@ -56,15 +56,14 @@ const ContentCard = ({
           description: descriptionText,
           creator: userId,
         })
-        .then((res) => console.log(res));
+        .then(() => setUpdateContents(!updateContents));
     }
     setEnableEdit(!enableEdit);
-    setUpdateContents(!updateContents);
   };
 
   return (
     <div className="content-card">
-      <p className="content-card-label">콘텐츠</p>
+      <p className="content-card-label">카테고리</p>
       <div className="content-card-text" onClick={() => setEnableEdit(true)}>
         <p>
           {enableEdit ? (

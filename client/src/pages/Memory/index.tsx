@@ -33,7 +33,7 @@ const Memory = () => {
     <div className="memory">
       <div className="memory-utils-container">
         <button onClick={() => setToggle(!toggle)} className="btn">
-          콘텐츠 추가
+          카테고리 추가
         </button>
       </div>
 
@@ -64,7 +64,7 @@ const Memory = () => {
           className="memory-contents-default"
           onClick={createFromDefaultContent}
         >
-          <p className="memory-contents-default-title">콘텐츠 추가하기</p>
+          <p className="memory-contents-default-title">카테고리 추가하기</p>
         </div>
       </div>
     </div>
