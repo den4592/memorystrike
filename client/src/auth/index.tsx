@@ -20,15 +20,29 @@ const Auth = () => {
     password: "",
   });
 
+  useEffect(() => {
+    registerValues.email && setIsFocusedFirst(true);
+    registerValues.password && setIsFocusedSecond(true);
+    registerValues.name && setIsFocusedThird(true);
+    loginValues.email && setIsFocusedFirst(true);
+    loginValues.password && setIsFocusedSecond(true);
+  }, [
+    registerValues.email,
+    registerValues.name,
+    registerValues.password,
+    loginValues.email,
+    loginValues.password,
+  ]);
+
   const handleChangeView = () => {
     setToggleValue(!toggleValue);
-    let newRegisterObject = { name: "", email: "", password: "" };
-    setRegisterValues(newRegisterObject);
-    let newLoginObject = { email: "", password: "" };
-    setLoginValues(newLoginObject);
-    setIsFocusedFirst(false);
-    setIsFocusedSecond(false);
-    setIsFocusedThird(false);
+    setLoginValues((prev) => {
+      return {
+        ...prev,
+        email: registerValues.email,
+        password: registerValues.password,
+      };
+    });
   };
 
   const [isFocusedFirst, setIsFocusedFirst] = useState(false);
@@ -113,35 +127,14 @@ const Auth = () => {
               <div
                 className={`input-container ${isFocusedFirst ? "focused" : ""}`}
               >
-                <label className="input-label">이름</label>
-                <input
-                  id="name"
-                  type="text"
-                  className="auth-input"
-                  value={registerValues.name}
-                  onFocus={() => handleFocus(1)}
-                  onBlur={(e) => handleBlur(e, 1)}
-                  onChange={(e) => {
-                    setRegisterValues({
-                      ...registerValues,
-                      name: e.target.value,
-                    });
-                  }}
-                />
-              </div>
-              <div
-                className={`input-container ${
-                  isFocusedSecond ? "focused" : ""
-                }`}
-              >
                 <label className="input-label">이메일</label>
                 <input
                   id="email"
                   type="email"
                   className="auth-input"
                   value={registerValues.email}
-                  onFocus={() => handleFocus(2)}
-                  onBlur={(e) => handleBlur(e, 2)}
+                  onFocus={() => handleFocus(1)}
+                  onBlur={(e) => handleBlur(e, 1)}
                   onChange={(e) => {
                     setRegisterValues({
                       ...registerValues,
@@ -151,7 +144,9 @@ const Auth = () => {
                 />
               </div>
               <div
-                className={`input-container ${isFocusedThird ? "focused" : ""}`}
+                className={`input-container ${
+                  isFocusedSecond ? "focused" : ""
+                }`}
               >
                 <label className="input-label">비밀번호</label>
                 <input
@@ -159,12 +154,31 @@ const Auth = () => {
                   type="password"
                   className="auth-input"
                   value={registerValues.password}
+                  onFocus={() => handleFocus(2)}
+                  onBlur={(e) => handleBlur(e, 2)}
+                  onChange={(e) => {
+                    setRegisterValues({
+                      ...registerValues,
+                      password: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div
+                className={`input-container ${isFocusedThird ? "focused" : ""}`}
+              >
+                <label className="input-label">이름</label>
+                <input
+                  id="name"
+                  type="text"
+                  className="auth-input"
+                  value={registerValues.name}
                   onFocus={() => handleFocus(3)}
                   onBlur={(e) => handleBlur(e, 3)}
                   onChange={(e) => {
                     setRegisterValues({
                       ...registerValues,
-                      password: e.target.value,
+                      name: e.target.value,
                     });
                   }}
                 />
@@ -174,9 +188,7 @@ const Auth = () => {
           ) : (
             <form onSubmit={(e) => handleSubmit(e, "login")}>
               <div
-                className={`input-container ${
-                  isFocusedSecond ? "focused" : ""
-                }`}
+                className={`input-container ${isFocusedFirst ? "focused" : ""}`}
               >
                 <label className="input-label">이메일</label>
                 <input
@@ -184,8 +196,8 @@ const Auth = () => {
                   type="email"
                   className="auth-input"
                   value={loginValues.email}
-                  onFocus={() => handleFocus(2)}
-                  onBlur={(e) => handleBlur(e, 2)}
+                  onFocus={() => handleFocus(1)}
+                  onBlur={(e) => handleBlur(e, 1)}
                   onChange={(e) => {
                     setLoginValues({
                       ...loginValues,
@@ -195,7 +207,9 @@ const Auth = () => {
                 />
               </div>
               <div
-                className={`input-container ${isFocusedThird ? "focused" : ""}`}
+                className={`input-container ${
+                  isFocusedSecond ? "focused" : ""
+                }`}
               >
                 <label className="input-label">비밀번호</label>
                 <input
@@ -203,8 +217,8 @@ const Auth = () => {
                   type="password"
                   className="auth-input"
                   value={loginValues.password}
-                  onFocus={() => handleFocus(3)}
-                  onBlur={(e) => handleBlur(e, 3)}
+                  onFocus={() => handleFocus(2)}
+                  onBlur={(e) => handleBlur(e, 2)}
                   onChange={(e) => {
                     setLoginValues({
                       ...loginValues,
