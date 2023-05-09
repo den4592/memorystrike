@@ -1,5 +1,8 @@
+import { useState } from "react";
 import "./index.scss";
+import RemoveIcon from "../../../../assets/svgs/remove.svg";
 import CloseIcon from "../../../../assets/svgs/close.svg";
+import EditIcon from "../../../../assets/svgs/edit.svg";
 import axios from "axios";
 interface TopicCardProps {
   id: string;
@@ -16,27 +19,100 @@ const TopicCard = ({
   updateTopics,
   setUpdateTopics,
 }: TopicCardProps) => {
+  const [enableEdit, setEnableEdit] = useState<boolean>(false);
+  const [topicText, setTopicText] = useState<string>(topic);
+  const [descriptionText, setDescriptionText] = useState<string>(description);
+  const [prevText, setPrevText] = useState<string>("");
+  const [prevDesc, setPrevDesc] = useState<string>("");
+
   const handleDelete = async (topicId: string) => {
     await axios.delete(`http://localhost:8080/api/topics/${topicId}`, {});
     setUpdateTopics(!updateTopics);
   };
 
+  const handleEdit = () => {
+    setPrevText(topicText);
+    setPrevDesc(descriptionText);
+    if (
+      enableEdit === true &&
+      (prevText !== topicText || prevDesc !== descriptionText)
+    ) {
+      axios
+        .post(`http://localhost:8080/api/topic/${id}`, {
+          topic: topicText,
+          description: descriptionText,
+        })
+        .then(() => setUpdateTopics(!updateTopics));
+    }
+    setEnableEdit(!enableEdit);
+  };
+
   return (
     <div key={id} className="topic-card">
-      <div className="topic-card-header">
-        <label htmlFor="topic-card-topic" className="topic-card-label">
+      <div className="topic-card-container">
+        <label
+          htmlFor="topic-card-container-topic"
+          className="topic-card-container-label"
+        >
           주제 / 제목 / 질문
         </label>
-        <div className="topic-card-close" onClick={() => handleDelete(id)}>
-          <CloseIcon />
+
+        <div
+          className="topic-card-container-topic"
+          onClick={() => setEnableEdit(true)}
+        >
+          <p>
+            {enableEdit ? (
+              <input
+                type="text"
+                value={topicText}
+                className="topic-card-container-input"
+                onChange={(e) => setTopicText(e.target.value)}
+              />
+            ) : (
+              topic
+            )}
+          </p>
+        </div>
+        <label
+          htmlFor="topic-card-container-descritpion"
+          className="topic-card-container-label"
+        >
+          설명 / 정답
+        </label>
+
+        <div
+          className="topic-card-container-description"
+          onClick={() => setEnableEdit(true)}
+        >
+          <p>
+            {enableEdit ? (
+              <input
+                type="text"
+                value={descriptionText}
+                className="topic-card-container-input"
+                onChange={(e) => setDescriptionText(e.target.value)}
+              />
+            ) : description ? (
+              description
+            ) : (
+              "-"
+            )}
+          </p>
         </div>
       </div>
 
-      <p className="topic-card-topic">{topic}</p>
-      <label htmlFor="topic-card-descritpion" className="topic-card-label">
-        설명 / 정답
-      </label>
-      <p className="topic-card-description">{description}</p>
+      <div className="topic-card-sidebar">
+        <div className="topic-card-sidebar-edit" onClick={handleEdit}>
+          <EditIcon />
+        </div>
+        <div
+          className="topic-card-sidebar-close"
+          onClick={() => handleDelete(id)}
+        >
+          <RemoveIcon />
+        </div>
+      </div>
     </div>
   );
 };

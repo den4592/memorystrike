@@ -65,10 +65,9 @@ const ContentCard = ({
     <div className="content-card">
       <p className="content-card-label">카테고리</p>
       <div className="content-card-text" onClick={() => setEnableEdit(true)}>
-        <p>
+        <p className="content-card-text-inner">
           {enableEdit ? (
-            <input
-              type="text"
+            <textarea
               value={contentText}
               className="content-card-text-input"
               onChange={(e) => setContentText(e.target.value)}
@@ -83,10 +82,9 @@ const ContentCard = ({
         className="content-card-description-text  content-card-text"
         onClick={() => setEnableEdit(true)}
       >
-        <p>
+        <p className="content-card-text-inner">
           {enableEdit ? (
-            <input
-              type="text"
+            <textarea
               value={descriptionText}
               className="content-card-text-input"
               onChange={(e) => setDescriptionText(e.target.value)}
