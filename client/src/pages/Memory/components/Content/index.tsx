@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import "./index.scss";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import TopicForm from "../TopicForm";
 import BackIcon from "../../../../assets/svgs/back.svg";
+import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
 import TopicCard from "../TopicCard";
 import axios from "axios";
 
@@ -34,6 +35,7 @@ const Content = () => {
           <BackIcon />
         </div>
       </div>
+
       <p className="content-title">카테고리 : {state.content}</p>
 
       <TopicForm
@@ -42,7 +44,19 @@ const Content = () => {
         setUpdateTopics={setUpdateTopics}
       />
 
-      <p className="content-topics-length">총 토픽 : {topics.length}</p>
+      <div className="content-main">
+        <p className="content-main-topics-length">총 토픽 : {topics.length}</p>
+        <div className="content-main-btn-container">
+          <Link
+            to={`/memory/content/${state.contentId}/topics`}
+            className="btn content-main-btn-container-shuffle"
+          >
+            토픽 셔플
+            <ShuffleIcon />
+          </Link>
+        </div>
+      </div>
+
       {topics?.map((topic: any) => {
         return (
           <TopicCard

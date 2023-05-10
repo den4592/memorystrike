@@ -16,6 +16,7 @@ import Memory from "./pages/Memory";
 import Statistics from "./pages/Statistics";
 import Ask from "./pages/Ask";
 import Content from "./pages/Memory/components/Content";
+import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
 
 function App() {
   const auth: any = useContext(AuthContext);
@@ -48,6 +49,11 @@ function App() {
                     exact
                     path="/memory/content/:contentId"
                     component={() => <Content />}
+                  />
+                  <Route
+                    exact
+                    path="/memory/content/:contentId/topics"
+                    component={() => <ShuffledTopics />}
                   />
                   <Route
                     exact

@@ -26,8 +26,25 @@
     text-align: center;
     line-height: 1.5;
   }
-  &-topics-length {
-    font-size: 1.5em;
-    font-weight: bold;
+  &-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-topics-length {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    &-btn-container {
+      &-shuffle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        svg {
+          width: 20%;
+          fill: $color-pink;
+          height: 100%;
+        }
+      }
+    }
   }
 }
