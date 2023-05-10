@@ -4,7 +4,6 @@
   width: 100%;
   max-width: 350px;
   min-width: 200px;
-
   margin: 0 auto;
   background-color: $color-blue;
   color: #fff;
@@ -12,9 +11,11 @@
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
+  &-label {
+    font-weight: bold;
+  }
   &-text {
     padding: 20px 0;
-    font-weight: bold;
     line-height: 1.5;
     &-inner {
       overflow: hidden;

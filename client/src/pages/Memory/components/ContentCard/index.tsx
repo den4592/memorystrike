@@ -1,4 +1,4 @@
-import { useState, memo, useMemo } from "react";
+import { useState, memo } from "react";
 import axios from "axios";
 import "./index.scss";
 import { Link } from "react-router-dom";
@@ -77,7 +77,7 @@ const ContentCard = ({
           )}
         </p>
       </div>
-      <p className="content-card-description-label">설명</p>
+      <p className="content-card-label">설명</p>
       <div
         className="content-card-description-text  content-card-text"
         onClick={() => setEnableEdit(true)}

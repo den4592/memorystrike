@@ -2,11 +2,16 @@
 .memory {
   //나중에 검색 날짜 등 붙일 예정
   padding-bottom: 30px;
-  &-utils-container {
+  &-utils {
     width: 100%;
     display: flex;
-    justify-content: end;
-    padding: 1rem 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 0;
+    &-category-length {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
   }
   &-contents {
     display: flex;

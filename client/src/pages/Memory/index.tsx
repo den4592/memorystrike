@@ -26,7 +26,10 @@ const Memory = () => {
 
   return (
     <div className="memory">
-      <div className="memory-utils-container">
+      <div className="memory-utils">
+        <p className="memory-utils-category-length">
+          총 카테고리 : {contents.length}
+        </p>
         <button onClick={() => setToggle(!toggle)} className="btn">
           카테고리 추가
         </button>
