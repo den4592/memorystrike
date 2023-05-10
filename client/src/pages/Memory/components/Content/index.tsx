@@ -7,7 +7,7 @@ import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
 import TopicCard from "../TopicCard";
 import axios from "axios";
 
-interface stateType {
+export interface stateType {
   [x: string]: any;
   from: { pathname: string };
 }
@@ -48,7 +48,10 @@ const Content = () => {
         <p className="content-main-topics-length">총 토픽 : {topics.length}</p>
         <div className="content-main-btn-container">
           <Link
-            to={`/memory/content/${state.contentId}/topics`}
+            to={{
+              pathname: `/memory/content/${state.contentId}/topics`,
+              state: { topics: topics },
+            }}
             className="btn content-main-btn-container-shuffle"
           >
             토픽 셔플

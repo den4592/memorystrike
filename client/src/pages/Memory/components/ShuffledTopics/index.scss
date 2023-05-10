@@ -1,0 +1,21 @@
+@import "../../../../shared/common.scss";
+
+.shuffled-topics {
+  padding-top: 50px;
+  margin: 0 30px;
+  &-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    &-back {
+      width: 30px;
+      fill: $color-blue;
+      transition: 0.3s ease;
+      &:hover {
+        transform: translateX(-10px);
+        cursor: pointer;
+        opacity: 0.3;
+      }
+    }
+  }
+}
