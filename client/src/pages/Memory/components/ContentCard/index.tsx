@@ -1,4 +1,4 @@
-import { useState, useRef, memo } from "react";
+import { useState, memo, useMemo } from "react";
 import axios from "axios";
 import "./index.scss";
 import { Link } from "react-router-dom";

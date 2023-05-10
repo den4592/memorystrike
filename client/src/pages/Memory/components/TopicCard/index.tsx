@@ -30,11 +30,8 @@ const TopicCard = ({
   };
 
   const handleEdit = () => {
-    console.log(prevText, prevDesc);
-    console.log(topicText, descriptionText);
     setPrevText(topicText);
     setPrevDesc(descriptionText);
-
     if (
       enableEdit === true &&
       (prevText !== topicText || prevDesc !== descriptionText)

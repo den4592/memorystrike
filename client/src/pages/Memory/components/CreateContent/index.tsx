@@ -1,5 +1,5 @@
 import "./index.scss";
-import { useState, useCallback, useEffect, memo, useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 interface CreateContentProps {
@@ -70,4 +70,4 @@ const CreateContent = ({
   );
 };
 
-export default memo(CreateContent);
+export default CreateContent;

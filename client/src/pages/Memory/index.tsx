@@ -11,7 +11,7 @@ const Memory = () => {
 
   let userId = window.localStorage.getItem("token");
 
-  const createFromDefaultContent = () => {
+  const createContentFromDefault = () => {
     window.scrollTo(0, 0);
     setToggle(true);
   };
@@ -20,14 +20,9 @@ const Memory = () => {
     axios
       .get(`http://localhost:8080/api/contents/user/${userId}`)
       .then((res) => {
-        console.log(res.data.contents);
         setContents(res.data.contents);
       });
   }, [updateContents, userId]);
-
-  useEffect(() => {
-    console.log(contents);
-  }, [contents]);
 
   return (
     <div className="memory">
@@ -37,13 +32,11 @@ const Memory = () => {
         </button>
       </div>
 
-      {toggle ? (
+      {toggle && (
         <CreateContent
           updateContents={updateContents}
           setUpdateContents={setUpdateContents}
         />
-      ) : (
-        ""
       )}
 
       <div className="memory-contents">
@@ -62,7 +55,7 @@ const Memory = () => {
         })}
         <div
           className="memory-contents-default"
-          onClick={createFromDefaultContent}
+          onClick={createContentFromDefault}
         >
           <p className="memory-contents-default-title">카테고리 추가하기</p>
         </div>
