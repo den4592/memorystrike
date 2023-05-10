@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import TopicForm from "../TopicForm";
 import BackIcon from "../../../../assets/svgs/back.svg";
 import TopicCard from "../TopicCard";
+import axios from "axios";
 
 interface stateType {
   [x: string]: any;
@@ -18,6 +19,14 @@ const Content = () => {
     window.history.back();
   };
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/topics/${state.contentId}`)
+      .then((res) => {
+        setTopics(res.data.topics);
+      });
+  }, [state.contentId, updateTopics]);
+
   return (
     <div className="content">
       <div className="content-header">
@@ -29,15 +38,14 @@ const Content = () => {
 
       <TopicForm
         contentId={state.contentId}
-        setTopics={setTopics}
         updateTopics={updateTopics}
         setUpdateTopics={setUpdateTopics}
       />
       {topics?.map((topic: any) => {
         return (
           <TopicCard
-            key={topic._id}
-            id={topic._id}
+            key={topic.id}
+            id={topic.id}
             topic={topic.topic}
             description={topic.description}
             updateTopics={updateTopics}

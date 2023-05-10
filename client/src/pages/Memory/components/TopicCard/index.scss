@@ -12,6 +12,13 @@
   &-container {
     width: 100%;
     padding-right: 60px;
+    &-input {
+      max-width: 100%;
+      min-width: 100%;
+      min-height: 100px;
+      max-height: 200px;
+      overflow-y: scroll;
+    }
     &-label {
       display: block;
       padding: 10px 0;
@@ -32,8 +39,18 @@
       line-height: 1.4;
       word-wrap: break-word;
     }
-    &-input {
-      width: 100%;
+    &-confirm {
+      width: 100px;
+      border-radius: 50px;
+      border: none;
+      padding: 5px;
+      margin-top: 20px;
+      color: #76abdf;
+      background-color: #f6db4a;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+      }
     }
   }
   &-sidebar {

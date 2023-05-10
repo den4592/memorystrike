@@ -4,14 +4,12 @@ import axios from "axios";
 
 interface TopicFormProps {
   contentId: string;
-  setTopics: React.Dispatch<any>;
   updateTopics: boolean;
   setUpdateTopics: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TopicForm = ({
   contentId,
-  setTopics,
   updateTopics,
   setUpdateTopics,
 }: TopicFormProps) => {
@@ -42,13 +40,6 @@ const TopicForm = ({
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    console.log(contentId);
-    axios.get(`http://localhost:8080/api/topics/${contentId}`).then((res) => {
-      setTopics(res.data.topics);
-    });
-  }, [contentId, setTopics, updateTopics]);
 
   return (
     <div className="topic-form">

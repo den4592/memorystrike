@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import "./index.scss";
 import RemoveIcon from "../../../../assets/svgs/remove.svg";
-import CloseIcon from "../../../../assets/svgs/close.svg";
 import EditIcon from "../../../../assets/svgs/edit.svg";
 import axios from "axios";
 interface TopicCardProps {
@@ -31,14 +30,17 @@ const TopicCard = ({
   };
 
   const handleEdit = () => {
+    console.log(prevText, prevDesc);
+    console.log(topicText, descriptionText);
     setPrevText(topicText);
     setPrevDesc(descriptionText);
+
     if (
       enableEdit === true &&
       (prevText !== topicText || prevDesc !== descriptionText)
     ) {
       axios
-        .post(`http://localhost:8080/api/topic/${id}`, {
+        .post(`http://localhost:8080/api/topics/${id}`, {
           topic: topicText,
           description: descriptionText,
         })
@@ -63,8 +65,7 @@ const TopicCard = ({
         >
           <p>
             {enableEdit ? (
-              <input
-                type="text"
+              <textarea
                 value={topicText}
                 className="topic-card-container-input"
                 onChange={(e) => setTopicText(e.target.value)}
@@ -87,8 +88,7 @@ const TopicCard = ({
         >
           <p>
             {enableEdit ? (
-              <input
-                type="text"
+              <textarea
                 value={descriptionText}
                 className="topic-card-container-input"
                 onChange={(e) => setDescriptionText(e.target.value)}
@@ -100,6 +100,13 @@ const TopicCard = ({
             )}
           </p>
         </div>
+        {enableEdit ? (
+          <button className="topic-card-container-confirm" onClick={handleEdit}>
+            확인
+          </button>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="topic-card-sidebar">
@@ -117,4 +124,4 @@ const TopicCard = ({
   );
 };
 
-export default TopicCard;
+export default memo(TopicCard);
