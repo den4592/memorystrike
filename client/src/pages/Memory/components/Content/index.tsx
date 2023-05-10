@@ -41,6 +41,8 @@ const Content = () => {
         updateTopics={updateTopics}
         setUpdateTopics={setUpdateTopics}
       />
+
+      <p className="content-topics-length">총 토픽 : {topics.length}</p>
       {topics?.map((topic: any) => {
         return (
           <TopicCard
