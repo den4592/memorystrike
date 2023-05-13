@@ -1,5 +1,5 @@
 import "./index.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export interface ShuffledTopicCardProps {
   topic: string;
   description: string;
@@ -13,12 +13,20 @@ const ShuffledTopicCard = ({ topic, description }: ShuffledTopicCardProps) => {
     setShowAnswer(!showAnswer);
   };
 
+  const handleFlipCard = () => {
+    setCardCover(false);
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div
       className={`shuffled-topic-card ${
         cardCover ? "shuffled-topic-card-cover" : ""
       }`}
-      onClick={() => setCardCover(false)}
+      onClick={handleFlipCard}
     >
       <p className="shuffled-topic-card-label">주제 / 제목 / 질문</p>
       <p className="shuffled-topic-card-topic">{topic}</p>
