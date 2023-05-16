@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const Content = require("../models/content");
 const Topic = require("../models/topic");
 const HttpError = require("../models/http-error");
-const User = require("../models/user");
 
 const createTopic = async (req, res, next) => {
   const errors = validationResult(req);
