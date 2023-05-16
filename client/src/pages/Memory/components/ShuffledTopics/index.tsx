@@ -2,11 +2,14 @@ import "./index.scss";
 import BackIcon from "../../../../assets/svgs/back.svg";
 import { useLocation } from "react-router";
 import { stateType } from "../Content";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ShuffledTopicCard from "../ShuffledTopicCard";
+import Timer from "../../../../shared/components/Timer";
 
 const ShuffledTopics = () => {
   const { state } = useLocation<stateType>();
+  const [playTimer, setPlayTimer] = useState(false);
+  const [pauseTimer, setPauseTimer] = useState(true);
 
   const shuffle = useMemo(() => {
     for (let index = state.topics.length - 1; index > 0; index--) {
@@ -26,6 +29,12 @@ const ShuffledTopics = () => {
 
   return (
     <div className="shuffled-topics">
+      <Timer
+        playTimer={playTimer}
+        setPlayTimer={setPlayTimer}
+        pauseTimer={pauseTimer}
+        setPauseTimer={setPauseTimer}
+      />
       <div className="shuffled-topics-header">
         <div className="shuffled-topics-header-back" onClick={handleBack}>
           <BackIcon />
@@ -38,6 +47,8 @@ const ShuffledTopics = () => {
               key={topic.id}
               topic={topic.topic}
               description={topic.description}
+              setPlayTimer={setPlayTimer}
+              setPauseTimer={setPauseTimer}
             />
           );
         })}

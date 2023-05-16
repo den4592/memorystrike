@@ -230,7 +230,10 @@ const Auth = () => {
               <button className="btn-registration">로그인</button>
             </form>
           )}
-          <span onClick={handleChangeView}>
+          <span
+            className="auth-container-view-toggle"
+            onClick={handleChangeView}
+          >
             {toggleValue ? "가입하기" : "로그인하기"}
           </span>
         </div>

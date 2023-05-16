@@ -1,20 +1,31 @@
 import "./index.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+
 export interface ShuffledTopicCardProps {
   topic: string;
   description: string;
+  setPlayTimer: React.Dispatch<React.SetStateAction<boolean>>;
+  setPauseTimer: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ShuffledTopicCard = ({ topic, description }: ShuffledTopicCardProps) => {
+const ShuffledTopicCard = ({
+  topic,
+  description,
+  setPlayTimer,
+  setPauseTimer,
+}: ShuffledTopicCardProps) => {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [cardCover, setCardCover] = useState<boolean>(true);
 
   const handleShowAnswer = () => {
     setShowAnswer(!showAnswer);
+    setPauseTimer(true);
+    setPlayTimer(false);
   };
 
   const handleFlipCard = () => {
     setCardCover(false);
+    setPlayTimer(true);
   };
 
   useEffect(() => {
@@ -26,7 +37,7 @@ const ShuffledTopicCard = ({ topic, description }: ShuffledTopicCardProps) => {
       className={`shuffled-topic-card ${
         cardCover ? "shuffled-topic-card-cover" : ""
       }`}
-      onClick={handleFlipCard}
+      onClick={cardCover ? handleFlipCard : () => {}}
     >
       <p className="shuffled-topic-card-label">주제 / 제목 / 질문</p>
       <p className="shuffled-topic-card-topic">{topic}</p>
