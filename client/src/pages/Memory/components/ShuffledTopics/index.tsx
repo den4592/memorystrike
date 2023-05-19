@@ -2,14 +2,32 @@ import "./index.scss";
 import BackIcon from "../../../../assets/svgs/back.svg";
 import { useLocation } from "react-router";
 import { stateType } from "../Content";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ShuffledTopicCard from "../ShuffledTopicCard";
 import Timer from "../../../../shared/components/Timer";
 
+export interface CardStatusCount {
+  correct: number;
+  uncertation: number;
+  incorrect: number;
+}
+
+export interface CardStatuses {
+  correct: boolean;
+  uncertation: boolean;
+  incorrect: boolean;
+}
+
 const ShuffledTopics = () => {
   const { state } = useLocation<stateType>();
-  const [playTimer, setPlayTimer] = useState(false);
-  const [pauseTimer, setPauseTimer] = useState(true);
+  const [playTimer, setPlayTimer] = useState<boolean>(false);
+  const [pauseTimer, setPauseTimer] = useState<boolean>(true);
+  const [cardStatusCount, setCardStatusCount] = useState({
+    correct: 0,
+    uncertation: 0,
+    incorrect: 0,
+  });
+  const [cardStatuses, setCardStatuses] = useState<CardStatuses[]>([]);
 
   const shuffle = useMemo(() => {
     for (let index = state.topics.length - 1; index > 0; index--) {
@@ -21,34 +39,90 @@ const ShuffledTopics = () => {
       state.topics[index] = state.topics[randomPosition];
       state.topics[randomPosition] = temporary;
     }
+
+    state.topics.map((value: any) => {
+      setCardStatuses((prev) => {
+        return [
+          ...prev,
+          { correct: false, uncertation: false, incorrect: false },
+        ];
+      });
+    });
   }, [state.topics]);
 
   const handleBack = () => {
     window.history.back();
   };
 
+  const handleCheckStatusCount = useCallback(() => {
+    let correctCount = 0;
+    let uncertationCount = 0;
+    let incorrectCount = 0;
+
+    cardStatuses.forEach((status) => {
+      if (status.correct) {
+        correctCount += 1;
+      }
+      if (status.uncertation) {
+        uncertationCount += 1;
+      }
+      if (status.incorrect) {
+        incorrectCount += 1;
+      }
+    });
+
+    setCardStatusCount((prev) => {
+      return {
+        ...prev,
+        correct: correctCount,
+        uncertation: uncertationCount,
+        incorrect: incorrectCount,
+      };
+    });
+  }, [cardStatuses]);
+
+  useEffect(() => {
+    handleCheckStatusCount();
+  }, [cardStatuses]);
+
   return (
     <div className="shuffled-topics">
-      <Timer
-        playTimer={playTimer}
-        setPlayTimer={setPlayTimer}
-        pauseTimer={pauseTimer}
-        setPauseTimer={setPauseTimer}
-      />
       <div className="shuffled-topics-header">
         <div className="shuffled-topics-header-back" onClick={handleBack}>
           <BackIcon />
         </div>
+        <Timer
+          playTimer={playTimer}
+          setPlayTimer={setPlayTimer}
+          pauseTimer={pauseTimer}
+          setPauseTimer={setPauseTimer}
+        />
+        <div>
+          <span style={{ color: "green" }}>
+            correct : {cardStatusCount.correct}
+          </span>{" "}
+          <span style={{ color: "orange" }}>
+            uncertation: {cardStatusCount.uncertation}
+          </span>{" "}
+          <span style={{ color: "red" }}>
+            incorrect : {cardStatusCount.incorrect}
+          </span>
+        </div>
       </div>
       <div className="shuffled-topics-container">
-        {state.topics.map((topic: any) => {
+        {state.topics.map((topic: any, idx: number) => {
           return (
             <ShuffledTopicCard
               key={topic.id}
+              idx={idx}
               topic={topic.topic}
               description={topic.description}
               setPlayTimer={setPlayTimer}
               setPauseTimer={setPauseTimer}
+              cardStatusCount={cardStatusCount}
+              setCardStatusCount={setCardStatusCount}
+              cardStatuses={cardStatuses}
+              setCardStatuses={setCardStatuses}
             />
           );
         })}

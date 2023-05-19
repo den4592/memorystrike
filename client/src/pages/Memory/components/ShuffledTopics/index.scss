@@ -4,12 +4,15 @@
   padding-top: 50px;
   margin: 0 30px;
   &-header {
-    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 10px;
+    z-index: 1;
     &-back {
       width: 30px;
-      fill: $color-blue;
+      fill: #146c94;
       transition: 0.3s ease;
       &:hover {
         transform: translateX(-10px);

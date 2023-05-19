@@ -1,14 +1,10 @@
 .timer {
-  position: sticky;
-  z-index: 2;
-  top: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   &-container {
     display: flex;
     align-items: center;
-    z-index: 2;
     &-text {
       color: black;
       padding: 0 5px;
