@@ -1,11 +1,75 @@
 @import "../../../../shared/common.scss";
 
+.correct {
+  border: 5px solid green;
+}
+
+.uncertation {
+  border: 5px solid $color-yellow;
+}
+
+.incorrect {
+  border: 5px solid red;
+}
+
 .shuffled-topic-card {
   padding: 30px 20px;
   background-color: $color-blue;
   position: relative;
   color: #fff;
   border-radius: 10px;
+
+  &-check {
+    position: absolute;
+    right: 20px;
+    top: -20px;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 15px;
+    svg {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: aliceblue;
+      padding: 7px;
+    }
+    &-correct {
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
+      border: 3px solid green;
+      fill: green;
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+      }
+    }
+    &-uncertation {
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
+      border: 3px solid $color-yellow;
+      fill: $color-yellow;
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+      }
+    }
+    &-incorrect {
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
+      border: 3px solid red;
+      fill: red;
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+      }
+    }
+  }
   &-cover {
     &::before {
       z-index: 1;

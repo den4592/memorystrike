@@ -2,7 +2,7 @@ import "./index.scss";
 import BackIcon from "../../../../assets/svgs/back.svg";
 import { useLocation } from "react-router";
 import { stateType } from "../Content";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import ShuffledTopicCard from "../ShuffledTopicCard";
 import Timer from "../../../../shared/components/Timer";
 
