@@ -3,21 +3,14 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import CheckIcon from "@/assets/svgs/check.svg";
 import ExclamationIcon from "@/assets/svgs/exclamation.svg";
 import IncorrectIcon from "@/assets/svgs/xmark.svg";
-import { CardStatusCount, CardStatuses } from "../ShuffledTopics";
+import { CardStatuses } from "../ShuffledTopics";
 
 export interface ShuffledTopicCardProps {
   topic: string;
   description: string;
   setPlayTimer: React.Dispatch<React.SetStateAction<boolean>>;
   setPauseTimer: React.Dispatch<React.SetStateAction<boolean>>;
-  cardStatusCount: CardStatusCount;
-  setCardStatusCount: React.Dispatch<
-    React.SetStateAction<{
-      correct: number;
-      uncertation: number;
-      incorrect: number;
-    }>
-  >;
+
   cardStatuses: CardStatuses[];
   setCardStatuses: React.Dispatch<React.SetStateAction<CardStatuses[]>>;
   idx: number;
@@ -28,8 +21,6 @@ const ShuffledTopicCard = ({
   description,
   setPlayTimer,
   setPauseTimer,
-  cardStatusCount,
-  setCardStatusCount,
   cardStatuses,
   setCardStatuses,
   idx,
@@ -49,10 +40,6 @@ const ShuffledTopicCard = ({
     setCardCover(false);
     setPlayTimer(true);
   };
-
-  useEffect(() => {
-    console.log(cardStatuses);
-  }, [cardStatuses]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
