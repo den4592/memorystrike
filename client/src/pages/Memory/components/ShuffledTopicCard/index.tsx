@@ -13,6 +13,8 @@ export interface ShuffledTopicCardProps {
   cardStatuses: CardStatuses[];
   setCardStatuses: React.Dispatch<React.SetStateAction<CardStatuses[]>>;
   idx: number;
+  openedCardsCount: number;
+  setOpenedCardsCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ShuffledTopicCard = ({
@@ -23,6 +25,9 @@ const ShuffledTopicCard = ({
   cardStatuses,
   setCardStatuses,
   idx,
+
+  openedCardsCount,
+  setOpenedCardsCount,
 }: ShuffledTopicCardProps) => {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [cardCover, setCardCover] = useState<boolean>(true);
@@ -38,6 +43,8 @@ const ShuffledTopicCard = ({
   const handleFlipCard = () => {
     setCardCover(false);
     setPlayTimer(true);
+
+    setOpenedCardsCount(openedCardsCount + 1);
   };
 
   useEffect(() => {

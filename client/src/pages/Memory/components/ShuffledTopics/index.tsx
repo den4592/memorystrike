@@ -28,6 +28,7 @@ const ShuffledTopics = () => {
     incorrect: 0,
   });
   const [cardStatuses, setCardStatuses] = useState<CardStatuses[]>([]);
+  const [openedCardsCount, setOpenedCardsCount] = useState<number>(0);
 
   const shuffle = useMemo(() => {
     for (let index = state.topics.length - 1; index > 0; index--) {
@@ -82,6 +83,10 @@ const ShuffledTopics = () => {
   }, [cardStatuses]);
 
   useEffect(() => {
+    console.log(openedCardsCount);
+  }, [openedCardsCount]);
+
+  useEffect(() => {
     handleCheckStatusCount();
   }, [cardStatuses]);
 
@@ -121,13 +126,18 @@ const ShuffledTopics = () => {
               setPauseTimer={setPauseTimer}
               cardStatuses={cardStatuses}
               setCardStatuses={setCardStatuses}
+              openedCardsCount={openedCardsCount}
+              setOpenedCardsCount={setOpenedCardsCount}
             />
           );
         })}
       </div>
 
       <div className="shuffled-topics-btn">
-        <button className="btn" disabled={true}>
+        <button
+          className="btn"
+          disabled={openedCardsCount !== state.topics.length}
+        >
           마무리하기
         </button>
       </div>
