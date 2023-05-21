@@ -9,12 +9,14 @@ app.use(cors());
 const contentsRoutes = require("./routes/contents-routes");
 const userRoutes = require("./routes/user-routes");
 const topicsRoutes = require("./routes/topics-routes");
+const statisticRoutes = require("./routes/statistics-routes");
 
 app.use(bodyParser.json());
 
 app.use("/api/contents", contentsRoutes);
 app.use("/api/topics", topicsRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/statistics", statisticRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
