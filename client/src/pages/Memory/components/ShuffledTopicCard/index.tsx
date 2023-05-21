@@ -10,7 +10,6 @@ export interface ShuffledTopicCardProps {
   description: string;
   setPlayTimer: React.Dispatch<React.SetStateAction<boolean>>;
   setPauseTimer: React.Dispatch<React.SetStateAction<boolean>>;
-
   cardStatuses: CardStatuses[];
   setCardStatuses: React.Dispatch<React.SetStateAction<CardStatuses[]>>;
   idx: number;

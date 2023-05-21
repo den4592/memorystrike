@@ -119,13 +119,17 @@ const ShuffledTopics = () => {
               description={topic.description}
               setPlayTimer={setPlayTimer}
               setPauseTimer={setPauseTimer}
-              cardStatusCount={cardStatusCount}
-              setCardStatusCount={setCardStatusCount}
               cardStatuses={cardStatuses}
               setCardStatuses={setCardStatuses}
             />
           );
         })}
+      </div>
+
+      <div className="shuffled-topics-btn">
+        <button className="btn" disabled={true}>
+          마무리하기
+        </button>
       </div>
     </div>
   );
