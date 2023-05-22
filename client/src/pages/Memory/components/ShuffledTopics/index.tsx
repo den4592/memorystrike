@@ -5,6 +5,7 @@ import { stateType } from "../Content";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ShuffledTopicCard from "../ShuffledTopicCard";
 import Timer from "../../../../shared/components/Timer";
+import axios from "axios";
 
 export interface CardStatusCount {
   correct: number;
@@ -19,6 +20,7 @@ export interface CardStatuses {
 }
 
 const ShuffledTopics = () => {
+  let userId = window.localStorage.getItem("token");
   const { state } = useLocation<stateType>();
   const [playTimer, setPlayTimer] = useState<boolean>(false);
   const [pauseTimer, setPauseTimer] = useState<boolean>(true);
@@ -83,12 +85,37 @@ const ShuffledTopics = () => {
   }, [cardStatuses]);
 
   useEffect(() => {
-    console.log(openedCardsCount);
-  }, [openedCardsCount]);
-
-  useEffect(() => {
     handleCheckStatusCount();
-  }, [cardStatuses]);
+  }, []);
+
+  const handleSubmit = useCallback(async () => {
+    const arr = [];
+
+    //상태에 대한 부여가 이루어 지지 않았을 경우 return
+    for (let i = 0; i < cardStatuses.length; i++) {
+      if (
+        cardStatuses[i].correct === false &&
+        cardStatuses[i].uncertation === false &&
+        cardStatuses[i].incorrect === false
+      ) {
+        alert("모든 항목에 대해 상태를 부여해주세요.");
+        return;
+      }
+    }
+
+    //토픽 카드와 해당 카드의 상태를 객체로 합친다
+    for (let i = 0; i < state.topics.length; i++) {
+      let newArr = [...state.topics];
+      newArr[i].statuses = cardStatuses[i];
+      arr.push(newArr[i]);
+    }
+
+    //creatStatistics
+    await axios.post("http://localhost:8080/api/statistics", {
+      creator: userId,
+      shuffled: arr,
+    });
+  }, [cardStatuses, state.topics]);
 
   return (
     <div className="shuffled-topics">
@@ -137,6 +164,7 @@ const ShuffledTopics = () => {
         <button
           className="btn"
           disabled={openedCardsCount !== state.topics.length}
+          onClick={handleSubmit}
         >
           마무리하기
         </button>

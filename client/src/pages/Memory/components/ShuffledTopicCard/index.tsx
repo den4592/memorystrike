@@ -43,7 +43,6 @@ const ShuffledTopicCard = ({
   const handleFlipCard = () => {
     setCardCover(false);
     setPlayTimer(true);
-
     setOpenedCardsCount(openedCardsCount + 1);
   };
 
@@ -76,6 +75,7 @@ const ShuffledTopicCard = ({
       items[idx] = item;
 
       setCardStatuses(items);
+      console.log(cardStatuses);
     },
     [idx, setCardStatuses]
   );
