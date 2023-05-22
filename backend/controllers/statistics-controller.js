@@ -18,18 +18,13 @@ const createStatistic = async (req, res, next) => {
 
   await statistic.save();
 
-  const shuffledCard = new ShuffledCard({
-    creator,
-    topic: shuffled[0].topic,
-    description: shuffled[0].description,
-    statuses: {
-      correct: shuffled[0].statuses.correct,
-      uncertation: shuffled[0].statuses.uncertation,
-      incorrect: shuffled[0].statuses.incorrect,
-    },
-  });
+  let arr = [];
+  for (let i = 0; i < shuffled.length; i++) {
+    shuffled[i].creator = creator;
+    arr.push(shuffled[i]);
+  }
 
-  await shuffledCard.save();
+  await ShuffledCard.insertMany(arr);
 
   let user;
   let stat;
@@ -50,9 +45,12 @@ const createStatistic = async (req, res, next) => {
   try {
     const sess = await mongoose.startSession();
     await sess.withTransaction(async () => {
-      user.statistics.push(statistic);
+      user.statistics.push(stat);
       await user.save();
-      stat.shuffled.push(shuffledCard);
+      const data = await ShuffledCard.find();
+      for (let i = 0; i < data.length; i++) {
+        stat.shuffled.push(data[i]);
+      }
       await stat.save();
     });
     await sess.endSession();
@@ -64,7 +62,11 @@ const createStatistic = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ user: user });
+  const shuffledCard = await ShuffledCard.find();
+
+  res.status(200).json({
+    data: shuffledCard.map((card) => card.toObject({ getters: true })),
+  });
 };
 
 exports.createStatistic = createStatistic;

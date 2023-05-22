@@ -13,7 +13,7 @@ const shuffledCardSchema = new Schema(
     creator: {
       type: mongoose.Types.ObjectId,
       required: true,
-      ref: "User",
+      ref: "Statistic",
     },
     topic: { type: String, required: true },
     description: { type: String, required: true },
