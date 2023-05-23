@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const Statistic = require("../models/statistic");
-const ShuffledCard = require("../models/shuffled-card");
 const Date = require("../models/dates");
 
 const createStatistic = async (req, res, next) => {
@@ -11,6 +10,7 @@ const createStatistic = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
+
   const { creator, shuffled, duration, date } = req.body;
 
   //조건 - 있으면 push / 없으면 create후 push
@@ -108,4 +108,25 @@ const createStatistic = async (req, res, next) => {
   res.status(200).json({ user: user });
 };
 
+const getStatisticByUserId = async (req, res, next) => {
+  const userId = req.params.uid;
+  let statistic;
+  try {
+    statistic = await Statistic.find({ creator: userId }).populate("shuffled");
+  } catch (err) {
+    const error = new HttpError(
+      "콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!statistic) {
+    const error = new HttpError("제공한 id로 콘텐츠를 찾을 수 없습니다.", 404);
+    return next(error);
+  }
+
+  res.json({ statistic: statistic });
+};
 exports.createStatistic = createStatistic;
+exports.getStatisticByUserId = getStatisticByUserId;
