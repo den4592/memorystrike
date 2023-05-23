@@ -11,6 +11,7 @@ export interface ShuffledTopicCardProps {
   setPlayTimer: React.Dispatch<React.SetStateAction<boolean>>;
   setPauseTimer: React.Dispatch<React.SetStateAction<boolean>>;
   cardStatuses: CardStatuses[];
+
   setCardStatuses: React.Dispatch<React.SetStateAction<CardStatuses[]>>;
   idx: number;
   openedCardsCount: number;
@@ -94,6 +95,7 @@ const ShuffledTopicCard = ({
         setCardStatus("incorrect");
         card.current?.classList.add("incorrect");
         handleChange(cardStatuses, "incorrect");
+        break;
     }
   };
 

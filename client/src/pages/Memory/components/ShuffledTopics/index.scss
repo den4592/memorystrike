@@ -8,8 +8,12 @@
     align-items: center;
     justify-content: space-between;
     position: sticky;
-    top: 10px;
-    z-index: 1;
+    top: 0px;
+    z-index: 2;
+    background-color: aliceblue;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 10px;
+    border-radius: 10px;
     &-back {
       width: 30px;
       fill: #146c94;
@@ -18,6 +22,35 @@
         transform: translateX(-10px);
         cursor: pointer;
         opacity: 0.3;
+      }
+    }
+    &-statuses {
+      display: flex;
+      gap: 10px;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+      &-correct {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        fill: green;
+        color: green;
+      }
+      &-uncertation {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        fill: $color-yellow;
+        color: $color-yellow;
+      }
+      &-incorrect {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        fill: red;
+        color: red;
       }
     }
   }

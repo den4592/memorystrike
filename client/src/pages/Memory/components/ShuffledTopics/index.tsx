@@ -1,5 +1,4 @@
 import "./index.scss";
-import { v4 as uuidv4 } from "uuid";
 import BackIcon from "../../../../assets/svgs/back.svg";
 import { useLocation } from "react-router";
 import { stateType } from "../Content";
@@ -7,6 +6,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import ShuffledTopicCard from "../ShuffledTopicCard";
 import Timer from "../../../../shared/components/Timer";
 import axios from "axios";
+import CorrecIcon from "@/assets/svgs/check.svg";
+import ExclamationIcon from "@/assets/svgs/exclamation.svg";
+import IncorrectIcon from "@/assets/svgs/xmark.svg";
 
 export interface CardStatusCount {
   correct: number;
@@ -34,7 +36,6 @@ const ShuffledTopics = () => {
   const [cardStatuses, setCardStatuses] = useState<CardStatuses[]>([]);
   const [openedCardsCount, setOpenedCardsCount] = useState<number>(0);
   const [shuffledDuration, setShuffledDuration] = useState<string>("");
-  const [date, setDate] = useState<string>(new Date().toISOString());
 
   const shuffle = useMemo(() => {
     for (let index = state.topics.length - 1; index > 0; index--) {
@@ -90,7 +91,7 @@ const ShuffledTopics = () => {
 
   useEffect(() => {
     handleCheckStatusCount();
-  }, []);
+  }, [cardStatuses]);
 
   const handleSubmit = useCallback(async () => {
     const arr = [];
@@ -121,11 +122,9 @@ const ShuffledTopics = () => {
       date: new Date().toDateString(),
     });
 
-    const data = await axios.get(
-      `http://localhost:8080/api/statistics/${userId}`
-    );
-
-    console.log(data.data);
+    // const data = await axios.get(
+    //   `http://localhost:8080/api/statistics/${userId}`
+    // );
 
     setChangeView(!changeView);
   }, [cardStatuses, changeView, shuffledDuration, state.topics, userId]);
@@ -147,17 +146,17 @@ const ShuffledTopics = () => {
               setPauseTimer={setPauseTimer}
               setShuffledDuration={setShuffledDuration}
             />
-            <div>
-              <span style={{ color: "green" }}>
-                correct : {cardStatusCount.correct}
-              </span>{" "}
-              <span style={{ color: "orange" }}>
-                uncertation: {cardStatusCount.uncertation}
-              </span>{" "}
-              <span style={{ color: "red" }}>
-                incorrect : {cardStatusCount.incorrect}
-              </span>
-            </div>
+            <ul className="shuffled-topics-header-statuses">
+              <li className="shuffled-topics-header-statuses-correct">
+                <CorrecIcon />: {cardStatusCount.correct}
+              </li>
+              <li className="shuffled-topics-header-statuses-uncertation">
+                <ExclamationIcon />: {cardStatusCount.uncertation}
+              </li>
+              <li className="shuffled-topics-header-statuses-incorrect">
+                <IncorrectIcon /> : {cardStatusCount.incorrect}
+              </li>
+            </ul>
           </div>
           <div className="shuffled-topics-container">
             {state.topics.map((topic: any, idx: number) => {
