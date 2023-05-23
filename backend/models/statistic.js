@@ -5,9 +5,7 @@ const Schema = mongoose.Schema;
 const statisticSchema = new Schema(
   {
     creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
-    shuffled: [
-      { type: mongoose.Types.ObjectId, required: true, ref: "ShuffledCard" },
-    ],
+    shuffled: [{ type: mongoose.Types.ObjectId, required: true, ref: "Date" }],
   },
   { timestamps: true }
 );

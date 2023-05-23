@@ -4,34 +4,80 @@ const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const Statistic = require("../models/statistic");
 const ShuffledCard = require("../models/shuffled-card");
+const Date = require("../models/dates");
 
 const createStatistic = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
-  const { creator, shuffled } = req.body;
+  const { creator, shuffled, duration, date } = req.body;
 
-  const statistic = new Statistic({
-    creator,
-  });
-
-  await statistic.save();
-
-  let arr = [];
-  for (let i = 0; i < shuffled.length; i++) {
-    shuffled[i].creator = creator;
-    arr.push(shuffled[i]);
+  //조건 - 있으면 push / 없으면 create후 push
+  try {
+    const todayObject = await Date.findOne({
+      createdAt: { $gte: date },
+    });
+    //있으면 거기에 추가
+    if (todayObject !== null) {
+      await Date.updateOne(
+        { createdAt: { $gte: date } },
+        {
+          $set: {
+            shuffled: shuffled,
+          },
+        }
+      );
+    }
+    //없으면 생성 후 추가
+    if (todayObject === null) {
+      await Date.insertMany({ shuffled, duration });
+      await Date.updateOne(
+        { createdAt: { $gte: date } },
+        {
+          $set: {
+            shuffled: shuffled,
+          },
+        }
+      );
+    }
+  } catch (error) {
+    console.log(error);
   }
 
-  await ShuffledCard.insertMany(arr);
+  const dates = await Date.find();
+  const statistic = await Statistic.find();
+
+  try {
+    if (statistic !== null) {
+      await Statistic.updateOne(
+        { creator: creator },
+        {
+          $set: {
+            shuffled: dates,
+          },
+        }
+      );
+    }
+    if (statistic.length === 0) {
+      await Statistic.insertMany({ creator, dates });
+      await Statistic.updateOne(
+        { creator: creator },
+        {
+          $set: {
+            shuffled: dates,
+          },
+        }
+      );
+    }
+  } catch (error) {}
 
   let user;
-  let stat;
+  let stats = await Statistic.find();
+  console.log(stats);
 
   try {
     user = await User.findById(creator);
-    stat = await Statistic.findOne({ creator: creator });
   } catch (err) {
     const error = new HttpError("Creating place failed, please try again", 500);
     return next(error);
@@ -43,17 +89,14 @@ const createStatistic = async (req, res, next) => {
   }
 
   try {
-    const sess = await mongoose.startSession();
-    await sess.withTransaction(async () => {
-      user.statistics.push(stat);
-      await user.save();
-      const data = await ShuffledCard.find();
-      for (let i = 0; i < data.length; i++) {
-        stat.shuffled.push(data[i]);
+    await User.updateOne(
+      { _id: creator },
+      {
+        $set: {
+          statistics: stats,
+        },
       }
-      await stat.save();
-    });
-    await sess.endSession();
+    );
   } catch (err) {
     const error = new HttpError(
       "Creating place failed, please try again.",
@@ -62,11 +105,7 @@ const createStatistic = async (req, res, next) => {
     return next(error);
   }
 
-  const shuffledCard = await ShuffledCard.find();
-
-  res.status(200).json({
-    data: shuffledCard.map((card) => card.toObject({ getters: true })),
-  });
+  res.status(200).json({ user: user });
 };
 
 exports.createStatistic = createStatistic;
