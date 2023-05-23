@@ -20,15 +20,19 @@ const createStatistic = async (req, res, next) => {
     });
     //있으면 거기에 추가
     if (todayObject !== null) {
+      const dateObject = await Date.findOne({ createdAt: { $gte: date } });
+      let dur = dateObject.duration;
       await Date.updateOne(
         { createdAt: { $gte: date } },
         {
           $set: {
             shuffled: shuffled,
+            duration: parseInt(dur) + parseInt(duration),
           },
         }
       );
     }
+
     //없으면 생성 후 추가
     if (todayObject === null) {
       await Date.insertMany({ shuffled, duration });
@@ -74,7 +78,6 @@ const createStatistic = async (req, res, next) => {
 
   let user;
   let stats = await Statistic.find();
-  console.log(stats);
 
   try {
     user = await User.findById(creator);
