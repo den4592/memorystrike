@@ -9,6 +9,7 @@ interface Props {
   setPlayTimer: React.Dispatch<React.SetStateAction<boolean>>;
   pauseTimer: boolean;
   setPauseTimer: React.Dispatch<React.SetStateAction<boolean>>;
+  setShuffledDuration: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Timer = ({
@@ -16,6 +17,7 @@ const Timer = ({
   setPlayTimer,
   pauseTimer,
   setPauseTimer,
+  setShuffledDuration,
 }: Props) => {
   const { seconds, minutes, hours, isRunning, start, pause } = useStopwatch({
     autoStart: false,
@@ -24,6 +26,10 @@ const Timer = ({
   const handlePlayButtonOnCardOpen = () => {
     playTimer ? start() : pause();
   };
+
+  useEffect(() => {
+    setShuffledDuration(`${hours}:${minutes}:${seconds}`);
+  }, [hours, minutes, seconds, setShuffledDuration]);
 
   useEffect(() => {
     handlePlayButtonOnCardOpen();

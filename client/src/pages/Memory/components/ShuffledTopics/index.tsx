@@ -1,4 +1,5 @@
 import "./index.scss";
+import { v4 as uuidv4 } from "uuid";
 import BackIcon from "../../../../assets/svgs/back.svg";
 import { useLocation } from "react-router";
 import { stateType } from "../Content";
@@ -21,6 +22,7 @@ export interface CardStatuses {
 
 const ShuffledTopics = () => {
   let userId = window.localStorage.getItem("token");
+  const [changeView, setChangeView] = useState<boolean>(false);
   const { state } = useLocation<stateType>();
   const [playTimer, setPlayTimer] = useState<boolean>(false);
   const [pauseTimer, setPauseTimer] = useState<boolean>(true);
@@ -31,6 +33,8 @@ const ShuffledTopics = () => {
   });
   const [cardStatuses, setCardStatuses] = useState<CardStatuses[]>([]);
   const [openedCardsCount, setOpenedCardsCount] = useState<number>(0);
+  const [shuffledDuration, setShuffledDuration] = useState<string>("");
+  const [date, setDate] = useState<string>(new Date().toISOString());
 
   const shuffle = useMemo(() => {
     for (let index = state.topics.length - 1; index > 0; index--) {
@@ -110,65 +114,75 @@ const ShuffledTopics = () => {
       arr.push(newArr[i]);
     }
 
-    //creatStatistics
     await axios.post("http://localhost:8080/api/statistics", {
       creator: userId,
       shuffled: arr,
+      duration: shuffledDuration,
+      date: new Date().toDateString(),
     });
-  }, [cardStatuses, state.topics]);
+
+    setChangeView(!changeView);
+  }, [cardStatuses, changeView, shuffledDuration, state.topics, userId]);
 
   return (
     <div className="shuffled-topics">
-      <div className="shuffled-topics-header">
-        <div className="shuffled-topics-header-back" onClick={handleBack}>
-          <BackIcon />
-        </div>
-        <Timer
-          playTimer={playTimer}
-          setPlayTimer={setPlayTimer}
-          pauseTimer={pauseTimer}
-          setPauseTimer={setPauseTimer}
-        />
-        <div>
-          <span style={{ color: "green" }}>
-            correct : {cardStatusCount.correct}
-          </span>{" "}
-          <span style={{ color: "orange" }}>
-            uncertation: {cardStatusCount.uncertation}
-          </span>{" "}
-          <span style={{ color: "red" }}>
-            incorrect : {cardStatusCount.incorrect}
-          </span>
-        </div>
-      </div>
-      <div className="shuffled-topics-container">
-        {state.topics.map((topic: any, idx: number) => {
-          return (
-            <ShuffledTopicCard
-              key={topic.id}
-              idx={idx}
-              topic={topic.topic}
-              description={topic.description}
+      {changeView ? (
+        ""
+      ) : (
+        <>
+          <div className="shuffled-topics-header">
+            <div className="shuffled-topics-header-back" onClick={handleBack}>
+              <BackIcon />
+            </div>
+            <Timer
+              playTimer={playTimer}
               setPlayTimer={setPlayTimer}
+              pauseTimer={pauseTimer}
               setPauseTimer={setPauseTimer}
-              cardStatuses={cardStatuses}
-              setCardStatuses={setCardStatuses}
-              openedCardsCount={openedCardsCount}
-              setOpenedCardsCount={setOpenedCardsCount}
+              setShuffledDuration={setShuffledDuration}
             />
-          );
-        })}
-      </div>
+            <div>
+              <span style={{ color: "green" }}>
+                correct : {cardStatusCount.correct}
+              </span>{" "}
+              <span style={{ color: "orange" }}>
+                uncertation: {cardStatusCount.uncertation}
+              </span>{" "}
+              <span style={{ color: "red" }}>
+                incorrect : {cardStatusCount.incorrect}
+              </span>
+            </div>
+          </div>
+          <div className="shuffled-topics-container">
+            {state.topics.map((topic: any, idx: number) => {
+              return (
+                <ShuffledTopicCard
+                  key={topic.id}
+                  idx={idx}
+                  topic={topic.topic}
+                  description={topic.description}
+                  setPlayTimer={setPlayTimer}
+                  setPauseTimer={setPauseTimer}
+                  cardStatuses={cardStatuses}
+                  setCardStatuses={setCardStatuses}
+                  openedCardsCount={openedCardsCount}
+                  setOpenedCardsCount={setOpenedCardsCount}
+                />
+              );
+            })}
+          </div>
 
-      <div className="shuffled-topics-btn">
-        <button
-          className="btn"
-          disabled={openedCardsCount !== state.topics.length}
-          onClick={handleSubmit}
-        >
-          마무리하기
-        </button>
-      </div>
+          <div className="shuffled-topics-btn">
+            <button
+              className="btn"
+              disabled={openedCardsCount !== state.topics.length}
+              onClick={handleSubmit}
+            >
+              마무리하기
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

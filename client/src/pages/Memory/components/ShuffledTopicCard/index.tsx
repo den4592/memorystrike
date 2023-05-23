@@ -25,7 +25,6 @@ const ShuffledTopicCard = ({
   cardStatuses,
   setCardStatuses,
   idx,
-
   openedCardsCount,
   setOpenedCardsCount,
 }: ShuffledTopicCardProps) => {
