@@ -105,42 +105,45 @@ const ShuffledTopicCard = ({
       } ${cardStatus}`}
       onClick={cardCover ? handleFlipCard : () => {}}
     >
-      {!cardCover && (
-        <div className="shuffled-topic-card-check">
-          <div
-            className="shuffled-topic-card-check-correct"
-            onClick={() => handleCardStatus("correct")}
-          >
-            <CheckIcon />
+      {" "}
+      <>
+        {!cardCover && (
+          <div className="shuffled-topic-card-check">
+            <div
+              className="shuffled-topic-card-check-correct"
+              onClick={() => handleCardStatus("correct")}
+            >
+              <CheckIcon />
+            </div>
+            <div
+              className="shuffled-topic-card-check-uncertation"
+              onClick={() => handleCardStatus("uncertation")}
+            >
+              <ExclamationIcon />
+            </div>
+            <div
+              className="shuffled-topic-card-check-incorrect"
+              onClick={() => handleCardStatus("incorrect")}
+            >
+              <IncorrectIcon />
+            </div>
           </div>
-          <div
-            className="shuffled-topic-card-check-uncertation"
-            onClick={() => handleCardStatus("uncertation")}
-          >
-            <ExclamationIcon />
-          </div>
-          <div
-            className="shuffled-topic-card-check-incorrect"
-            onClick={() => handleCardStatus("incorrect")}
-          >
-            <IncorrectIcon />
-          </div>
-        </div>
-      )}
+        )}
 
-      <p className="shuffled-topic-card-label">주제 / 제목 / 질문</p>
-      <p className="shuffled-topic-card-topic">{topic}</p>
-      <p className="shuffled-topic-card-label">설명 / 정답</p>
-      <textarea className="shuffled-topic-card-topic-input" />
+        <p className="shuffled-topic-card-label">주제 / 제목 / 질문</p>
+        <p className="shuffled-topic-card-topic">{topic}</p>
+        <p className="shuffled-topic-card-label">설명 / 정답</p>
+        <textarea className="shuffled-topic-card-topic-input" />
 
-      <p className="shuffled-topic-card-btn" onClick={handleShowAnswer}>
-        정답 확인
-      </p>
-      {showAnswer && (
-        <div className="shuffled-topic-card-answer">
-          <p className="shuffled-topic-card-answer">{description}</p>
-        </div>
-      )}
+        <p className="shuffled-topic-card-btn" onClick={handleShowAnswer}>
+          정답 확인
+        </p>
+        {showAnswer && (
+          <div className="shuffled-topic-card-answer">
+            <p className="shuffled-topic-card-answer">{description}</p>
+          </div>
+        )}
+      </>
     </div>
   );
 };

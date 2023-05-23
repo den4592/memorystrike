@@ -1,15 +1,46 @@
 @import "../../../../shared/common.scss";
 
 .correct {
-  border: 5px solid green;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: 5px solid green;
+    border-radius: 10px;
+  }
 }
 
 .uncertation {
-  border: 5px solid $color-yellow;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: 5px solid $color-yellow;
+    border-radius: 10px;
+  }
 }
 
 .incorrect {
-  border: 5px solid red;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: 5px solid red;
+    border-radius: 10px;
+  }
 }
 
 .shuffled-topic-card {
@@ -20,6 +51,7 @@
   border-radius: 10px;
 
   &-check {
+    z-index: 1;
     position: absolute;
     right: 20px;
     top: -20px;
