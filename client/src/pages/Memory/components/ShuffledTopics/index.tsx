@@ -121,6 +121,12 @@ const ShuffledTopics = () => {
       date: new Date().toDateString(),
     });
 
+    const data = await axios.get(
+      `http://localhost:8080/api/statistics/${userId}`
+    );
+
+    console.log(data.data);
+
     setChangeView(!changeView);
   }, [cardStatuses, changeView, shuffledDuration, state.topics, userId]);
 

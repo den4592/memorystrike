@@ -74,7 +74,6 @@ const ShuffledTopicCard = ({
       items[idx] = item;
 
       setCardStatuses(items);
-      console.log(cardStatuses);
     },
     [idx, setCardStatuses]
   );
