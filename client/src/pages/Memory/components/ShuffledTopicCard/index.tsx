@@ -46,10 +46,6 @@ const ShuffledTopicCard = ({
     setOpenedCardsCount(openedCardsCount + 1);
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const handleChange = useCallback(
     (cardStatuses: any, status: string) => {
       let items = [...cardStatuses];

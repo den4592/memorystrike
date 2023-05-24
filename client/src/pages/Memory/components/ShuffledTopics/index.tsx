@@ -91,10 +91,6 @@ const ShuffledTopics = () => {
   }, [cardStatuses]);
 
   useEffect(() => {
-    console.log(cardStatusCount);
-  }, [cardStatusCount]);
-
-  useEffect(() => {
     handleCheckStatusCount();
   }, [cardStatuses]);
 

@@ -4,6 +4,7 @@ import { CardStatusCount, CardStatuses } from "../ShuffledTopics";
 import CheckIcon from "@/assets/svgs/check.svg";
 import ExclamationIcon from "@/assets/svgs/exclamation.svg";
 import IncorrectIcon from "@/assets/svgs/xmark.svg";
+import { Link } from "react-router-dom";
 
 interface ShuffledResultProps {
   shuffledDuration: string;
@@ -58,13 +59,17 @@ const ShuffledResult = ({
             <span>: {cardStatusCount.incorrect}</span>
           </div>
         </div>
+
         <div className="shuffled-result-container-btn-container">
           <button className="btn" onClick={handleDoAgain}>
             다시하기
           </button>
-          <button className="btn">통계</button>
+          <Link to="/statistics">
+            <button className="btn">통계</button>
+          </Link>
         </div>
       </div>
+      <div className="confetti"></div>
     </div>
   );
 };
