@@ -21,13 +21,16 @@ const createStatistic = async (req, res, next) => {
     //있으면 거기에 추가
     if (todayObject !== null) {
       const dateObject = await Date.findOne({ createdAt: { $gte: date } });
+
       let dur = dateObject.duration;
       await Date.updateOne(
         { createdAt: { $gte: date } },
         {
           $set: {
-            shuffled: shuffled,
             duration: parseInt(dur) + parseInt(duration),
+          },
+          $push: {
+            shuffled: shuffled,
           },
         }
       );
@@ -58,7 +61,7 @@ const createStatistic = async (req, res, next) => {
         { creator: creator },
         {
           $set: {
-            shuffled: dates,
+            dates: dates,
           },
         }
       );
@@ -69,7 +72,7 @@ const createStatistic = async (req, res, next) => {
         { creator: creator },
         {
           $set: {
-            shuffled: dates,
+            dates: dates,
           },
         }
       );
