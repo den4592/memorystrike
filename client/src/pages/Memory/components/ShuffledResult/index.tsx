@@ -20,6 +20,7 @@ interface ShuffledResultProps {
   >;
   setCardStatuses: React.Dispatch<React.SetStateAction<CardStatuses[]>>;
   setOpenedCardsCount: React.Dispatch<React.SetStateAction<number>>;
+  setPlayTimer: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ShuffledResult = ({
@@ -29,13 +30,14 @@ const ShuffledResult = ({
   setChangeView,
   setCardStatusCount,
   setCardStatuses,
-
   setOpenedCardsCount,
+  setPlayTimer,
 }: ShuffledResultProps) => {
   const handleDoAgain = () => {
     setCardStatusCount({ correct: 0, uncertation: 0, incorrect: 0 });
     setCardStatuses([]);
     setOpenedCardsCount(0);
+    setPlayTimer(false);
     setChangeView(!changeView);
   };
 

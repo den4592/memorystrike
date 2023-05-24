@@ -140,6 +140,7 @@ const ShuffledTopics = () => {
           setChangeView={setChangeView}
           setCardStatuses={setCardStatuses}
           setOpenedCardsCount={setOpenedCardsCount}
+          setPlayTimer={setPlayTimer}
         />
       ) : (
         <>
