@@ -108,30 +108,29 @@ const ShuffledTopicCard = ({
       onClick={cardCover ? handleFlipCard : () => {}}
     >
       {" "}
-      <>
-        {!cardCover && (
-          <div className="shuffled-topic-card-check">
-            <div
-              className="shuffled-topic-card-check-correct"
-              onClick={() => handleCardStatus("correct")}
-            >
-              <CheckIcon />
-            </div>
-            <div
-              className="shuffled-topic-card-check-uncertation"
-              onClick={() => handleCardStatus("uncertation")}
-            >
-              <ExclamationIcon />
-            </div>
-            <div
-              className="shuffled-topic-card-check-incorrect"
-              onClick={() => handleCardStatus("incorrect")}
-            >
-              <IncorrectIcon />
-            </div>
+      {!cardCover && (
+        <div className="shuffled-topic-card-check">
+          <div
+            className="shuffled-topic-card-check-correct"
+            onClick={() => handleCardStatus("correct")}
+          >
+            <CheckIcon />
           </div>
-        )}
-
+          <div
+            className="shuffled-topic-card-check-uncertation"
+            onClick={() => handleCardStatus("uncertation")}
+          >
+            <ExclamationIcon />
+          </div>
+          <div
+            className="shuffled-topic-card-check-incorrect"
+            onClick={() => handleCardStatus("incorrect")}
+          >
+            <IncorrectIcon />
+          </div>
+        </div>
+      )}
+      <div className={`${!cardCover && "shuffled-topic-card-inner"}`}>
         <p className="shuffled-topic-card-label">주제 / 제목 / 질문</p>
         <p className="shuffled-topic-card-topic">{topic}</p>
         <p className="shuffled-topic-card-label">설명 / 정답</p>
@@ -145,7 +144,7 @@ const ShuffledTopicCard = ({
             <p className="shuffled-topic-card-answer">{description}</p>
           </div>
         )}
-      </>
+      </div>
     </div>
   );
 };

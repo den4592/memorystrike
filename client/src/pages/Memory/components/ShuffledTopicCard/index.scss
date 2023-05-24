@@ -2,7 +2,6 @@
 
 .correct {
   position: relative;
-
   &::after {
     content: "";
     position: absolute;
@@ -123,10 +122,13 @@
       height: 100%;
     }
     &:hover {
-      z-index: 1;
       cursor: pointer;
       opacity: 0.3;
     }
+  }
+  &-inner {
+    position: relative;
+    z-index: 2;
   }
   &-label {
     color: $color-yellow;

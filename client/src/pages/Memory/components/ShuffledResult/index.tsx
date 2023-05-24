@@ -14,7 +14,6 @@ interface ShuffledResultProps {
     }>
   >;
   setCardStatuses: React.Dispatch<React.SetStateAction<CardStatuses[]>>;
-
   setOpenedCardsCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
