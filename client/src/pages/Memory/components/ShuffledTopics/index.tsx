@@ -9,6 +9,7 @@ import axios from "axios";
 import CorrecIcon from "@/assets/svgs/check.svg";
 import ExclamationIcon from "@/assets/svgs/exclamation.svg";
 import IncorrectIcon from "@/assets/svgs/xmark.svg";
+import ShuffledResult from "../ShuffledResult";
 
 export interface CardStatusCount {
   correct: number;
@@ -56,7 +57,7 @@ const ShuffledTopics = () => {
         ];
       });
     });
-  }, [state.topics]);
+  }, [state.topics, changeView]);
 
   const handleBack = () => {
     window.history.back();
@@ -90,6 +91,10 @@ const ShuffledTopics = () => {
   }, [cardStatuses]);
 
   useEffect(() => {
+    console.log(cardStatusCount);
+  }, [cardStatusCount]);
+
+  useEffect(() => {
     handleCheckStatusCount();
   }, [cardStatuses]);
 
@@ -115,16 +120,15 @@ const ShuffledTopics = () => {
       arr.push(newArr[i]);
     }
 
+    let time = shuffledDuration.split(":");
+    let seconds = +time[0] * 60 * 60 + +time[1] * 60 + +time[2];
+
     await axios.post("http://localhost:8080/api/statistics", {
       creator: userId,
       shuffled: arr,
-      duration: shuffledDuration,
+      duration: seconds,
       date: new Date().toDateString(),
     });
-
-    // const data = await axios.get(
-    //   `http://localhost:8080/api/statistics/${userId}`
-    // );
 
     setChangeView(!changeView);
   }, [cardStatuses, changeView, shuffledDuration, state.topics, userId]);
@@ -132,7 +136,15 @@ const ShuffledTopics = () => {
   return (
     <div className="shuffled-topics">
       {changeView ? (
-        ""
+        <ShuffledResult
+          shuffledDuration={shuffledDuration}
+          cardStatusCount={cardStatusCount}
+          setCardStatusCount={setCardStatusCount}
+          changeView={changeView}
+          setChangeView={setChangeView}
+          setCardStatuses={setCardStatuses}
+          setOpenedCardsCount={setOpenedCardsCount}
+        />
       ) : (
         <>
           <div className="shuffled-topics-header">
