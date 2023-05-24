@@ -118,7 +118,7 @@ const getStatisticByUserId = async (req, res, next) => {
   const userId = req.params.uid;
   let statistic;
   try {
-    statistic = await Statistic.find({ creator: userId }).populate("shuffled");
+    statistic = await Statistic.find({ creator: userId }).populate("dates");
   } catch (err) {
     const error = new HttpError(
       "콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
