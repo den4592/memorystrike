@@ -9,7 +9,11 @@ const userSchema = new Schema({
   password: { type: String, required: true, minLegth: 6 },
   contents: [{ type: mongoose.Types.ObjectId, required: true, ref: "Content" }],
   statistics: [
-    { type: mongoose.Types.ObjectId, required: true, ref: "Statistic" },
+    {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: "Statistic",
+    },
   ],
 });
 

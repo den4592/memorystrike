@@ -12,19 +12,35 @@ const createStatistic = async (req, res, next) => {
   }
 
   const { creator, shuffled, duration, date } = req.body;
+  console.log(duration);
 
   //조건 - 있으면 push / 없으면 create후 push
   try {
-    const todayObject = await Date.findOne({
+    const todayObject = await Date.find({
+      creator: creator,
       createdAt: { $gte: date },
     });
+
+    console.log(todayObject);
+
     //있으면 거기에 추가
-    if (todayObject !== null) {
-      const dateObject = await Date.findOne({ createdAt: { $gte: date } });
+    if (todayObject.length) {
+      const dateObject = await Date.findOne({
+        creator: creator,
+        createdAt: { $gte: date },
+      });
 
       let dur = dateObject.duration;
+
+      console.log(dateObject);
+      console.log("dur", parseInt(dur));
+      console.log("duration", parseInt(duration));
+
       await Date.updateOne(
-        { createdAt: { $gte: date } },
+        {
+          creator: creator,
+          createdAt: { $gte: date },
+        },
         {
           $set: {
             duration: parseInt(dur) + parseInt(duration),
@@ -37,10 +53,13 @@ const createStatistic = async (req, res, next) => {
     }
 
     //없으면 생성 후 추가
-    if (todayObject === null) {
-      await Date.insertMany({ shuffled, duration });
+    if (todayObject.length === 0) {
+      await Date.insertMany({ creator, shuffled, duration });
       await Date.updateOne(
-        { createdAt: { $gte: date } },
+        {
+          creator: creator,
+          createdAt: { $gte: date },
+        },
         {
           $set: {
             shuffled: shuffled,
@@ -52,8 +71,8 @@ const createStatistic = async (req, res, next) => {
     console.log(error);
   }
 
-  const dates = await Date.find();
-  const statistic = await Statistic.find();
+  const dates = await Date.findOne({ creator: creator });
+  const statistic = await Statistic.findOne({ creator: creator });
 
   try {
     if (statistic !== null) {
@@ -66,7 +85,7 @@ const createStatistic = async (req, res, next) => {
         }
       );
     }
-    if (statistic.length === 0) {
+    if (statistic === null) {
       await Statistic.insertMany({ creator, dates });
       await Statistic.updateOne(
         { creator: creator },
@@ -132,7 +151,7 @@ const getStatisticByUserId = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ statistic: statistic });
+  res.json({ statistics: statistic });
 };
 exports.createStatistic = createStatistic;
 exports.getStatisticByUserId = getStatisticByUserId;

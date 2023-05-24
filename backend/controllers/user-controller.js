@@ -55,6 +55,7 @@ const signup = async (req, res, next) => {
     email,
     password,
     contents: [],
+    statistics: [],
   });
 
   try {

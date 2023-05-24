@@ -16,6 +16,11 @@ const shuffledSchema = new Schema({
 
 const datesSchema = new Schema(
   {
+    creator: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     shuffled: [shuffledSchema],
     duration: { type: String, required: true },
   },
