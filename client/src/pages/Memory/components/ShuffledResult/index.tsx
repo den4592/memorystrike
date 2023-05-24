@@ -1,5 +1,9 @@
+import "./index.scss";
 import { useEffect } from "react";
 import { CardStatusCount, CardStatuses } from "../ShuffledTopics";
+import CheckIcon from "@/assets/svgs/check.svg";
+import ExclamationIcon from "@/assets/svgs/exclamation.svg";
+import IncorrectIcon from "@/assets/svgs/xmark.svg";
 
 interface ShuffledResultProps {
   shuffledDuration: string;
@@ -36,14 +40,31 @@ const ShuffledResult = ({
 
   return (
     <div className="shuffled-result">
-      <p>소요 시간 : {shuffledDuration}</p>
-      <span>correct : {cardStatusCount.correct}</span>
-      <span>uncertation : {cardStatusCount.uncertation}</span>
-      <span>incorrect : {cardStatusCount.incorrect}</span>
-      <button className="btn" onClick={handleDoAgain}>
-        다시하기
-      </button>
-      <button className="btn">통계</button>
+      <div className="shuffled-result-container">
+        <p className="shuffled-result-container-time">
+          소요 시간 : {shuffledDuration}
+        </p>
+        <div className="shuffled-result-container-statuses">
+          <div className="shuffled-result-container-statuses-correct">
+            <CheckIcon />
+            <span>: {cardStatusCount.correct}</span>
+          </div>
+          <div className="shuffled-result-container-statuses-uncertation">
+            <ExclamationIcon />
+            <span>: {cardStatusCount.uncertation}</span>
+          </div>
+          <div className="shuffled-result-container-statuses-incorrect">
+            <IncorrectIcon />
+            <span>: {cardStatusCount.incorrect}</span>
+          </div>
+        </div>
+        <div className="shuffled-result-container-btn-container">
+          <button className="btn" onClick={handleDoAgain}>
+            다시하기
+          </button>
+          <button className="btn">통계</button>
+        </div>
+      </div>
     </div>
   );
 };

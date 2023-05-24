@@ -4,6 +4,7 @@
   padding: 40px 0;
   margin: 0 30px;
   &-header {
+    min-width: 330px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -14,6 +15,7 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 10px;
     border-radius: 10px;
+
     &-back {
       width: 30px;
       fill: #146c94;
@@ -55,7 +57,7 @@
     }
   }
   &-container {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     gap: 30px;
