@@ -5,6 +5,20 @@ const User = require("../models/user");
 const Statistic = require("../models/statistic");
 const Dates = require("../models/dates");
 
+function getCurrentDate() {
+  let date = new Date();
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let today = date.getDate();
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let milliseconds = date.getMilliseconds();
+  return new Date(
+    Date.UTC(year, month, today, hours, minutes, seconds, milliseconds)
+  );
+}
+
 const createStatistic = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -15,11 +29,13 @@ const createStatistic = async (req, res, next) => {
 
   const timestamp = getCurrentDate();
 
+  console.log(getCurrentDate());
+
   //조건 - 있으면 push / 없으면 create후 push
   try {
     const todayObject = await Dates.find({
       creator: creator,
-      timestamp: { $gte: date },
+      timestamp: { $gte: getCurrentDate() },
     });
 
     //있으면 거기에 추가
@@ -56,18 +72,6 @@ const createStatistic = async (req, res, next) => {
         duration,
         timestamp,
       });
-      await Dates.updateOne(
-        {
-          creator: creator,
-          timestamp: { $gte: date },
-        },
-        {
-          $set: {
-            shuffled: shuffled,
-            timestamp: getCurrentDate(),
-          },
-        }
-      );
     }
   } catch (error) {
     console.log(error);
