@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const Statistic = require("../models/statistic");
-const Date = require("../models/dates");
+const Dates = require("../models/dates");
 
 const createStatistic = async (req, res, next) => {
   const errors = validationResult(req);
@@ -12,38 +12,34 @@ const createStatistic = async (req, res, next) => {
   }
 
   const { creator, shuffled, duration, date } = req.body;
-  console.log(duration);
+
+  const timestamp = getCurrentDate();
 
   //조건 - 있으면 push / 없으면 create후 push
   try {
-    const todayObject = await Date.find({
+    const todayObject = await Dates.find({
       creator: creator,
-      createdAt: { $gte: date },
+      timestamp: { $gte: date },
     });
-
-    console.log(todayObject);
 
     //있으면 거기에 추가
     if (todayObject.length) {
-      const dateObject = await Date.findOne({
+      const dateObject = await Dates.findOne({
         creator: creator,
-        createdAt: { $gte: date },
+        timestamp: { $gte: date },
       });
 
       let dur = dateObject.duration;
 
-      console.log(dateObject);
-      console.log("dur", parseInt(dur));
-      console.log("duration", parseInt(duration));
-
-      await Date.updateOne(
+      await Dates.updateOne(
         {
           creator: creator,
-          createdAt: { $gte: date },
+          timestamp: { $gte: date },
         },
         {
           $set: {
             duration: parseInt(dur) + parseInt(duration),
+            timestamp: getCurrentDate(),
           },
           $push: {
             shuffled: shuffled,
@@ -54,15 +50,21 @@ const createStatistic = async (req, res, next) => {
 
     //없으면 생성 후 추가
     if (todayObject.length === 0) {
-      await Date.insertMany({ creator, shuffled, duration });
-      await Date.updateOne(
+      await Dates.insertMany({
+        creator,
+        shuffled,
+        duration,
+        timestamp,
+      });
+      await Dates.updateOne(
         {
           creator: creator,
-          createdAt: { $gte: date },
+          timestamp: { $gte: date },
         },
         {
           $set: {
             shuffled: shuffled,
+            timestamp: getCurrentDate(),
           },
         }
       );
@@ -71,7 +73,7 @@ const createStatistic = async (req, res, next) => {
     console.log(error);
   }
 
-  const dates = await Date.findOne({ creator: creator });
+  const dates = await Dates.findOne({ creator: creator });
   const statistic = await Statistic.findOne({ creator: creator });
 
   try {
@@ -133,11 +135,11 @@ const createStatistic = async (req, res, next) => {
   res.status(200).json({ user: user });
 };
 
-const getStatisticByUserId = async (req, res, next) => {
+const getStatisticDatesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  let statistic;
+  let dates;
   try {
-    statistic = await Statistic.find({ creator: userId }).populate("dates");
+    dates = await Dates.find({ creator: userId }).populate("shuffled");
   } catch (err) {
     const error = new HttpError(
       "콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
@@ -146,12 +148,20 @@ const getStatisticByUserId = async (req, res, next) => {
     return next(error);
   }
 
-  if (!statistic) {
+  if (!dates) {
     const error = new HttpError("제공한 id로 콘텐츠를 찾을 수 없습니다.", 404);
     return next(error);
   }
 
-  res.json({ statistics: statistic });
+  dates.map((date) =>
+    date.shuffled.sort((prev, cur) => {
+      if (prev.timestamp < cur.timestamp) return 1;
+      if (prev.timestamp > cur.timestamp) return -1;
+    })
+  ),
+    res.json({
+      dates: dates.map((date) => date),
+    });
 };
 exports.createStatistic = createStatistic;
-exports.getStatisticByUserId = getStatisticByUserId;
+exports.getStatisticDatesByUserId = getStatisticDatesByUserId;

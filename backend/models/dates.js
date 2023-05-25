@@ -12,19 +12,18 @@ const shuffledSchema = new Schema({
   topic: { type: String, required: true },
   description: { type: String, required: true },
   statuses: statusesSchema,
+  timestamp: { type: Date, required: true },
 });
 
-const datesSchema = new Schema(
-  {
-    creator: {
-      type: mongoose.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
-    shuffled: [shuffledSchema],
-    duration: { type: String, required: true },
+const datesSchema = new Schema({
+  creator: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
-  { timestamps: true }
-);
+  timestamp: { type: Date, required: true },
+  shuffled: [shuffledSchema],
+  duration: { type: String, required: true },
+});
 
-module.exports = mongoose.model("Date", datesSchema);
+module.exports = mongoose.model("Dates", datesSchema);
