@@ -94,6 +94,20 @@ const ShuffledTopics = () => {
     handleCheckStatusCount();
   }, [cardStatuses]);
 
+  function getCurrentDate() {
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let today = date.getDate();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    return new Date(
+      Date.UTC(year, month, today, hours, minutes, seconds)
+    ).toISOString();
+  }
+
   const handleSubmit = useCallback(async () => {
     const arr = [];
 
@@ -113,6 +127,7 @@ const ShuffledTopics = () => {
     for (let i = 0; i < state.topics.length; i++) {
       let newArr = [...state.topics];
       newArr[i].statuses = cardStatuses[i];
+      newArr[i].timestamp = getCurrentDate();
       arr.push(newArr[i]);
     }
 
@@ -123,7 +138,7 @@ const ShuffledTopics = () => {
       creator: userId,
       shuffled: arr,
       duration: seconds,
-      date: new Date().toDateString(),
+      date: getCurrentDate().split("T")[0],
     });
 
     setChangeView(!changeView);
