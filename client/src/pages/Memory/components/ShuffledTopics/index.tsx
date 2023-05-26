@@ -27,7 +27,6 @@ const ShuffledTopics = () => {
   let userId = window.localStorage.getItem("token");
   const [changeView, setChangeView] = useState<boolean>(false);
   const { state } = useLocation<stateType>();
-  console.log(state);
   const [playTimer, setPlayTimer] = useState<boolean>(false);
   const [pauseTimer, setPauseTimer] = useState<boolean>(true);
   const [cardStatusCount, setCardStatusCount] = useState({

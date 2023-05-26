@@ -54,6 +54,7 @@ const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
 );
 
 const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
+  const [topics, setTopics] = useState<any>();
   const {
     getTableProps,
     getTableBodyProps,
@@ -92,12 +93,14 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
     ]);
   });
 
-  const [topics, setTopics] = useState<any>();
-
-  useEffect(() => {
+  const handleSelectedRow = useCallback(() => {
     if (selectedFlatRows.length) {
       setTopics(selectedFlatRows.map((d) => d.original));
     }
+  }, [selectedFlatRows]);
+
+  useEffect(() => {
+    handleSelectedRow();
   }, [selectedFlatRows]);
 
   return (

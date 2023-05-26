@@ -2,7 +2,7 @@ import { useStopwatch } from "react-timer-hook";
 import "./index.scss";
 import PlayButton from "../../../assets/svgs/play.svg";
 import PauseButton from "../../../assets/svgs/pause.svg";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 interface Props {
   playTimer: boolean;
@@ -27,9 +27,13 @@ const Timer = ({
     playTimer ? start() : pause();
   };
 
-  useEffect(() => {
+  const handleDuration = useCallback(() => {
     setShuffledDuration(`${hours}:${minutes}:${seconds}`);
   }, [hours, minutes, seconds, setShuffledDuration]);
+
+  useEffect(() => {
+    handleDuration();
+  }, []);
 
   useEffect(() => {
     handlePlayButtonOnCardOpen();
