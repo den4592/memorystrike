@@ -1,4 +1,4 @@
-import { useTable } from "react-table";
+import { useSortBy, useTable } from "react-table";
 import "./index.scss";
 
 interface StatisticsTableProps {
@@ -8,7 +8,7 @@ interface StatisticsTableProps {
 
 const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+    useTable({ columns, data }, useSortBy);
 
   return (
     <>
@@ -18,8 +18,15 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.render("Header")}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
                   </th>
                 ))}
               </tr>
