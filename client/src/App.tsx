@@ -52,7 +52,7 @@ function App() {
                   />
                   <Route
                     exact
-                    path="/memory/content/:contentId/topics"
+                    path="/memory/shuffled"
                     component={() => <ShuffledTopics />}
                   />
                   <Route

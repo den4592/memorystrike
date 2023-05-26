@@ -49,7 +49,7 @@ const Content = () => {
         <div className="content-main-btn-container">
           <Link
             to={{
-              pathname: `/memory/content/${state.contentId}/topics`,
+              pathname: `/memory/shuffled`,
               state: { topics: topics },
             }}
             className="btn content-main-btn-container-shuffle"

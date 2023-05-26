@@ -1,6 +1,8 @@
 import { useSortBy, useTable, useRowSelect } from "react-table";
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import "./index.scss";
+import { Link } from "react-router-dom";
+import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
 
 interface StatisticsTableProps {
   columns: any;
@@ -90,6 +92,14 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
     ]);
   });
 
+  const [topics, setTopics] = useState<any>();
+
+  useEffect(() => {
+    if (selectedFlatRows.length) {
+      setTopics(selectedFlatRows.map((d) => d.original));
+    }
+  }, [selectedFlatRows]);
+
   return (
     <>
       <div className="tbl-header">
@@ -145,20 +155,17 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
         </table>
       </div>
       <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-      <pre>
-        <code>
-          {JSON.stringify(
-            {
-              selectedRowIds: selectedRowIds,
-              "selectedFlatRows[].original": selectedFlatRows.map(
-                (d) => d.original
-              ),
-            },
-            null,
-            2
-          )}
-        </code>
-      </pre>
+
+      <Link
+        to={{
+          pathname: `/memory/shuffled`,
+          state: { topics: topics },
+        }}
+        className="btn content-main-btn-container-shuffle"
+      >
+        토픽 셔플
+        <ShuffleIcon />
+      </Link>
     </>
   );
 };
