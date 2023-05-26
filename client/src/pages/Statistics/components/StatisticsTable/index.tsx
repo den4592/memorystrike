@@ -33,17 +33,16 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
-
               return (
                 <tr
                   {...row.getRowProps()}
                   className={
-                    row.values.statuses === "correct"
-                      ? "correct"
-                      : row.values.statuses === "uncertation"
-                      ? "uncertation"
-                      : row.values.statuses === "incorrect"
-                      ? "incorrect"
+                    row.values.statuses === "정답"
+                      ? "tbl-content-correct"
+                      : row.values.statuses === "확인 필요"
+                      ? "tbl-content-uncertation"
+                      : row.values.statuses === "틀림"
+                      ? "tbl-content-incorrect"
                       : ""
                   }
                 >

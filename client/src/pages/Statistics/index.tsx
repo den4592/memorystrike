@@ -28,13 +28,13 @@ const Statistics = () => {
     statistics.map((item: any) => {
       item.shuffled.map((i: any) => {
         if (i.statuses.correct === true) {
-          i.statuses = "correct";
+          i.statuses = "정답";
         }
         if (i.statuses.uncertation === true) {
-          i.statuses = "uncertation";
+          i.statuses = "확인 필요";
         }
         if (i.statuses.incorrect === true) {
-          i.statuses = "incorrect";
+          i.statuses = "틀림";
         }
         const [yyyy, mm, dd, hh, mi] = i.timestamp.split(/[/:\-T]/);
         i.timestamp = `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
