@@ -12,7 +12,7 @@ const shuffledSchema = new Schema({
   topic: { type: String, required: true },
   description: { type: String, required: true },
   statuses: statusesSchema,
-  timestamp: { type: Date, required: true },
+  timestamp: { type: String, required: true },
 });
 
 const datesSchema = new Schema({
@@ -21,7 +21,7 @@ const datesSchema = new Schema({
     required: true,
     ref: "User",
   },
-  timestamp: { type: Date, required: true },
+  timestamp: { type: String, required: true },
   shuffled: [shuffledSchema],
   duration: { type: String, required: true },
 });

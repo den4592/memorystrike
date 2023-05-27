@@ -27,35 +27,31 @@ const createStatistic = async (req, res, next) => {
 
   const { creator, shuffled, duration, date } = req.body;
 
-  const timestamp = getCurrentDate();
-
-  console.log(getCurrentDate());
+  const timestamp = date;
 
   //조건 - 있으면 push / 없으면 create후 push
   try {
     const todayObject = await Dates.find({
       creator: creator,
-      timestamp: { $gte: getCurrentDate() },
+      timestamp: timestamp,
+    });
+
+    const dateObject = await Dates.findOne({
+      creator: creator,
+      timestamp: timestamp,
     });
 
     //있으면 거기에 추가
     if (todayObject.length) {
-      const dateObject = await Dates.findOne({
-        creator: creator,
-        timestamp: { $gte: date },
-      });
-
       let dur = dateObject.duration;
-
       await Dates.updateOne(
         {
           creator: creator,
-          timestamp: { $gte: date },
+          timestamp: timestamp,
         },
         {
           $set: {
             duration: parseInt(dur) + parseInt(duration),
-            timestamp: getCurrentDate(),
           },
           $push: {
             shuffled: shuffled,
