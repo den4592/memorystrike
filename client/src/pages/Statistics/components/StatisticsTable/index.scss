@@ -1,5 +1,17 @@
 @import "../../../../shared/common.scss";
 
+.statistics-table {
+  &-btn-container {
+    display: flex;
+    justify-content: end;
+    margin-top: 30px;
+  }
+  &-text {
+    text-align: center;
+    color: #a9a9a9;
+  }
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
