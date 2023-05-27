@@ -6,4 +6,6 @@ router.get("/:uid", statisticsController.getStatisticDatesByUserId);
 
 router.post("/", statisticsController.createStatistic);
 
+router.get("/", statisticsController.getDateDay);
+
 module.exports = router;

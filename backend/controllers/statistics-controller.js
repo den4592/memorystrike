@@ -163,5 +163,19 @@ const getStatisticDatesByUserId = async (req, res, next) => {
       dates: dates.map((date) => date),
     });
 };
+
+const getDateDay = async (req, res, next) => {
+  const { creator, date } = req.body;
+  let day;
+
+  day = await Dates.findOne({
+    creator: creator,
+    timestamp: date,
+  });
+
+  res.json({ day: day.shuffled.map((item) => item) });
+};
+
 exports.createStatistic = createStatistic;
 exports.getStatisticDatesByUserId = getStatisticDatesByUserId;
+exports.getDateDay = getDateDay;
