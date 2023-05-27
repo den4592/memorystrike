@@ -16,7 +16,7 @@ const Statistics = () => {
       `http://localhost:8080/api/statistics/${userId}`
     );
     setStatistics(data.dates);
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     getStatistics();
@@ -95,6 +95,7 @@ const Statistics = () => {
         day={day}
         setDay={setDay}
       />
+      <button onClick={getStatistics}>fetch</button>
       <StatisticsTable columns={columnData} data={rowData} />
     </div>
   );

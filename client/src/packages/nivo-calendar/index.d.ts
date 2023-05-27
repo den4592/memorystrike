@@ -23,6 +23,8 @@ declare module "@nivo/calendar" {
   };
 
   export interface CalendarDayData {
+    data: any;
+    target: any;
     date: Date;
     day: string;
     value?: number;

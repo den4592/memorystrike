@@ -63,35 +63,51 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
     rows,
     prepareRow,
     selectedFlatRows,
-  } = useTable({ columns, data }, useSortBy, useRowSelect, (hooks) => {
-    hooks.visibleColumns.push((columns) => [
-      // Let's make a column for selection
-      {
-        id: "selection",
-        // The header can use the table's getToggleAllRowsSelectedProps method
-        // to render a checkbox
-        Header: ({ getToggleAllRowsSelectedProps }) => (
-          <div>
-            <IndeterminateCheckbox
-              name={""}
-              {...getToggleAllRowsSelectedProps()}
-            />
-          </div>
-        ),
-        // The cell can use the individual row's getToggleRowSelectedProps method
-        // to the render a checkbox
-        Cell: ({ row }) => (
-          <div>
-            <IndeterminateCheckbox
-              name={""}
-              {...row.getToggleRowSelectedProps()}
-            />
-          </div>
-        ),
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        sortBy: columns.map((one: any) => {
+          return {
+            desc: true,
+            id: one.accessor === "timestamp",
+          };
+        }),
       },
-      ...columns,
-    ]);
-  });
+    },
+    useSortBy,
+    useRowSelect,
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        // Let's make a column for selection
+        {
+          id: "selection",
+          // The header can use the table's getToggleAllRowsSelectedProps method
+          // to render a checkbox
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <div>
+              <IndeterminateCheckbox
+                name={""}
+                {...getToggleAllRowsSelectedProps()}
+              />
+            </div>
+          ),
+          // The cell can use the individual row's getToggleRowSelectedProps method
+          // to the render a checkbox
+          Cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox
+                name={""}
+                {...row.getToggleRowSelectedProps()}
+              />
+            </div>
+          ),
+        },
+        ...columns,
+      ]);
+    }
+  );
 
   const handleSelectedRow = useCallback(() => {
     if (selectedFlatRows.length) {
@@ -177,7 +193,9 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
             pathname: `/memory/shuffled`,
             state: { topics: topics },
           }}
-          className="btn content-main-btn-container-shuffle"
+          className={`btn content-main-btn-container-shuffle ${
+            !selectedFlatRows.length && "disabled-link"
+          }`}
         >
           토픽 셔플
           <ShuffleIcon />

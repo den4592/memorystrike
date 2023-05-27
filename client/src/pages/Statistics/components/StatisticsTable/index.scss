@@ -12,6 +12,15 @@
   }
 }
 
+.disabled-link {
+  pointer-events: none;
+  color: gray;
+  background-color: gray !important;
+  svg {
+    fill: gray !important;
+  }
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

@@ -17,6 +17,10 @@ const StatisticsChart = ({
   setDay,
 }: StatisticsChartProps) => {
   let userId = localStorage.getItem("token");
+  const [count, setCount] = useState<any>({
+    day: "",
+    count: "",
+  });
 
   const handleFetchDayData = useCallback(async () => {
     const dt = await axios.get(
@@ -32,7 +36,12 @@ const StatisticsChart = ({
   return (
     <div className="statistics-chart">
       <ResponsiveCalendar
-        onClick={(data) => setDay(data.day)}
+        onClick={(data) => {
+          setDay(data.day);
+          setCount((prev: any) => {
+            return { ...prev, day: data.day, count: data.value };
+          });
+        }}
         data={data[0]?.map((item: any) => item)}
         from="2023-01-01"
         to="2023-12-31"
@@ -57,6 +66,11 @@ const StatisticsChart = ({
           },
         ]}
       />
+      {count.day !== "" && (
+        <p>
+          {count.day} : {count.count}
+        </p>
+      )}
     </div>
   );
 };
