@@ -55,6 +55,7 @@ const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
 
 const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
   const [topics, setTopics] = useState<any>();
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -62,7 +63,6 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
     rows,
     prepareRow,
     selectedFlatRows,
-    state: { selectedRowIds },
   } = useTable({ columns, data }, useSortBy, useRowSelect, (hooks) => {
     hooks.visibleColumns.push((columns) => [
       // Let's make a column for selection
@@ -157,7 +157,6 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
           </tbody>
         </table>
       </div>
-      <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
 
       <Link
         to={{

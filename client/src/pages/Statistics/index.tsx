@@ -1,46 +1,63 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, memo } from "react";
 import "./index.scss";
 import axios from "axios";
-import { useTable } from "react-table";
+import StatisticsChart from "./components/StatisticsChart";
 import StatisticsTable from "./components/StatisticsTable";
 
 const Statistics = () => {
   let userId = window.localStorage.getItem("token");
   const [statistics, setStatistics] = useState<any>([]);
-  const [duration, setDuration] = useState<string>("");
   const [shuffled, setShuffled] = useState([]);
+  const [chartData, setChartData] = useState<any>([]);
+  const [day, setDay] = useState<string>("");
 
-  const getStatistics = async () => {
+  const getStatistics = useCallback(async () => {
     const { data } = await axios.get(
       `http://localhost:8080/api/statistics/${userId}`
     );
-
     setStatistics(data.dates);
-    // setDuration(data.dates[0].duration);
-  };
+  }, []);
 
   useEffect(() => {
     getStatistics();
   }, []);
 
+  const handleChartData = useCallback(() => {
+    const chartArr: any = [];
+    for (let i = 0; i < statistics.length; i++) {
+      if (statistics[i] !== null) {
+        chartArr.push({
+          value: statistics[i].shuffled.length,
+          day: statistics[i].timestamp.split("T")[0],
+        });
+      }
+    }
+    if (day === "") {
+      setChartData([chartArr]);
+    }
+  }, [statistics]);
+
   useEffect(() => {
     const arr: any = [];
-    statistics.map((item: any) => {
-      item.shuffled.map((i: any) => {
-        if (i.statuses.correct === true) {
-          i.statuses = "정답";
-        }
-        if (i.statuses.uncertation === true) {
-          i.statuses = "확인 필요";
-        }
-        if (i.statuses.incorrect === true) {
-          i.statuses = "틀림";
-        }
-        const [yyyy, mm, dd, hh, mi] = i.timestamp.split(/[/:\-T]/);
-        i.timestamp = `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
-        arr.push(i);
-      });
-    });
+    handleChartData();
+    for (let i = 0; i < statistics.length; i++) {
+      if (statistics[i] !== null) {
+        statistics[i].shuffled?.map((i: any) => {
+          if (i.statuses.correct === true) {
+            i.statuses = "정답";
+          }
+          if (i.statuses.uncertation === true) {
+            i.statuses = "확인 필요";
+          }
+          if (i.statuses.incorrect === true) {
+            i.statuses = "틀림";
+          }
+          const [yyyy, mm, dd, hh, mi] = i.timestamp.split(/[/:\-T]/);
+          i.timestamp = `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
+          arr.push(i);
+        });
+      }
+    }
     setShuffled(arr);
   }, [statistics]);
 
@@ -72,9 +89,15 @@ const Statistics = () => {
 
   return (
     <div>
+      <StatisticsChart
+        data={chartData}
+        setStatistics={setStatistics}
+        day={day}
+        setDay={setDay}
+      />
       <StatisticsTable columns={columnData} data={rowData} />
     </div>
   );
 };
 
-export default Statistics;
+export default memo(Statistics);

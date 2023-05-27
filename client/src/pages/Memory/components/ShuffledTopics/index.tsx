@@ -39,7 +39,7 @@ const ShuffledTopics = () => {
   const [shuffledDuration, setShuffledDuration] = useState<string>("");
 
   const shuffle = useMemo(() => {
-    for (let index = state.topics.length - 1; index > 0; index--) {
+    for (let index = state.topics?.length - 1; index > 0; index--) {
       // 무작위 index 값을 만든다. (0 이상의 배열 길이 값)
       const randomPosition = Math.floor(Math.random() * (index + 1));
 
@@ -49,7 +49,7 @@ const ShuffledTopics = () => {
       state.topics[randomPosition] = temporary;
     }
 
-    state.topics.map((value: any) => {
+    state.topics?.map((value: any) => {
       setCardStatuses((prev) => {
         return [
           ...prev,
@@ -124,7 +124,7 @@ const ShuffledTopics = () => {
     }
 
     //토픽 카드와 해당 카드의 상태를 객체로 합친다
-    for (let i = 0; i < state.topics.length; i++) {
+    for (let i = 0; i < state.topics?.length; i++) {
       let newArr = [...state.topics];
       newArr[i].statuses = cardStatuses[i];
       newArr[i].timestamp = getCurrentDate();
@@ -183,7 +183,7 @@ const ShuffledTopics = () => {
             </ul>
           </div>
           <div className="shuffled-topics-container">
-            {state.topics.map((topic: any, idx: number) => {
+            {state.topics?.map((topic: any, idx: number) => {
               return (
                 <ShuffledTopicCard
                   key={topic._id}
@@ -204,7 +204,7 @@ const ShuffledTopics = () => {
           <div className="shuffled-topics-btn">
             <button
               className="btn"
-              disabled={openedCardsCount !== state.topics.length}
+              disabled={openedCardsCount !== state.topics?.length}
               onClick={handleSubmit}
             >
               마무리하기
