@@ -165,15 +165,23 @@ const getStatisticDatesByUserId = async (req, res, next) => {
 };
 
 const getDateDay = async (req, res, next) => {
-  const { creator, date } = req.body;
+  const creator = req.params.uid;
+  const date = req.params.did;
   let day;
 
-  day = await Dates.findOne({
-    creator: creator,
-    timestamp: date,
-  });
+  console.log(creator, date);
+  try {
+    day = await Dates.findOne({
+      creator: creator,
+      timestamp: date,
+    });
+  } catch (err) {
+    console.log("해당 날짜의 데이터가 없습니다.");
+  }
 
-  res.json({ day: day.shuffled.map((item) => item) });
+  console.log([day]);
+
+  res.json([day]);
 };
 
 exports.createStatistic = createStatistic;
