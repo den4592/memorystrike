@@ -10,6 +10,10 @@ const Statistics = () => {
   const [shuffled, setShuffled] = useState([]);
   const [chartData, setChartData] = useState<any>([]);
   const [day, setDay] = useState<string>("");
+  const [dayDateCount, setDayDateCount] = useState<any>({
+    day: String(new Date().toISOString().split("T")[0]),
+    count: 0,
+  });
 
   const getStatistics = useCallback(async () => {
     const { data } = await axios.get(
@@ -59,6 +63,9 @@ const Statistics = () => {
       }
     }
     setShuffled(arr);
+    setDayDateCount((prev: any) => {
+      return { ...prev, count: arr.length };
+    });
   }, [statistics]);
 
   //헤더에 해당하는 데이터 저장
@@ -91,11 +98,13 @@ const Statistics = () => {
     <div>
       <StatisticsChart
         data={chartData}
+        dayDateCount={dayDateCount}
+        setDayDateCount={setDayDateCount}
         setStatistics={setStatistics}
         day={day}
         setDay={setDay}
       />
-      <button onClick={getStatistics}>fetch</button>
+      <button onClick={getStatistics}>가져오기</button>
       <StatisticsTable columns={columnData} data={rowData} />
     </div>
   );

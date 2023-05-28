@@ -1,10 +1,12 @@
 import { useEffect, useState, memo, useCallback } from "react";
 import "./index.scss";
 import { ResponsiveCalendar } from "@nivo/calendar";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 interface StatisticsChartProps {
   data: any;
+  dayDateCount: any;
+  setDayDateCount: any;
   setStatistics: React.Dispatch<React.SetStateAction<any[]>>;
   day: string;
   setDay: React.Dispatch<React.SetStateAction<string>>;
@@ -12,15 +14,13 @@ interface StatisticsChartProps {
 
 const StatisticsChart = ({
   data,
+  dayDateCount,
+  setDayDateCount,
   setStatistics,
   day,
   setDay,
 }: StatisticsChartProps) => {
   let userId = localStorage.getItem("token");
-  const [count, setCount] = useState<any>({
-    day: "",
-    count: "",
-  });
 
   const handleFetchDayData = useCallback(async () => {
     const dt = await axios.get(
@@ -38,7 +38,7 @@ const StatisticsChart = ({
       <ResponsiveCalendar
         onClick={(data) => {
           setDay(data.day);
-          setCount((prev: any) => {
+          setDayDateCount((prev: any) => {
             return { ...prev, day: data.day, count: data.value };
           });
         }}
@@ -66,9 +66,9 @@ const StatisticsChart = ({
           },
         ]}
       />
-      {count.day !== "" && (
+      {dayDateCount?.day !== "" && (
         <p>
-          {count.day} : {count.count}
+          {dayDateCount.day} : {dayDateCount.count}
         </p>
       )}
     </div>
