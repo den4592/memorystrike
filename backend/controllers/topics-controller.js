@@ -7,7 +7,7 @@ const HttpError = require("../models/http-error");
 const createTopic = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
+    return next(new HttpError("토픽을 입력해 주세요.", 422));
   }
   const { topic, description, contentId } = req.body;
 
@@ -22,12 +22,18 @@ const createTopic = async (req, res, next) => {
   try {
     content = await Content.findById(contentId);
   } catch (err) {
-    const error = new HttpError("Creating place failed, please try again", 500);
+    const error = new HttpError(
+      "제공한 ID로 콘텐츠를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
     return next(error);
   }
 
   if (!content) {
-    const error = new HttpError("Could not find user for provided id", 404);
+    const error = new HttpError(
+      "콘텐츠를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
+      404
+    );
     return next(error);
   }
 
@@ -40,7 +46,7 @@ const createTopic = async (req, res, next) => {
     await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
-      "Creating place failed, please try again.",
+      "토픽을 생성 할 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -57,14 +63,17 @@ const getTopics = async (req, res, next) => {
     content = await Content.findById(contentId).populate("topics");
   } catch (err) {
     const error = new HttpError(
-      "사용자를 찾을 수 없습니다. 다시 시도해 주세요.",
+      "제공한 ID로 콘텐츠를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
   }
 
   if (!content) {
-    const error = new HttpError("제공한 id로 사용자를 찾을 수 없습니다.", 404);
+    const error = new HttpError(
+      "콘텐츠를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
+      404
+    );
     return next(error);
   }
 
@@ -81,7 +90,7 @@ const getTopics = async (req, res, next) => {
 const updateTopictById = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError("콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.", 422);
+    throw new HttpError("Validation Failed", 422);
   }
 
   const { topic, description } = req.body;
@@ -94,7 +103,7 @@ const updateTopictById = async (req, res, next) => {
     findedTopic = await Topic.findById(topicId);
   } catch (err) {
     const error = new HttpError(
-      "제공한 id로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      "제공한 ID로 토픽을 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -107,7 +116,7 @@ const updateTopictById = async (req, res, next) => {
     await findedTopic.save();
   } catch (err) {
     const error = new HttpError(
-      "제공한 id로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      "토픽을 업데이트 할 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -125,7 +134,7 @@ const deleteTopicById = async (req, res, next) => {
     topic = await Topic.findById(topicId).populate("contentId");
   } catch (err) {
     const error = new HttpError(
-      "콘텐츠를 삭제할 수 없습니다. 다시 시도해 주세요.",
+      "제공한 ID로 토픽을 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -133,7 +142,7 @@ const deleteTopicById = async (req, res, next) => {
 
   if (!topic) {
     const error = new HttpError(
-      "제공한 id로 콘텐츠를 삭제할 수 없습니다.",
+      "토픽을 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
       404
     );
     return next(error);
@@ -148,7 +157,7 @@ const deleteTopicById = async (req, res, next) => {
     await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
-      "Something went wrong, could not delete place.",
+      "토픽을 삭제할 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
