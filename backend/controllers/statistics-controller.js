@@ -138,8 +138,11 @@ const createStatistic = async (req, res, next) => {
 const getStatisticDatesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
   let dates;
+
   try {
-    dates = await Dates.find({ creator: userId }).populate("shuffled");
+    dates = await Dates.find({
+      creator: userId,
+    }).populate("shuffled");
   } catch (err) {
     const error = new HttpError(
       "콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",

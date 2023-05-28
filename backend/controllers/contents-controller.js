@@ -31,12 +31,18 @@ const createContent = async (req, res, next) => {
   try {
     user = await User.findById(creator);
   } catch (err) {
-    const error = new HttpError("Creating place failed, please try again", 500);
+    const error = new HttpError(
+      "제공된 ID에 대한 사용자를 찾을 수 없습니다",
+      500
+    );
     return next(error);
   }
 
   if (!user) {
-    const error = new HttpError("Could not find user for provided id", 404);
+    const error = new HttpError(
+      "제공된 ID에 대한 사용자를 찾을 수 없습니다",
+      404
+    );
     return next(error);
   }
 
@@ -50,7 +56,7 @@ const createContent = async (req, res, next) => {
     await sess.endSession();
   } catch (err) {
     const error = new HttpError(
-      "Creating place failed, please try again.",
+      "콘텐츠를 생성할 수 없습니다. 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -73,7 +79,7 @@ const getContentById = async (req, res, next) => {
   }
 
   if (!content) {
-    const error = new HttpError("제공한 id로 콘텐츠를 찾을 수 없습니다.", 404);
+    const error = new HttpError("제공한 ID로 콘텐츠를 찾을 수 없습니다.", 404);
     return next(error);
   }
 
@@ -94,7 +100,7 @@ const getContentsByUserId = async (req, res, next) => {
   }
 
   if (!user) {
-    const error = new HttpError("제공한 id로 사용자를 찾을 수 없습니다.", 404);
+    const error = new HttpError("제공한 ID로 사용자를 찾을 수 없습니다.", 404);
     return next(error);
   }
 
@@ -124,7 +130,7 @@ const updateContentById = async (req, res, next) => {
     findedContent = await Content.findById(contentId);
   } catch (err) {
     const error = new HttpError(
-      "제공한 id로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      "제공한 ID로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -137,7 +143,7 @@ const updateContentById = async (req, res, next) => {
     await findedContent.save();
   } catch (err) {
     const error = new HttpError(
-      "제공한 id로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      "제공한 ID로 컨텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -155,7 +161,7 @@ const deleteContentById = async (req, res, next) => {
     content = await Content.findById(contentId).populate("creator");
   } catch (err) {
     const error = new HttpError(
-      "콘텐츠를 삭제할 수 없습니다. 다시 시도해 주세요.",
+      "제공한 ID로 콘텐츠를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -163,7 +169,7 @@ const deleteContentById = async (req, res, next) => {
 
   if (!content) {
     const error = new HttpError(
-      "제공한 id로 콘텐츠를 삭제할 수 없습니다.",
+      "제공한 ID로 콘텐츠를 찾을 수 업습니다. 나중에 다시 시도해 주세요.",
       404
     );
     return next(error);
@@ -179,7 +185,7 @@ const deleteContentById = async (req, res, next) => {
     await sess.endSession();
   } catch (err) {
     const error = new HttpError(
-      "Something went wrong, could not delete place.",
+      "콘첸츠를 삭제 할 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);

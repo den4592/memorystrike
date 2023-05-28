@@ -10,7 +10,7 @@ const getUsers = async (req, res, next) => {
     users = await User.find({}, "-password");
   } catch (err) {
     const error = new HttpError(
-      "Fetching users failder, please try again later.",
+      "사용자가 존재하지 않습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return error;
@@ -20,10 +20,10 @@ const getUsers = async (req, res, next) => {
 
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
-  console.log(errors);
+
   if (!errors.isEmpty()) {
     return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
+      new HttpError("잘못된 입력이 전달되었습니다. 데이터를 확인해 주세요", 422)
     );
   }
   console.log(req.body);
@@ -31,12 +31,11 @@ const signup = async (req, res, next) => {
 
   let existingUser;
 
-  //유저가 이미 존재하면 즉 이메일이 있으면
   try {
     existingUser = await User.findOne({ email });
   } catch (err) {
     const error = new HttpError(
-      "Signing up failed, please try again later.",
+      "가입하지 못했습니다. 나중에 다시 시도해 주세요",
       500
     );
     return next(error);
@@ -44,7 +43,7 @@ const signup = async (req, res, next) => {
 
   if (existingUser) {
     const error = new HttpError(
-      "User exists already, please login instead.",
+      "사용자가 이미 존재합니다. 로그인해 주세요.",
       422
     );
     return next(error);
@@ -61,7 +60,10 @@ const signup = async (req, res, next) => {
   try {
     await createdUser.save();
   } catch (err) {
-    const error = new HttpError("Signing up failed, please try again", 500);
+    const error = new HttpError(
+      "가입하지 못했습니다. 다시 시도해 주세요.",
+      500
+    );
     return next(error);
   }
 
@@ -72,12 +74,11 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   let existingUser;
 
-  //유저가 이미 존재하면 즉 이메일이 있으면
   try {
     existingUser = await User.findOne({ email });
   } catch (err) {
     const error = new HttpError(
-      "Logging in failed, please try again later.",
+      "로그인하지 못했습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -85,7 +86,7 @@ const login = async (req, res, next) => {
 
   if (!existingUser || existingUser.password !== password) {
     const error = new HttpError(
-      "Invalid creadentials, could not log you in.",
+      "잘못된 자격 증명입니다. 로그인할 수 없습니다.",
       401
     );
     return next(error);
