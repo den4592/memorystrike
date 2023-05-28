@@ -22,14 +22,14 @@ function getCurrentDate() {
 const createStatistic = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
+    return next(new HttpError("Validation Failed", 422));
   }
 
   const { creator, shuffled, duration, date } = req.body;
 
   const timestamp = date;
 
-  //조건 - 있으면 push / 없으면 create후 push
+  //timestamp가 이미 존재하면 기존 Dates에 push / 존재하지 않으면 새로운 Date를 생성 후 push
   try {
     const todayObject = await Dates.find({
       creator: creator,
@@ -69,8 +69,12 @@ const createStatistic = async (req, res, next) => {
         timestamp,
       });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    const error = new HttpError(
+      "통계를 생성할 수 없습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
   }
 
   const dates = await Dates.findOne({ creator: creator });
@@ -98,7 +102,10 @@ const createStatistic = async (req, res, next) => {
         }
       );
     }
-  } catch (error) {}
+  } catch (err) {
+    const error = new HttpError("통계가 존재하지 않습니다.", 500);
+    return next(error);
+  }
 
   let user;
   let stats = await Statistic.find();
@@ -106,12 +113,18 @@ const createStatistic = async (req, res, next) => {
   try {
     user = await User.findById(creator);
   } catch (err) {
-    const error = new HttpError("Creating place failed, please try again", 500);
+    const error = new HttpError(
+      "제공한 ID로 사용자를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
     return next(error);
   }
 
   if (!user) {
-    const error = new HttpError("Could not find user for provided id", 404);
+    const error = new HttpError(
+      "사용자를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
+      404
+    );
     return next(error);
   }
 
@@ -126,7 +139,7 @@ const createStatistic = async (req, res, next) => {
     );
   } catch (err) {
     const error = new HttpError(
-      "Creating place failed, please try again.",
+      "사용자를 업데이트 할 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
@@ -145,14 +158,17 @@ const getStatisticDatesByUserId = async (req, res, next) => {
     }).populate("shuffled");
   } catch (err) {
     const error = new HttpError(
-      "콘텐츠를 찾을 수 없습니다. 다시 시도해 주세요.",
+      "제공한 ID로 Date를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
       500
     );
     return next(error);
   }
 
   if (!dates) {
-    const error = new HttpError("제공한 id로 콘텐츠를 찾을 수 없습니다.", 404);
+    const error = new HttpError(
+      "Date가 존재하지 않습니다. 나중에 다시 시도해 주세요.",
+      404
+    );
     return next(error);
   }
 
@@ -172,14 +188,17 @@ const getDateDay = async (req, res, next) => {
   const date = req.params.did;
   let day;
 
-  console.log(creator, date);
   try {
     day = await Dates.findOne({
       creator: creator,
       timestamp: date,
     });
   } catch (err) {
-    console.log("해당 날짜의 데이터가 없습니다.");
+    const error = new HttpError(
+      "Date를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
   }
 
   console.log([day]);
