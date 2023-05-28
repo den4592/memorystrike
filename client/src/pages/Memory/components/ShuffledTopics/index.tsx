@@ -38,6 +38,10 @@ const ShuffledTopics = () => {
   const [openedCardsCount, setOpenedCardsCount] = useState<number>(0);
   const [shuffledDuration, setShuffledDuration] = useState<string>("");
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const shuffle = useMemo(() => {
     for (let index = state.topics?.length - 1; index > 0; index--) {
       // 무작위 index 값을 만든다. (0 이상의 배열 길이 값)

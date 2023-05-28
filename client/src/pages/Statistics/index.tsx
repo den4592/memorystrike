@@ -104,7 +104,9 @@ const Statistics = () => {
         day={day}
         setDay={setDay}
       />
-      <button onClick={getStatistics}>가져오기</button>
+      <button className="btn" onClick={getStatistics}>
+        가져오기
+      </button>
       <StatisticsTable columns={columnData} data={rowData} />
     </div>
   );
