@@ -104,7 +104,8 @@ const Auth = () => {
           })
           .then(function (response) {
             if (response.status === 200) {
-              auth.token = response.data.token;
+              auth.login(response.data.token);
+              window.localStorage.setItem("userId", response.data.userId);
               history.push("/memory");
             }
           })

@@ -20,7 +20,7 @@ const CreateContent = ({
       .post("http://localhost:8080/api/contents", {
         content: contentText,
         description: descriptionText,
-        creator: window.localStorage.getItem("token"),
+        creator: window.localStorage.getItem("userId"),
       })
       .then(function (response) {
         console.log(response);

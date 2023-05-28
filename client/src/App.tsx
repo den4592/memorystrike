@@ -1,7 +1,13 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback, useContext, useEffect } from "react";
 import "./index.scss";
 import "./reset.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
 import "./index.scss";
 
 import Auth from "./auth";
@@ -14,53 +20,61 @@ import Content from "./pages/Memory/components/Content";
 import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
 
 function App() {
-  const auth: any = useContext(AuthContext);
+  const [token, setToken] = useState<any>(false);
 
-  const [isLoggedIn, setisLoggedIn] = useState(false);
-
-  const login = useCallback(() => {
-    setisLoggedIn(true);
+  const login = useCallback((token: boolean) => {
+    setToken(token);
   }, []);
 
   const logout = useCallback(() => {
-    setisLoggedIn(false);
+    setToken(null);
   }, []);
-
-  let routes;
 
   return (
     <div className="App">
       <AuthContext.Provider
-        value={(auth.token, auth.isLoggedIn, auth.login, auth.logout)}
+        value={{
+          isLoggedIn: !!token,
+          token: token,
+          login: login,
+          logout: logout,
+        }}
       >
         <Router>
-          <Switch>
-            <Route exact path="/" component={() => <Auth />} />
-            <>
-              <div className="main">
-                <div className="main-container">
-                  <Sidebar />
-                  <Route exact path="/memory" component={() => <Memory />} />
-                  <Route
-                    exact
-                    path="/memory/content/:contentId"
-                    component={() => <Content />}
-                  />
-                  <Route
-                    exact
-                    path="/memory/shuffled"
-                    component={() => <ShuffledTopics />}
-                  />
-                  <Route
-                    exact
-                    path="/statistics"
-                    component={() => <Statistics />}
-                  />
-                  <Route exact path="/ask" component={() => <Ask />} />
+          {localStorage.getItem("userId") ? (
+            <Switch>
+              <>
+                <div className="main">
+                  <div className="main-container">
+                    <Sidebar />
+                    <Route exact path="/memory" component={() => <Memory />} />
+                    <Route
+                      exact
+                      path="/memory/content/:contentId"
+                      component={() => <Content />}
+                    />
+                    <Route
+                      exact
+                      path="/memory/shuffled"
+                      component={() => <ShuffledTopics />}
+                    />
+                    <Route
+                      exact
+                      path="/statistics"
+                      component={() => <Statistics />}
+                    />
+                    <Route exact path="/ask" component={() => <Ask />} />
+                  </div>
                 </div>
-              </div>
-            </>
-          </Switch>
+              </>
+              <Route exact path="/login" component={() => <Auth />} />
+            </Switch>
+          ) : (
+            <Switch>
+              <Route exact path="/login" component={() => <Auth />} />
+              <Redirect to="/login" />
+            </Switch>
+          )}
         </Router>
       </AuthContext.Provider>
     </div>
