@@ -1,5 +1,5 @@
-const { v4 } = require("uuid");
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
 
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
@@ -26,7 +26,7 @@ const signup = async (req, res, next) => {
       new HttpError("잘못된 입력이 전달되었습니다. 데이터를 확인해 주세요", 422)
     );
   }
-  console.log(req.body);
+
   const { name, email, password } = req.body;
 
   let existingUser;
@@ -49,10 +49,21 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch (err) {
+    const error = new HttpError(
+      "사용자를 생성할 수 없습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
   const createdUser = new User({
     name,
     email,
-    password,
+    password: hashedPassword,
     contents: [],
     statistics: [],
   });
@@ -84,7 +95,26 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  if (!existingUser || existingUser.password !== password) {
+  if (!existingUser) {
+    const error = new HttpError(
+      "잘못된 자격 증명입니다. 로그인할 수 없습니다.",
+      401
+    );
+    return next(error);
+  }
+
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+  } catch (err) {
+    const error = new HttpError(
+      "로그인 할 수 없습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!isValidPassword) {
     const error = new HttpError(
       "잘못된 자격 증명입니다. 로그인할 수 없습니다.",
       401
