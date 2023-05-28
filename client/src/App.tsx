@@ -1,12 +1,7 @@
 import { useState, useCallback, useContext } from "react";
 import "./index.scss";
 import "./reset.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./index.scss";
 
 import Auth from "./auth";
@@ -20,15 +15,16 @@ import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
 
 function App() {
   const auth: any = useContext(AuthContext);
+
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
-  // const login = useCallback(() => {
-  //   setisLoggedIn(true);
-  // }, []);
+  const login = useCallback(() => {
+    setisLoggedIn(true);
+  }, []);
 
-  // const logout = useCallback(() => {
-  //   setisLoggedIn(false);
-  // }, []);
+  const logout = useCallback(() => {
+    setisLoggedIn(false);
+  }, []);
 
   let routes;
 

@@ -7,7 +7,7 @@ import axios from "axios";
 const Auth = () => {
   const auth = useContext(AuthContext);
   const history = useHistory();
-  const [token, setToken] = useState("");
+
   const [toggleValue, setToggleValue] = useState<boolean>(false);
   const [registerValues, setRegisterValues] = useState({
     name: "",
@@ -79,7 +79,6 @@ const Auth = () => {
     e.preventDefault();
     switch (value) {
       case "registration":
-        console.log(registerValues);
         axios
           .post("http://localhost:8080/api/user/signup", {
             name: registerValues.name,
@@ -98,16 +97,14 @@ const Auth = () => {
           });
         break;
       case "login":
-        console.log(loginValues);
         axios
           .post("http://localhost:8080/api/user/login", {
             email: loginValues.email,
             password: loginValues.password,
           })
           .then(function (response) {
-            console.log(response);
             if (response.status === 200) {
-              window.localStorage.setItem("token", response.data.token);
+              auth.token = response.data.token;
               history.push("/memory");
             }
           })
