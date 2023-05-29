@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../shared/context/auth.context";
 import { httpClientForCredentials } from "../api";
 import { signUp } from "../api/signup";
+import { logIn } from "../api/login";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -80,9 +81,8 @@ const Auth = () => {
     e.preventDefault();
     switch (value) {
       case "sign-up":
-        const res = await signUp(signUpValues);
-        console.log(res);
-        if (res.success) {
+        const signUpResponse = await signUp(signUpValues);
+        if (signUpResponse.success) {
           setIsFocusedSecond(false);
           setIsFocusedThird(false);
           setToggleValue(!toggleValue);
@@ -90,25 +90,12 @@ const Auth = () => {
 
         break;
       case "login":
-        httpClientForCredentials
-          .post(
-            "http://localhost:8080/api/user/login",
-            {
-              email: loginValues.email,
-              password: loginValues.password,
-            },
-            { withCredentials: true }
-          )
-          .then(function (response) {
-            if (response.status === 200) {
-              console.log(response.data);
-              auth.login(response.data.userId, response.data.token);
-              history.push("/memory");
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        const logInResponse = await logIn(loginValues);
+        if (logInResponse?.status === 200) {
+          auth.login(logInResponse.data.userId, logInResponse.data.token);
+          history.push("/memory");
+        }
+
         break;
     }
   };
