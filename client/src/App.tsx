@@ -1,4 +1,3 @@
-import { useState, useCallback, useEffect } from "react";
 import "./index.scss";
 import "./reset.css";
 import {
@@ -17,30 +16,10 @@ import Statistics from "./pages/Statistics";
 import Ask from "./pages/Ask";
 import Content from "./pages/Memory/components/Content";
 import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
+import useAuth from "./hooks/auth-hook";
 
 function App() {
-  const [token, setToken] = useState<any>(false);
-
-  const login = useCallback((token: boolean) => {
-    setToken(token);
-    localStorage.setItem("userData", JSON.stringify({ token }));
-  }, []);
-
-  const logout = useCallback(() => {
-    setToken(null);
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userData");
-  }, []);
-
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("userData")!);
-    if (storedData && storedData.token) {
-      login(storedData.token);
-    } else {
-      logout();
-    }
-  }, [login, logout]);
-
+  const { token, login, logout } = useAuth();
   return (
     <div className="App">
       <AuthContext.Provider
@@ -59,6 +38,7 @@ function App() {
                   <div className="main-container">
                     <Sidebar />
                     <Route exact path="/memory" component={() => <Memory />} />
+                    <Redirect from="/*" to="/memory" />
                     <Route
                       exact
                       path="/memory/content/:contentId"
@@ -78,7 +58,6 @@ function App() {
                   </div>
                 </div>
               </>
-              <Route exact path="/login" component={() => <Auth />} />
             </Switch>
           ) : (
             <Switch>
