@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import "./index.scss";
 import "./reset.css";
 import {
@@ -6,7 +6,6 @@ import {
   Route,
   Switch,
   Redirect,
-  useHistory,
 } from "react-router-dom";
 import "./index.scss";
 
@@ -24,11 +23,19 @@ function App() {
 
   const login = useCallback((token: boolean) => {
     setToken(token);
+    localStorage.setItem("userData", JSON.stringify({ token }));
   }, []);
 
   const logout = useCallback(() => {
     setToken(null);
   }, []);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData")!);
+    if (storedData && storedData.token) {
+      login(storedData.token);
+    }
+  }, [login]);
 
   return (
     <div className="App">

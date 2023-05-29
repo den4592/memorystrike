@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../shared/context/auth.context";
 import axios from "axios";
+import { httpClientForCredentials } from "../api";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -79,7 +80,7 @@ const Auth = () => {
     e.preventDefault();
     switch (value) {
       case "registration":
-        axios
+        httpClientForCredentials
           .post("http://localhost:8080/api/user/signup", {
             name: registerValues.name,
             email: registerValues.email,
@@ -97,11 +98,15 @@ const Auth = () => {
           });
         break;
       case "login":
-        axios
-          .post("http://localhost:8080/api/user/login", {
-            email: loginValues.email,
-            password: loginValues.password,
-          })
+        httpClientForCredentials
+          .post(
+            "http://localhost:8080/api/user/login",
+            {
+              email: loginValues.email,
+              password: loginValues.password,
+            },
+            { withCredentials: true }
+          )
           .then(function (response) {
             if (response.status === 200) {
               auth.login(response.data.token);
