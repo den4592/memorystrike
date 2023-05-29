@@ -7,6 +7,7 @@ import Calendar from "../../../../assets/svgs/calendar.svg";
 import DeleteContent from "../../../../assets/svgs/remove.svg";
 import ArrowLink from "../../../../assets/svgs/arrow-link.svg";
 import { AuthContext } from "../../../../shared/context/auth.context";
+import { editContent } from "../../../../api/content/editContent";
 
 interface ContentCardProps {
   id: string;
@@ -46,26 +47,22 @@ const ContentCard = ({
     setUpdateContents(!updateContents);
   };
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     setPrevText(contentText);
     setPrevDesc(descriptionText);
     if (
       enableEdit === true &&
       (prevText !== contentText || prevDesc !== descriptionText)
     ) {
-      axios
-        .post(
-          `http://localhost:8080/api/contents/${id}`,
-          {
-            content: contentText,
-            description: descriptionText,
-            creator: userData.userId,
-          },
-          {
-            headers: { Authorization: "Bearer" + auth.token },
-          }
-        )
-        .then(() => setUpdateContents(!updateContents));
+      let params = {
+        content: contentText,
+        description: descriptionText,
+        creator: userData.userId,
+      };
+      const editContentResponse = await editContent(params, id, auth.token);
+      if (editContentResponse?.status === 200) {
+        setUpdateContents(!updateContents);
+      }
     }
     setEnableEdit(!enableEdit);
   };

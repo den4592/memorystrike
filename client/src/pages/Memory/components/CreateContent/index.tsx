@@ -1,8 +1,7 @@
 import "./index.scss";
 import { useState, useContext } from "react";
-import axios from "axios";
 import { AuthContext } from "../../../../shared/context/auth.context";
-import { createContent } from "../../../../api/createContent";
+import { createContent } from "../../../../api/content/createContent";
 
 interface CreateContentProps {
   updateContents: boolean;
@@ -21,7 +20,6 @@ const CreateContent = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     let params = {
       content: contentText,
       description: descriptionText,
