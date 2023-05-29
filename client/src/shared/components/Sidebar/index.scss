@@ -10,6 +10,11 @@
   background-color: $color-blue;
   overflow-x: hidden;
   transition: 0.3s;
+  text-align: center;
+  &-logout-btn {
+    margin: 16px 0;
+    padding: 10px 15px;
+  }
   &.active {
     left: 0;
   }
@@ -33,6 +38,7 @@
 }
 
 .sidebar-toggle {
+  border: 1px solid red;
   position: fixed;
   top: 10px;
   left: 10px;

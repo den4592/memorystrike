@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import CreateContent from "./components/CreateContent";
 import axios from "axios";
 import ContentCard from "../Memory/components/ContentCard";
-import { Redirect } from "react-router-dom";
 
 const Memory = () => {
   const [toggle, setToggle] = useState<boolean>(false);

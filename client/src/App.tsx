@@ -28,14 +28,18 @@ function App() {
 
   const logout = useCallback(() => {
     setToken(null);
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userData");
   }, []);
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData")!);
     if (storedData && storedData.token) {
       login(storedData.token);
+    } else {
+      logout();
     }
-  }, [login]);
+  }, [login, logout]);
 
   return (
     <div className="App">
