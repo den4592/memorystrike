@@ -1,6 +1,7 @@
 import "./index.scss";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../../../../shared/context/auth.context";
 
 interface CreateContentProps {
   updateContents: boolean;
@@ -11,17 +12,24 @@ const CreateContent = ({
   updateContents,
   setUpdateContents,
 }: CreateContentProps) => {
+  const auth = useContext(AuthContext);
   const [contentText, setContentText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/api/contents", {
-        content: contentText,
-        description: descriptionText,
-        creator: window.localStorage.getItem("userId"),
-      })
+    await axios
+      .post(
+        "http://localhost:8080/api/contents",
+        {
+          content: contentText,
+          description: descriptionText,
+          creator: window.localStorage.getItem("userId"),
+        },
+        {
+          headers: { Authorization: "Bearer" + auth.token },
+        }
+      )
       .then(function (response) {
         console.log(response);
         if (response.status === 200) {

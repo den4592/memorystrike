@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, memo, useContext } from "react";
 import axios from "axios";
 import "./index.scss";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import EditContent from "../../../../assets/svgs/edit.svg";
 import Calendar from "../../../../assets/svgs/calendar.svg";
 import DeleteContent from "../../../../assets/svgs/remove.svg";
 import ArrowLink from "../../../../assets/svgs/arrow-link.svg";
+import { AuthContext } from "../../../../shared/context/auth.context";
 
 interface ContentCardProps {
   id: string;
@@ -24,7 +25,8 @@ const ContentCard = ({
   updateContents,
   setUpdateContents,
 }: ContentCardProps) => {
-  let userId = window.localStorage.getItem("token");
+  let userId = window.localStorage.getItem("userId");
+  const auth = useContext(AuthContext);
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [contentText, setContentText] = useState<string>(content);
   const [descriptionText, setDescriptionText] = useState<string>(description);
@@ -39,6 +41,7 @@ const ContentCard = ({
         id,
         userId,
       },
+      headers: { Authorization: "Bearer" + auth.token },
     });
     setUpdateContents(!updateContents);
   };
@@ -51,11 +54,17 @@ const ContentCard = ({
       (prevText !== contentText || prevDesc !== descriptionText)
     ) {
       axios
-        .post(`http://localhost:8080/api/contents/${id}`, {
-          content: contentText,
-          description: descriptionText,
-          creator: userId,
-        })
+        .post(
+          `http://localhost:8080/api/contents/${id}`,
+          {
+            content: contentText,
+            description: descriptionText,
+            creator: userId,
+          },
+          {
+            headers: { Authorization: "Bearer" + auth.token },
+          }
+        )
         .then(() => setUpdateContents(!updateContents));
     }
     setEnableEdit(!enableEdit);

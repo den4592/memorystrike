@@ -10,7 +10,7 @@ const Memory = () => {
   const [updateContents, setUpdateContents] = useState<boolean>(false);
   const [contents, setContents] = useState([]);
 
-  let userId = window.localStorage.getItem("token");
+  let userId = localStorage.getItem("userId");
 
   const createContentFromDefault = () => {
     window.scrollTo(0, 0);
