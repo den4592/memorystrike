@@ -2,6 +2,7 @@ import "./index.scss";
 import { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../../shared/context/auth.context";
+import { createContent } from "../../../../api/createContent";
 
 interface CreateContentProps {
   updateContents: boolean;
@@ -20,29 +21,18 @@ const CreateContent = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await axios
-      .post(
-        "http://localhost:8080/api/contents",
-        {
-          content: contentText,
-          description: descriptionText,
-          creator: userData.userId,
-        },
-        {
-          headers: { Authorization: "Bearer" + auth.token },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 200) {
-          setContentText("");
-          setDescriptionText("");
-          setUpdateContents(!updateContents);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
+    let params = {
+      content: contentText,
+      description: descriptionText,
+      creator: userData.userId,
+    };
+    const createContentResponse = await createContent(params, auth.token);
+    if (createContentResponse?.status === 200) {
+      setContentText("");
+      setDescriptionText("");
+      setUpdateContents(!updateContents);
+    }
   };
 
   return (

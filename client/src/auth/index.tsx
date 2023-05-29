@@ -87,7 +87,6 @@ const Auth = () => {
           setIsFocusedThird(false);
           setToggleValue(!toggleValue);
         }
-
         break;
       case "login":
         const logInResponse = await logIn(loginValues);
@@ -95,7 +94,6 @@ const Auth = () => {
           auth.login(logInResponse.data.userId, logInResponse.data.token);
           history.push("/memory");
         }
-
         break;
     }
   };
