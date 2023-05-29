@@ -4,7 +4,13 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5173", // 접근 권한을 부여하는 도메인
+    credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
+    optionsSuccessStatus: 200, // 응답 상태 200으로 설정
+  })
+);
 
 const contentsRoutes = require("./routes/contents-routes");
 const userRoutes = require("./routes/user-routes");
@@ -14,12 +20,17 @@ const statisticRoutes = require("./routes/statistics-routes");
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5173"); // 모든 출처(origin)을 허용
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  ); // 모든 HTTP 메서드 허용
+  res.setHeader("Access-Control-Allow-Credentials", "true"); // 클라이언트와 서버 간에 쿠키 주고받기 허용
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  res.setHeader("Acess-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+  res.setHeader("Access-Control-Max-Age", "60");
   next();
 });
 

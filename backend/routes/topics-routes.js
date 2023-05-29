@@ -2,10 +2,11 @@ const express = require("express");
 const { check } = require("express-validator");
 const router = express.Router();
 const topicsController = require("../controllers/topics-controller");
-
-// router.get("/:cid", contentsController.getContentById);
+const Auth = require("../middleware/auth");
 
 router.get("/:cid", topicsController.getTopics);
+
+// router.use(Auth);
 
 router.post("/", [
   check("topic").not().isEmpty(),
