@@ -9,20 +9,20 @@ const Memory = () => {
   const [updateContents, setUpdateContents] = useState<boolean>(false);
   const [contents, setContents] = useState([]);
 
-  let userId = localStorage.getItem("userId");
-
   const createContentFromDefault = () => {
     window.scrollTo(0, 0);
     setToggle(true);
   };
 
+  const userData = JSON.parse(localStorage.getItem("userData")!);
+
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/contents/user/${userId}`)
+      .get(`http://localhost:8080/api/contents/user/${userData.userId}`)
       .then((res) => {
         setContents(res.data.contents);
       });
-  }, [updateContents, userId]);
+  }, [updateContents, userData.userId]);
 
   return (
     <div className="memory">

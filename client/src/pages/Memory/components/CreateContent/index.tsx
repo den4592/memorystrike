@@ -16,6 +16,8 @@ const CreateContent = ({
   const [contentText, setContentText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
 
+  const userData = JSON.parse(localStorage.getItem("userData")!);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
@@ -24,7 +26,7 @@ const CreateContent = ({
         {
           content: contentText,
           description: descriptionText,
-          creator: window.localStorage.getItem("userId"),
+          creator: userData.userId,
         },
         {
           headers: { Authorization: "Bearer" + auth.token },

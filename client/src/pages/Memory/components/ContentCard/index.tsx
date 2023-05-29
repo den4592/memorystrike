@@ -25,7 +25,7 @@ const ContentCard = ({
   updateContents,
   setUpdateContents,
 }: ContentCardProps) => {
-  let userId = window.localStorage.getItem("userId");
+  const userData = JSON.parse(localStorage.getItem("userData")!);
   const auth = useContext(AuthContext);
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [contentText, setContentText] = useState<string>(content);
@@ -39,7 +39,7 @@ const ContentCard = ({
     await axios.delete(`http://localhost:8080/api/contents/${contentId}`, {
       data: {
         id,
-        userId,
+        userId: userData.userId,
       },
       headers: { Authorization: "Bearer" + auth.token },
     });
@@ -59,7 +59,7 @@ const ContentCard = ({
           {
             content: contentText,
             description: descriptionText,
-            creator: userId,
+            creator: userData.userId,
           },
           {
             headers: { Authorization: "Bearer" + auth.token },
@@ -132,7 +132,7 @@ const ContentCard = ({
         <Link
           to={{
             pathname: `/memory/content/${id}`,
-            state: { content: content, userId: userId, contentId: id },
+            state: { content: content, userId: userData.userId, contentId: id },
           }}
         >
           <div className="content-card-options-arrow">

@@ -19,19 +19,20 @@ import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
 import useAuth from "./hooks/auth-hook";
 
 function App() {
-  const { token, login, logout } = useAuth();
+  const { token, login, logout, userId } = useAuth();
   return (
     <div className="App">
       <AuthContext.Provider
         value={{
           isLoggedIn: !!token,
+          userId: userId,
           token: token,
           login: login,
           logout: logout,
         }}
       >
         <Router>
-          {localStorage.getItem("userId") ? (
+          {token ? (
             <Switch>
               <>
                 <div className="main">

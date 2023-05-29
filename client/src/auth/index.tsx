@@ -2,7 +2,6 @@ import "./index.scss";
 import { useHistory } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../shared/context/auth.context";
-import axios from "axios";
 import { httpClientForCredentials } from "../api";
 
 const Auth = () => {
@@ -109,8 +108,8 @@ const Auth = () => {
           )
           .then(function (response) {
             if (response.status === 200) {
-              auth.login(response.data.token);
-              window.localStorage.setItem("userId", response.data.userId);
+              console.log(response.data);
+              auth.login(response.data.userId, response.data.token);
               history.push("/memory");
             }
           })
