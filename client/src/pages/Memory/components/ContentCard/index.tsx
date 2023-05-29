@@ -8,6 +8,7 @@ import DeleteContent from "../../../../assets/svgs/remove.svg";
 import ArrowLink from "../../../../assets/svgs/arrow-link.svg";
 import { AuthContext } from "../../../../shared/context/auth.context";
 import { editContent } from "../../../../api/content/editContent";
+import { deleteContent } from "../../../../api/content/deleteContent";
 
 interface ContentCardProps {
   id: string;
@@ -37,14 +38,18 @@ const ContentCard = ({
   const date = new Date(time).toLocaleString("ko-KR");
 
   const handleDelete = async (contentId: string) => {
-    await axios.delete(`http://localhost:8080/api/contents/${contentId}`, {
-      data: {
-        id,
-        userId: userData.userId,
-      },
-      headers: { Authorization: "Bearer" + auth.token },
-    });
-    setUpdateContents(!updateContents);
+    let params = {
+      id,
+      userId: userData.userId,
+    };
+    const deleteContentResponse = await deleteContent(
+      params,
+      contentId,
+      auth.token
+    );
+    if (deleteContentResponse?.status === 200) {
+      setUpdateContents(!updateContents);
+    }
   };
 
   const handleEdit = async () => {
