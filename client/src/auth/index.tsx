@@ -2,7 +2,6 @@ import "./index.scss";
 import { useHistory } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../shared/context/auth.context";
-import { httpClientForCredentials } from "../api";
 import { signUp } from "../api/signup";
 import { logIn } from "../api/login";
 

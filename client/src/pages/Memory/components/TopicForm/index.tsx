@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./index.scss";
 import axios from "axios";
+import { createTopic } from "../../../../api/topic/createTopic";
+import { AuthContext } from "../../../../shared/context/auth.context";
 
 interface TopicFormProps {
   contentId: string;
@@ -13,32 +15,29 @@ const TopicForm = ({
   updateTopics,
   setUpdateTopics,
 }: TopicFormProps) => {
+  const auth = useContext(AuthContext);
   const [topicText, setTopicText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (topicText === "" || descriptionText === "") {
       alert("필수 항목들을 입력해 주세요.");
       return;
     }
-    axios
-      .post(`http://localhost:8080/api/topics`, {
-        topic: topicText,
-        description: descriptionText,
-        contentId: contentId,
-      })
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 200) {
-          setTopicText("");
-          setDescriptionText("");
-          setUpdateTopics(!updateTopics);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
+    let params = {
+      topic: topicText,
+      description: descriptionText,
+      contentId: contentId,
+    };
+
+    const createTopicResponse = await createTopic(params, auth.token);
+    if (createTopicResponse?.status === 200) {
+      setTopicText("");
+      setDescriptionText("");
+      setUpdateTopics(!updateTopics);
+    }
   };
 
   return (
