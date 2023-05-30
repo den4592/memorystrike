@@ -20,11 +20,11 @@ const StatisticsChart = ({
   day,
   setDay,
 }: StatisticsChartProps) => {
-  let userId = localStorage.getItem("token");
+  const userData = JSON.parse(localStorage.getItem("userData")!);
 
   const handleFetchDayData = useCallback(async () => {
     const dt = await axios.get(
-      `http://localhost:8080/api/statistics/${userId}/${day}`
+      `http://localhost:8080/api/statistics/${userData.userId}/${day}`
     );
     setStatistics(dt.data);
   }, [day, setStatistics]);
