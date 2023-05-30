@@ -194,68 +194,67 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
               </tbody>
             </table>
           </div>
+          <div className="statistics-table-bottom-container">
+            <div className="pagination">
+              <div className="pagination-btn-container">
+                <button
+                  className="pagination-btn-container-btn"
+                  onClick={() => gotoPage(0)}
+                  disabled={!canPreviousPage}
+                >
+                  {"<<"}
+                </button>
+                <button
+                  className="pagination-btn-container-btn"
+                  onClick={() => previousPage()}
+                  disabled={!canPreviousPage}
+                >
+                  {"<"}
+                </button>
+                <button
+                  className="pagination-btn-container-btn"
+                  onClick={() => nextPage()}
+                  disabled={!canNextPage}
+                >
+                  {">"}
+                </button>
+                <button
+                  className="pagination-btn-container-btn"
+                  onClick={() => gotoPage(pageCount - 1)}
+                  disabled={!canNextPage}
+                >
+                  {">>"}
+                </button>
+              </div>
+
+              <span>
+                페이지{" "}
+                <strong>
+                  {pageIndex + 1} - {pageOptions.length}
+                </strong>{" "}
+              </span>
+            </div>
+            <div className="statistics-table-btn-container">
+              <Link
+                to={{
+                  pathname: `/memory/shuffled`,
+                  state: { topics: topics },
+                }}
+                className={`btn content-main-btn-container-shuffle ${
+                  !selectedFlatRows.length && "disabled-link"
+                }`}
+              >
+                토픽 셔플
+                <ShuffleIcon />
+              </Link>
+            </div>
+          </div>
         </>
       ) : (
         <p className="statistics-table-text">
           "선택한 날짜에 해당하는 데이터가 존재하지 않습니다."
         </p>
       )}
-
-      <div className="statistics-table-bottom-container">
-        <div className="pagination">
-          <div className="pagination-btn-container">
-            <button
-              className="pagination-btn-container-btn"
-              onClick={() => gotoPage(0)}
-              disabled={!canPreviousPage}
-            >
-              {"<<"}
-            </button>
-            <button
-              className="pagination-btn-container-btn"
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
-            >
-              {"<"}
-            </button>
-            <button
-              className="pagination-btn-container-btn"
-              onClick={() => nextPage()}
-              disabled={!canNextPage}
-            >
-              {">"}
-            </button>
-            <button
-              className="pagination-btn-container-btn"
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              {">>"}
-            </button>
-          </div>
-
-          <span>
-            페이지{" "}
-            <strong>
-              {pageIndex + 1} - {pageOptions.length}
-            </strong>{" "}
-          </span>
-        </div>
-        <div className="statistics-table-btn-container">
-          <Link
-            to={{
-              pathname: `/memory/shuffled`,
-              state: { topics: topics },
-            }}
-            className={`btn content-main-btn-container-shuffle ${
-              !selectedFlatRows.length && "disabled-link"
-            }`}
-          >
-            토픽 셔플
-            <ShuffleIcon />
-          </Link>
-        </div>
-      </div>
     </div>
   );
 };
