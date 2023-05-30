@@ -1,8 +1,10 @@
-import { useState, memo } from "react";
+import { useState, memo, useContext } from "react";
 import "./index.scss";
 import RemoveIcon from "../../../../assets/svgs/remove.svg";
 import EditIcon from "../../../../assets/svgs/edit.svg";
 import axios from "axios";
+import { editTopic } from "../../../../api/topic/editTopic";
+import { AuthContext } from "../../../../shared/context/auth.context";
 interface TopicCardProps {
   id: string;
   topic: string;
@@ -18,6 +20,7 @@ const TopicCard = ({
   updateTopics,
   setUpdateTopics,
 }: TopicCardProps) => {
+  const auth = useContext(AuthContext);
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
   const [topicText, setTopicText] = useState<string>(topic);
   const [descriptionText, setDescriptionText] = useState<string>(description);
@@ -29,19 +32,21 @@ const TopicCard = ({
     setUpdateTopics(!updateTopics);
   };
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     setPrevText(topicText);
     setPrevDesc(descriptionText);
     if (
       enableEdit === true &&
       (prevText !== topicText || prevDesc !== descriptionText)
     ) {
-      axios
-        .post(`http://localhost:8080/api/topics/${id}`, {
-          topic: topicText,
-          description: descriptionText,
-        })
-        .then(() => setUpdateTopics(!updateTopics));
+      let params = {
+        topic: topicText,
+        description: descriptionText,
+      };
+      const editTopicResponse = await editTopic(params, id, auth.token);
+      if (editTopicResponse?.status === 200) {
+        setUpdateTopics(!updateTopics);
+      }
     }
     setEnableEdit(!enableEdit);
   };
