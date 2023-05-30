@@ -1,9 +1,10 @@
 @import "../../../../shared/common.scss";
 
 .statistics-table {
-  &-btn-container {
+  &-bottom-container {
     display: flex;
-    justify-content: end;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 30px;
   }
   &-text {
@@ -19,6 +20,33 @@
   background-color: gray !important;
   svg {
     fill: gray !important;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  &-btn-container {
+    display: flex;
+    gap: 10px;
+    &-btn {
+      width: 50px;
+      padding: 7px 0px;
+      background-color: $color-pink;
+      border: none;
+      border-radius: 10px;
+      &:disabled {
+        cursor: not-allowed;
+      }
+      &:enabled {
+        cursor: pointer;
+        &:hover {
+          opacity: 0.7;
+          transform: scale(1.1);
+        }
+      }
+    }
   }
 }
 

@@ -78,7 +78,7 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
       columns,
       data,
       initialState: {
-        pageSize: 2,
+        pageSize: 10,
         sortBy: columns.map((one: any) => {
           return {
             desc: true,
@@ -201,40 +201,60 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
         </p>
       )}
 
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {"<<"}
-        </button>{" "}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {"<"}
-        </button>{" "}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {">"}
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {">>"}
-        </button>{" "}
-        <span>
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
-        </span>
-      </div>
+      <div className="statistics-table-bottom-container">
+        <div className="pagination">
+          <div className="pagination-btn-container">
+            <button
+              className="pagination-btn-container-btn"
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+            >
+              {"<<"}
+            </button>
+            <button
+              className="pagination-btn-container-btn"
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              {"<"}
+            </button>
+            <button
+              className="pagination-btn-container-btn"
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+            >
+              {">"}
+            </button>
+            <button
+              className="pagination-btn-container-btn"
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              {">>"}
+            </button>
+          </div>
 
-      <div className="statistics-table-btn-container">
-        <Link
-          to={{
-            pathname: `/memory/shuffled`,
-            state: { topics: topics },
-          }}
-          className={`btn content-main-btn-container-shuffle ${
-            !selectedFlatRows.length && "disabled-link"
-          }`}
-        >
-          토픽 셔플
-          <ShuffleIcon />
-        </Link>
+          <span>
+            페이지{" "}
+            <strong>
+              {pageIndex + 1} - {pageOptions.length}
+            </strong>{" "}
+          </span>
+        </div>
+        <div className="statistics-table-btn-container">
+          <Link
+            to={{
+              pathname: `/memory/shuffled`,
+              state: { topics: topics },
+            }}
+            className={`btn content-main-btn-container-shuffle ${
+              !selectedFlatRows.length && "disabled-link"
+            }`}
+          >
+            토픽 셔플
+            <ShuffleIcon />
+          </Link>
+        </div>
       </div>
     </div>
   );
