@@ -2,7 +2,7 @@ import "./index.scss";
 import BackIcon from "../../../../assets/svgs/back.svg";
 import { useLocation } from "react-router";
 import { stateType } from "../Content";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ShuffledTopicCard from "../ShuffledTopicCard";
 import Timer from "../../../../shared/components/Timer";
 import axios from "axios";
@@ -10,6 +10,8 @@ import CorrecIcon from "@/assets/svgs/check.svg";
 import ExclamationIcon from "@/assets/svgs/exclamation.svg";
 import IncorrectIcon from "@/assets/svgs/xmark.svg";
 import ShuffledResult from "../ShuffledResult";
+import { createStatistic } from "../../../../api/statistic/createStatistic";
+import { AuthContext } from "../../../../shared/context/auth.context";
 
 export interface CardStatusCount {
   correct: number;
@@ -24,7 +26,8 @@ export interface CardStatuses {
 }
 
 const ShuffledTopics = () => {
-  let userId = window.localStorage.getItem("token");
+  const auth = useContext(AuthContext);
+  const userData = JSON.parse(localStorage.getItem("userData")!);
   const [changeView, setChangeView] = useState<boolean>(false);
   const { state } = useLocation<stateType>();
   const [playTimer, setPlayTimer] = useState<boolean>(false);
@@ -138,15 +141,25 @@ const ShuffledTopics = () => {
     let time = shuffledDuration.split(":");
     let seconds = +time[0] * 60 * 60 + +time[1] * 60 + +time[2];
 
-    await axios.post("http://localhost:8080/api/statistics", {
-      creator: userId,
+    let params = {
+      creator: userData.userId,
       shuffled: arr,
       duration: seconds,
       date: getCurrentDate().split("T")[0],
-    });
+    };
 
-    setChangeView(!changeView);
-  }, [cardStatuses, changeView, shuffledDuration, state.topics, userId]);
+    const createStatisticResponse = await createStatistic(params, auth.token);
+    if (createStatisticResponse?.status === 200) {
+      setChangeView(!changeView);
+    }
+  }, [
+    auth.token,
+    cardStatuses,
+    changeView,
+    shuffledDuration,
+    state.topics,
+    userData.userId,
+  ]);
 
   return (
     <div className="shuffled-topics">

@@ -5,7 +5,7 @@ import StatisticsChart from "./components/StatisticsChart";
 import StatisticsTable from "./components/StatisticsTable";
 
 const Statistics = () => {
-  let userId = window.localStorage.getItem("token");
+  const userData = JSON.parse(localStorage.getItem("userData")!);
   const [statistics, setStatistics] = useState<any>([]);
   const [shuffled, setShuffled] = useState([]);
   const [chartData, setChartData] = useState<any>([]);
@@ -17,10 +17,10 @@ const Statistics = () => {
 
   const getStatistics = useCallback(async () => {
     const { data } = await axios.get(
-      `http://localhost:8080/api/statistics/${userId}`
+      `http://localhost:8080/api/statistics/${userData.userId}`
     );
     setStatistics(data.dates);
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     getStatistics();
