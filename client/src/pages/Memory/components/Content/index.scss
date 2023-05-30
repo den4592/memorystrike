@@ -2,6 +2,8 @@
 .content {
   padding-top: 50px;
   margin: 0 30px;
+  position: relative;
+  height: 100vh;
   &-header {
     width: 100%;
     display: flex;
