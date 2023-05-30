@@ -6,7 +6,7 @@ const Auth = require("../middleware/auth");
 
 router.get("/:cid", topicsController.getTopics);
 
-// router.use(Auth);
+router.use(Auth);
 
 router.post("/", [
   check("topic").not().isEmpty(),

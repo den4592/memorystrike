@@ -201,8 +201,6 @@ const getDateDay = async (req, res, next) => {
     return next(error);
   }
 
-  console.log([day]);
-
   res.json([day]);
 };
 
