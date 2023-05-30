@@ -5,6 +5,7 @@ import EditIcon from "../../../../assets/svgs/edit.svg";
 import axios from "axios";
 import { editTopic } from "../../../../api/topic/editTopic";
 import { AuthContext } from "../../../../shared/context/auth.context";
+import { deleteTopic } from "../../../../api/topic/deleteTopic";
 interface TopicCardProps {
   id: string;
   topic: string;
@@ -28,8 +29,10 @@ const TopicCard = ({
   const [prevDesc, setPrevDesc] = useState<string>("");
 
   const handleDelete = async (topicId: string) => {
-    await axios.delete(`http://localhost:8080/api/topics/${topicId}`, {});
-    setUpdateTopics(!updateTopics);
+    const deleteTopicResponse = await deleteTopic(topicId, auth.token);
+    if (deleteTopicResponse?.status === 200) {
+      setUpdateTopics(!updateTopics);
+    }
   };
 
   const handleEdit = async () => {

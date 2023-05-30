@@ -1,10 +1,10 @@
 import { httpClientForCredentials } from "../index";
 
-export const deleteContent = async (contentId: string, token: any) => {
+export const deleteTopic = async (topicId: string, token: any) => {
   let response;
   try {
     response = await httpClientForCredentials.delete(
-      `http://localhost:8080/api/contents/${contentId}`,
+      `http://localhost:8080/api/topics/${topicId}`,
       {
         headers: { Authorization: "Bearer" + token },
       }

@@ -38,15 +38,7 @@ const ContentCard = ({
   const date = new Date(time).toLocaleString("ko-KR");
 
   const handleDelete = async (contentId: string) => {
-    let params = {
-      id,
-      userId: userData.userId,
-    };
-    const deleteContentResponse = await deleteContent(
-      params,
-      contentId,
-      auth.token
-    );
+    const deleteContentResponse = await deleteContent(contentId, auth.token);
     if (deleteContentResponse?.status === 200) {
       setUpdateContents(!updateContents);
     }
