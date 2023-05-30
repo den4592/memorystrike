@@ -1,4 +1,4 @@
-import { useSortBy, useTable, useRowSelect } from "react-table";
+import { useSortBy, useTable, useRowSelect, usePagination } from "react-table";
 import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import "./index.scss";
 import { Link } from "react-router-dom";
@@ -60,14 +60,25 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
     prepareRow,
     selectedFlatRows,
+
+    //
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
       initialState: {
+        pageSize: 2,
         sortBy: columns.map((one: any) => {
           return {
             desc: true,
@@ -76,8 +87,11 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
         }),
       },
     },
+
     useSortBy,
+    usePagination,
     useRowSelect,
+
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
         // Let's make a column for selection
@@ -121,7 +135,7 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
 
   return (
     <div className="statistics-table">
-      {rows.length ? (
+      {page.length ? (
         <>
           <div className="tbl-header">
             <table {...getTableProps()}>
@@ -152,7 +166,7 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
           <div className="tbl-content">
             <table>
               <tbody {...getTableBodyProps()}>
-                {rows.map((row) => {
+                {page.map((row) => {
                   prepareRow(row);
                   return (
                     <tr
@@ -186,6 +200,27 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
           "선택한 날짜에 해당하는 데이터가 존재하지 않습니다."
         </p>
       )}
+
+      <div className="pagination">
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {"<<"}
+        </button>{" "}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          {"<"}
+        </button>{" "}
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          {">"}
+        </button>{" "}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {">>"}
+        </button>{" "}
+        <span>
+          Page{" "}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>{" "}
+        </span>
+      </div>
 
       <div className="statistics-table-btn-container">
         <Link
