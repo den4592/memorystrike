@@ -1,72 +1,90 @@
 import { useCallback, useEffect, useMemo, useState, memo } from "react";
 import "./index.scss";
-import axios from "axios";
 import StatisticsChart from "./components/StatisticsChart";
 import StatisticsTable from "./components/StatisticsTable";
+import { getStatistics } from "../../api/statistic/getStatistics";
 
 const Statistics = () => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
-  const [statistics, setStatistics] = useState<any>([]);
-  const [shuffled, setShuffled] = useState([]);
-  const [chartData, setChartData] = useState<any>([]);
-  const [day, setDay] = useState<string>("");
-  const [dayDateCount, setDayDateCount] = useState<any>({
-    day: String(new Date().toISOString().split("T")[0]),
-    count: 0,
-  });
+  const [loader, setLoader] = useState<boolean>(false);
 
-  const getStatistics = useCallback(async () => {
-    const { data } = await axios.get(
-      `http://localhost:8080/api/statistics/${userData.userId}`
-    );
-    setStatistics(data.dates);
-  }, []);
+  //전체 일정 데이터 (2023-05-30, 2023-05-31)
+  const [statisticDates, setStatisticDates] = useState<any>([]);
+
+  //전체 일정의 내부 추출된 shuffled
+  const [shuffled, setShuffled] = useState<any>([]);
+
+  //캘린더 차트에 뿌릴 데이터
+  const [chartData, setChartData] = useState<any>();
+
+  const [dateValue, setDateValue] = useState<number>(0);
+  const [dateDay, setDateDay] = useState<string>("");
+
+  const [shuffledDay, setShuffledDay] = useState<any>([]);
+
+  //전체 일정 데이터 받기
+  const fetchStatistics = useCallback(async () => {
+    try {
+      setLoader(true);
+      const getStatisticsResponse = await getStatistics(userData?.userId);
+      setStatisticDates(getStatisticsResponse?.data.dates);
+      setDateDay(new Date().toISOString().split("T")[0]);
+      setShuffledDay([]);
+      setLoader(false);
+    } catch (error) {}
+  }, [userData?.userId]);
 
   useEffect(() => {
-    getStatistics();
+    fetchStatistics();
   }, []);
 
-  const handleChartData = useCallback(() => {
+  const handleChartData = () => {
     const chartArr: any = [];
-    for (let i = 0; i < statistics.length; i++) {
-      if (statistics[i] !== null) {
+    for (let i = 0; i < statisticDates?.length; i++) {
+      if (statisticDates[i] !== null) {
         chartArr.push({
-          value: statistics[i].shuffled.length,
-          day: statistics[i].timestamp.split("T")[0],
+          value: statisticDates[i].shuffled.length,
+          day: statisticDates[i].timestamp.split("T")[0],
         });
       }
     }
-    if (day === "") {
-      setChartData([chartArr]);
-    }
-  }, [statistics]);
+    setChartData(chartArr);
+  };
 
-  useEffect(() => {
+  const handleStatisticDates = () => {
     const arr: any = [];
-    handleChartData();
-    for (let i = 0; i < statistics.length; i++) {
-      if (statistics[i] !== null) {
-        statistics[i].shuffled?.map((i: any) => {
-          if (i.statuses.correct === true) {
-            i.statuses = "정답";
-          }
-          if (i.statuses.uncertation === true) {
-            i.statuses = "확인 필요";
-          }
-          if (i.statuses.incorrect === true) {
-            i.statuses = "틀림";
-          }
-          const [yyyy, mm, dd, hh, mi] = i.timestamp.split(/[/:\-T]/);
-          i.timestamp = `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
-          arr.push(i);
-        });
-      }
+    let values = 0;
+    for (let i = 0; i <= statisticDates?.length - 1; i++) {
+      statisticDates[i].shuffled.forEach((item: any) => {
+        if (item.statuses.correct === true) {
+          item.statuses = "정답";
+        }
+        if (item.statuses.uncertation === true) {
+          item.statuses = "확인 필요";
+        }
+        if (item.statuses.incorrect === true) {
+          item.statuses = "틀림";
+        }
+        const [yyyy, mm, dd, hh, mi] = item.timestamp.split(/[/:\-T]/);
+        item.timestamp = `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
+        arr.push(item);
+      });
     }
     setShuffled(arr);
-    setDayDateCount((prev: any) => {
-      return { ...prev, count: arr.length };
+    statisticDates?.map((item: any) => {
+      values += item.shuffled.length;
     });
-  }, [statistics]);
+    setDateValue(values);
+  };
+
+  useEffect(() => {
+    console.log(shuffled);
+  }, [shuffled]);
+
+  useEffect(() => {
+    handleChartData();
+    handleStatisticDates();
+  }, [statisticDates]);
 
   //헤더에 해당하는 데이터 저장
   const columnData = useMemo(
@@ -98,16 +116,26 @@ const Statistics = () => {
     <div>
       <StatisticsChart
         data={chartData}
-        dayDateCount={dayDateCount}
-        setDayDateCount={setDayDateCount}
-        setStatistics={setStatistics}
-        day={day}
-        setDay={setDay}
+        setShuffled={setShuffled}
+        setLoader={setLoader}
+        statisticDates={statisticDates}
+        dateValue={dateValue}
+        setDateValue={setDateValue}
+        dateDay={dateDay}
+        setDateDay={setDateDay}
+        shuffledDay={shuffledDay}
+        setShuffledDay={setShuffledDay}
       />
-      <button className="btn" onClick={getStatistics}>
-        가져오기
-      </button>
-      <StatisticsTable columns={columnData} data={rowData} />
+      {loader ? (
+        <span className="loader"></span>
+      ) : (
+        <>
+          <button className="btn" onClick={fetchStatistics}>
+            가져오기
+          </button>
+          <StatisticsTable columns={columnData} data={rowData} />
+        </>
+      )}
     </div>
   );
 };

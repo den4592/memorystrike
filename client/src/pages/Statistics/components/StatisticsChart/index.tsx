@@ -1,48 +1,87 @@
 import { useEffect, useState, memo, useCallback } from "react";
 import "./index.scss";
 import { ResponsiveCalendar } from "@nivo/calendar";
-import axios from "axios";
+import { getStatisticsDay } from "../../../../api/statistic/getStatisticsDay";
 
 interface StatisticsChartProps {
   data: any;
-  dayDateCount: any;
-  setDayDateCount: any;
-  setStatistics: React.Dispatch<React.SetStateAction<any[]>>;
-  day: string;
-  setDay: React.Dispatch<React.SetStateAction<string>>;
+  setShuffled: React.Dispatch<any>;
+  setLoader: React.Dispatch<React.SetStateAction<boolean>>;
+  statisticDates: any;
+  dateValue: any;
+  setDateValue: React.Dispatch<any>;
+  dateDay: any;
+  setDateDay: React.Dispatch<any>;
+  setShuffledDay: React.Dispatch<any>;
+  shuffledDay: any;
 }
 
 const StatisticsChart = ({
   data,
-  dayDateCount,
-  setDayDateCount,
-  setStatistics,
-  day,
-  setDay,
+  setShuffled,
+  setLoader,
+  dateValue,
+  setDateValue,
+  dateDay,
+  setDateDay,
+  shuffledDay,
+  setShuffledDay,
 }: StatisticsChartProps) => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
+  const [dayDateCount, setDayDateCount] = useState<any>({
+    day: "",
+    value: 0,
+  });
 
-  const handleFetchDayData = useCallback(async () => {
-    const dt = await axios.get(
-      `http://localhost:8080/api/statistics/${userData.userId}/${day}`
-    );
-    setStatistics(dt.data);
-  }, [day, setStatistics]);
+  const fetchStatisticsDay = useCallback(async () => {
+    try {
+      setLoader(true);
+      const getStatisticsDayResponse = await getStatisticsDay(
+        userData.userId,
+        dayDateCount.day
+      );
+      if (getStatisticsDayResponse?.status === 200) {
+        setShuffledDay(getStatisticsDayResponse?.data);
+      }
+      setLoader(false);
+    } catch (error) {}
+  }, [dayDateCount.day, setLoader, userData.userId]);
 
   useEffect(() => {
-    handleFetchDayData();
-  }, [day]);
+    const arr: any = [];
+
+    shuffledDay?.shuffled?.forEach((item: any) => {
+      if (item.statuses.correct === true) {
+        item.statuses = "정답";
+      }
+      if (item.statuses.uncertation === true) {
+        item.statuses = "확인 필요";
+      }
+      if (item.statuses.incorrect === true) {
+        item.statuses = "틀림";
+      }
+      const [yyyy, mm, dd, hh, mi] = item.timestamp.split(/[/:\-T]/);
+      item.timestamp = `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
+      arr.push(item);
+    });
+    setShuffled(arr);
+  }, [shuffledDay]);
+
+  useEffect(() => {
+    fetchStatisticsDay();
+  }, [dayDateCount.day]);
 
   return (
     <div className="statistics-chart">
       <ResponsiveCalendar
         onClick={(data) => {
-          setDay(data.day);
           setDayDateCount((prev: any) => {
-            return { ...prev, day: data.day, count: data.value };
+            return { ...prev, day: data.day, value: data.value };
           });
+          setDateValue(0);
+          setDateDay("");
         }}
-        data={data[0]?.map((item: any) => item)}
+        data={data?.map((item: any) => item)}
         from="2023-01-01"
         to="2023-12-31"
         emptyColor="#eeeeee"
@@ -65,9 +104,14 @@ const StatisticsChart = ({
           },
         ]}
       />
-      {dayDateCount?.day !== "" && (
+
+      {dateValue ? (
         <p>
-          {dayDateCount.day} : {dayDateCount.count}
+          ~ {dateDay} : {dateValue}
+        </p>
+      ) : (
+        <p>
+          {dayDateCount.day} : {dayDateCount.value}
         </p>
       )}
     </div>

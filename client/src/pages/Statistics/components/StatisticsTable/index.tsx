@@ -1,5 +1,11 @@
 import { useSortBy, useTable, useRowSelect, usePagination } from "react-table";
-import React, { forwardRef, useCallback, useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import "./index.scss";
 import { Link } from "react-router-dom";
 import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
@@ -259,4 +265,4 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
   );
 };
 
-export default StatisticsTable;
+export default memo(StatisticsTable);
