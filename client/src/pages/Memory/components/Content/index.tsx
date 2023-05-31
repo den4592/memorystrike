@@ -6,13 +6,14 @@ import BackIcon from "../../../../assets/svgs/back.svg";
 import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
 import TopicCard from "../TopicCard";
 import { getTopics } from "../../../../api/topic/getTopics";
+import { Topic } from "../../../../types/topics";
 
 export interface stateType {
   [x: string]: any;
   from: { pathname: string };
 }
 const Content = () => {
-  const [topics, setTopics] = useState<any>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
   const [loader, setLoader] = useState<boolean>(false);
   const [updateTopics, setUpdateTopics] = useState<boolean>(false);
   const { state } = useLocation<stateType>();
@@ -74,7 +75,7 @@ const Content = () => {
             </div>
           </div>
 
-          {topics?.map((topic: any) => {
+          {topics?.map((topic: Topic) => {
             return (
               <TopicCard
                 key={topic.id}

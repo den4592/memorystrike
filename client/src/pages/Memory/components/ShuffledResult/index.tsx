@@ -1,5 +1,4 @@
 import "./index.scss";
-import { useEffect } from "react";
 import { CardStatusCount, CardStatuses } from "../ShuffledTopics";
 import CheckIcon from "@/assets/svgs/check.svg";
 import ExclamationIcon from "@/assets/svgs/exclamation.svg";

@@ -1,9 +1,9 @@
 import "./index.scss";
 import { useState, useEffect } from "react";
 import CreateContent from "./components/CreateContent";
-import axios from "axios";
 import ContentCard from "../Memory/components/ContentCard";
 import { getContents } from "../../api/content/getContents";
+import { Content } from "../../types/contents";
 
 const Memory = () => {
   const [toggle, setToggle] = useState<boolean>(false);
@@ -24,6 +24,7 @@ const Memory = () => {
       const getContentsResponse = await getContents(userData.userId);
       if (getContentsResponse?.status === 200) {
         setContents(getContentsResponse.data.contents);
+        console.log(getContentsResponse.data);
       }
       setLoader(false);
     } catch (error) {}
@@ -56,11 +57,11 @@ const Memory = () => {
           )}
 
           <div className="memory-contents">
-            {contents?.map((content: any) => {
+            {contents?.map((content: Content) => {
               return (
                 <ContentCard
-                  id={content._id}
-                  key={content._id}
+                  id={content.id}
+                  key={content.id}
                   content={content.content}
                   description={content.description}
                   time={content.updatedAt}

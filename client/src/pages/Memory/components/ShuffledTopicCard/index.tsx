@@ -1,5 +1,5 @@
 import "./index.scss";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import CheckIcon from "@/assets/svgs/check.svg";
 import ExclamationIcon from "@/assets/svgs/exclamation.svg";
 import IncorrectIcon from "@/assets/svgs/xmark.svg";
@@ -47,9 +47,9 @@ const ShuffledTopicCard = ({
   };
 
   const handleChange = useCallback(
-    (cardStatuses: any, status: string) => {
+    (cardStatuses: CardStatuses[], status: string) => {
       let items = [...cardStatuses];
-
+      console.log(cardStatuses);
       let item = items[idx];
 
       if (status === "correct") {

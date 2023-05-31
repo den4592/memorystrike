@@ -78,10 +78,6 @@ const Statistics = () => {
   };
 
   useEffect(() => {
-    console.log(shuffled);
-  }, [shuffled]);
-
-  useEffect(() => {
     handleChartData();
     handleStatisticDates();
   }, [statisticDates]);
