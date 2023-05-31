@@ -151,7 +151,6 @@ const createStatistic = async (req, res, next) => {
 const getStatisticDatesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
   let dates;
-
   try {
     dates = await Dates.find({
       creator: userId,
@@ -163,7 +162,6 @@ const getStatisticDatesByUserId = async (req, res, next) => {
     );
     return next(error);
   }
-
   if (!dates) {
     const error = new HttpError(
       "Date가 존재하지 않습니다. 나중에 다시 시도해 주세요.",
@@ -171,7 +169,6 @@ const getStatisticDatesByUserId = async (req, res, next) => {
     );
     return next(error);
   }
-
   dates.map((date) =>
     date.shuffled.sort((prev, cur) => {
       if (prev.timestamp < cur.timestamp) return 1;
@@ -192,7 +189,7 @@ const getDateDay = async (req, res, next) => {
     day = await Dates.findOne({
       creator: creator,
       timestamp: date,
-    });
+    }).populate("shuffled");
   } catch (err) {
     const error = new HttpError(
       "Date를 찾을 수 없습니다. 나중에 다시 시도해 주세요.",
@@ -201,7 +198,7 @@ const getDateDay = async (req, res, next) => {
     return next(error);
   }
 
-  res.json([day]);
+  res.json(day);
 };
 
 exports.createStatistic = createStatistic;
