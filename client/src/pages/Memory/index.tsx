@@ -24,7 +24,6 @@ const Memory = () => {
       const getContentsResponse = await getContents(userData.userId);
       if (getContentsResponse?.status === 200) {
         setContents(getContentsResponse.data.contents);
-        console.log(getContentsResponse.data);
       }
       setLoader(false);
     } catch (error) {}

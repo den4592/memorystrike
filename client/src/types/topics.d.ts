@@ -1,8 +1,9 @@
 export interface Topic {
-  contentId: string;
-  createdAt: string;
+  contentId?: string;
+  createdAt?: string;
   description: string;
-  id: string;
+  id?: string;
   topic: string;
-  updatedAt: string;
+  updatedAt?: string;
+  timestamp: string;
 }

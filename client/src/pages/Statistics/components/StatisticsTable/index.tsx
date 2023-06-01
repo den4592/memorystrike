@@ -1,4 +1,11 @@
-import { useSortBy, useTable, useRowSelect, usePagination } from "react-table";
+import {
+  useSortBy,
+  useTable,
+  useRowSelect,
+  usePagination,
+  UseTableOptions,
+  UseTableRowProps,
+} from "react-table";
 import React, {
   forwardRef,
   memo,
@@ -9,11 +16,7 @@ import React, {
 import "./index.scss";
 import { Link } from "react-router-dom";
 import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
-
-interface StatisticsTableProps {
-  columns: any;
-  data: any;
-}
+import { FilteredStatisticDates } from "../../../../types/statistics";
 
 interface Props {
   indeterminate?: boolean;
@@ -59,8 +62,16 @@ const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
   }
 );
 
-const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
-  const [topics, setTopics] = useState<any>();
+export interface Test {
+  _id: string;
+  description: string;
+  statuses: string;
+  timestamp: string;
+  topic: string;
+}
+
+const StatisticsTable = ({ columns, data }: UseTableOptions<any>) => {
+  const [topics, setTopics] = useState<Test[]>();
 
   const {
     getTableProps,
@@ -85,10 +96,10 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
       data,
       initialState: {
         pageSize: 10,
-        sortBy: columns.map((one: any) => {
+        sortBy: columns.map((one) => {
           return {
             desc: true,
-            id: one.accessor === "timestamp",
+            id: "timestamp",
           };
         }),
       },
@@ -131,7 +142,7 @@ const StatisticsTable = ({ columns, data }: StatisticsTableProps) => {
 
   const handleSelectedRow = useCallback(() => {
     if (selectedFlatRows.length) {
-      setTopics(selectedFlatRows.map((d) => d.original));
+      setTopics(selectedFlatRows.map((d: UseTableRowProps<any>) => d.original));
     }
   }, [selectedFlatRows]);
 

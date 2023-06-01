@@ -1,19 +1,27 @@
 import { useEffect, useState, memo, useCallback } from "react";
 import "./index.scss";
-import { ResponsiveCalendar } from "@nivo/calendar";
+import { CalendarDatum, ResponsiveCalendar } from "@nivo/calendar";
 import { getStatisticsDay } from "../../../../api/statistic/getStatisticsDay";
+import {
+  Chart,
+  FilteredStatisticDates,
+  StatisticDates,
+} from "../../../../types/statistics";
+import { Topic } from "../../../../types/topics";
 
 interface StatisticsChartProps {
-  data: any;
-  setShuffled: React.Dispatch<any>;
+  data: CalendarDatum[];
+  setShuffled: React.Dispatch<React.SetStateAction<Topic[]>>;
   setLoader: React.Dispatch<React.SetStateAction<boolean>>;
-  statisticDates: any;
-  dateValue: any;
-  setDateValue: React.Dispatch<any>;
-  dateDay: any;
-  setDateDay: React.Dispatch<any>;
-  setShuffledDay: React.Dispatch<any>;
-  shuffledDay: any;
+  statisticDates: StatisticDates[] | null | undefined;
+  dateValue: number;
+  setDateValue: React.Dispatch<React.SetStateAction<number>>;
+  dateDay: string;
+  setDateDay: React.Dispatch<React.SetStateAction<string>>;
+  setShuffledDay: React.Dispatch<
+    React.SetStateAction<StatisticDates[] | null | undefined>
+  >;
+  shuffledDay: StatisticDates[] | any;
 }
 
 const StatisticsChart = ({
@@ -28,7 +36,7 @@ const StatisticsChart = ({
   setShuffledDay,
 }: StatisticsChartProps) => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
-  const [dayDateCount, setDayDateCount] = useState<any>({
+  const [dayDateCount, setDayDateCount] = useState<Chart>({
     day: "",
     value: 0,
   });
@@ -48,8 +56,7 @@ const StatisticsChart = ({
   }, [dayDateCount.day, setLoader, userData.userId]);
 
   useEffect(() => {
-    const arr: any = [];
-
+    const arr: FilteredStatisticDates[] = [];
     shuffledDay?.shuffled?.forEach((item: any) => {
       if (item.statuses.correct === true) {
         item.statuses = "정답";
@@ -75,13 +82,13 @@ const StatisticsChart = ({
     <div className="statistics-chart">
       <ResponsiveCalendar
         onClick={(data) => {
-          setDayDateCount((prev: any) => {
+          setDayDateCount((prev: Chart) => {
             return { ...prev, day: data.day, value: data.value };
           });
           setDateValue(0);
           setDateDay("");
         }}
-        data={data?.map((item: any) => item)}
+        data={data?.map((item) => item)}
         from="2023-01-01"
         to="2023-12-31"
         emptyColor="#eeeeee"

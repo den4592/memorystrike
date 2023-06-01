@@ -3,24 +3,32 @@ import "./index.scss";
 import StatisticsChart from "./components/StatisticsChart";
 import StatisticsTable from "./components/StatisticsTable";
 import { getStatistics } from "../../api/statistic/getStatistics";
+import {
+  Chart,
+  FilteredStatisticDates,
+  StatisticDates,
+  Statuses,
+} from "../../types/statistics";
+import { Topic } from "../../types/topics";
+import { CalendarDatum } from "@nivo/calendar";
 
 const Statistics = () => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
   const [loader, setLoader] = useState<boolean>(false);
 
   //전체 일정 데이터 (2023-05-30, 2023-05-31)
-  const [statisticDates, setStatisticDates] = useState<any>([]);
+  const [statisticDates, setStatisticDates] = useState<StatisticDates[]>([]);
 
   //전체 일정의 내부 추출된 shuffled
-  const [shuffled, setShuffled] = useState<any>([]);
+  const [shuffled, setShuffled] = useState<Topic[]>([]);
 
   //캘린더 차트에 뿌릴 데이터
-  const [chartData, setChartData] = useState<any>();
+  const [chartData, setChartData] = useState<CalendarDatum[]>([]);
 
   const [dateValue, setDateValue] = useState<number>(0);
   const [dateDay, setDateDay] = useState<string>("");
 
-  const [shuffledDay, setShuffledDay] = useState<any>([]);
+  const [shuffledDay, setShuffledDay] = useState<StatisticDates[] | null>();
 
   //전체 일정 데이터 받기
   const fetchStatistics = useCallback(async () => {
@@ -39,7 +47,7 @@ const Statistics = () => {
   }, []);
 
   const handleChartData = () => {
-    const chartArr: any = [];
+    const chartArr: CalendarDatum[] = [];
     for (let i = 0; i < statisticDates?.length; i++) {
       if (statisticDates[i] !== null) {
         chartArr.push({
@@ -52,10 +60,10 @@ const Statistics = () => {
   };
 
   const handleStatisticDates = () => {
-    const arr: any = [];
+    const arr: Topic[] = [];
     let values = 0;
-    for (let i = 0; i <= statisticDates?.length - 1; i++) {
-      statisticDates[i].shuffled.forEach((item: any) => {
+    for (let i = 0; i < statisticDates?.length; i++) {
+      statisticDates[i].shuffled.forEach((item: FilteredStatisticDates) => {
         if (item.statuses.correct === true) {
           item.statuses = "정답";
         }
@@ -71,7 +79,7 @@ const Statistics = () => {
       });
     }
     setShuffled(arr);
-    statisticDates?.map((item: any) => {
+    statisticDates?.map((item: StatisticDates) => {
       values += item.shuffled.length;
     });
     setDateValue(values);
