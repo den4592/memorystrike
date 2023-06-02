@@ -1,4 +1,4 @@
-import { useState, memo, useContext } from "react";
+import { useState, memo, useContext, useCallback } from "react";
 import "./index.scss";
 import { Link } from "react-router-dom";
 import EditContent from "../../../../assets/svgs/edit.svg";
@@ -8,6 +8,7 @@ import ArrowLink from "../../../../assets/svgs/arrow-link.svg";
 import { AuthContext } from "../../../../shared/context/auth.context";
 import { editContent } from "../../../../api/content/editContent";
 import { deleteContent } from "../../../../api/content/deleteContent";
+import ConfirmModal from "../../../../shared/components/ConfirmModal";
 
 interface ContentCardProps {
   id: string;
@@ -33,15 +34,19 @@ const ContentCard = ({
   const [descriptionText, setDescriptionText] = useState<string>(description);
   const [prevText, setPrevText] = useState<string>("");
   const [prevDesc, setPrevDesc] = useState<string>("");
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
   const date = new Date(time).toLocaleString("ko-KR");
 
-  const handleDelete = async (contentId: string) => {
-    const deleteContentResponse = await deleteContent(contentId, auth.token);
-    if (deleteContentResponse?.status === 200) {
-      setUpdateContents(!updateContents);
-    }
-  };
+  const handleDelete = useCallback(
+    async (contentId: string) => {
+      const deleteContentResponse = await deleteContent(contentId, auth.token);
+      if (deleteContentResponse?.status === 200) {
+        setUpdateContents(!updateContents);
+      }
+    },
+    [auth.token, setUpdateContents, updateContents]
+  );
 
   const handleEdit = async () => {
     setPrevText(contentText);
@@ -115,7 +120,7 @@ const ContentCard = ({
 
         <div
           className="content-card-options-delete"
-          onClick={() => handleDelete(id)}
+          onClick={() => setShowConfirmModal(!showConfirmModal)}
         >
           <DeleteContent />
         </div>
@@ -133,6 +138,14 @@ const ContentCard = ({
           </div>
         </Link>
       </div>
+      {showConfirmModal && (
+        <ConfirmModal
+          showModal={showConfirmModal}
+          setShowModal={setShowConfirmModal}
+          handleDelete={handleDelete}
+          contentId={id}
+        />
+      )}
     </div>
   );
 };
