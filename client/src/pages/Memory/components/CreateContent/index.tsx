@@ -15,6 +15,7 @@ const CreateContent = ({
   const auth = useContext(AuthContext);
   const [contentText, setContentText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const userData = JSON.parse(localStorage.getItem("userData")!);
 
@@ -25,11 +26,13 @@ const CreateContent = ({
       description: descriptionText,
       creator: userData.userId,
     };
-    const createContentResponse = await createContent(params, auth.token);
-    if (createContentResponse?.status === 200) {
+    const res = await createContent(params, auth.token);
+    if (res?.status === 200) {
       setContentText("");
       setDescriptionText("");
       setUpdateContents(!updateContents);
+    } else {
+      setError(res);
     }
   };
 

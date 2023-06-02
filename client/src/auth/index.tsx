@@ -9,6 +9,7 @@ import {
   nameValidation,
   passwordValidation,
 } from "../api/utils/validation";
+import Modal from "../shared/components/Modal";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -17,6 +18,7 @@ const Auth = () => {
   const emailInputEl = useRef<HTMLInputElement>(null);
   const passwordInputEl = useRef<HTMLInputElement>(null);
   const nameInputEl = useRef<HTMLInputElement>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const [toggleValue, setToggleValue] = useState<boolean>(false);
   const [signUpValues, setSignUpValues] = useState({
@@ -75,8 +77,8 @@ const Auth = () => {
             setError(res);
           }
         } else {
-          //TODO : 모달
-          alert("모든 항목들을 채워주세요.");
+          setError("모든 항목들을 채워주세요.");
+          setShowModal(!showModal);
         }
         break;
       case "login":
@@ -92,8 +94,8 @@ const Auth = () => {
             setError(res);
           }
         } else {
-          //TODO : 모달
-          alert("모든 항목들을 채워주세요.");
+          setError("모든 항목들을 채워주세요.");
+          setShowModal(!showModal);
         }
         break;
     }
@@ -192,22 +194,7 @@ const Auth = () => {
                     });
                   }}
                 />
-                <span className="input-container-error">
-                  {/* {nameValidation(signUpValues.name) ? (
-                    <>
-                      <p>이름을 작성해주세요.</p>
-                      {nameInputEl.current?.classList.add("auth-input-outline")}
-                    </>
-                  ) : (
-                    <>
-                      {nameInputEl.current?.classList.remove(
-                        "auth-input-outline"
-                      )}
-                    </>
-                  )} */}
-                </span>
               </div>
-              <p className="input-container-error">{error ? error : ""}</p>
               <button className="btn-registration">회원가입</button>
             </form>
           ) : (
@@ -283,7 +270,6 @@ const Auth = () => {
                   )}
                 </span>
               </div>
-              <p className="input-container-error">{error ? error : ""}</p>
               <button className="btn-registration">로그인</button>
             </form>
           )}
@@ -295,6 +281,13 @@ const Auth = () => {
           </span>
         </div>
       </div>
+      {showModal && (
+        <Modal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          message={error}
+        />
+      )}
     </>
   );
 };
