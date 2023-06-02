@@ -18,7 +18,6 @@ const useAuth = () => {
         "userData",
         JSON.stringify({
           userId: uid,
-          token: token,
           expiration: tokenExpirationDate.toISOString(),
         })
       );

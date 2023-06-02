@@ -1,9 +1,9 @@
 import { httpClientForCredentials } from "./index";
 
 export const signUp = async (params: any) => {
-  let result: any = { success: false };
+  let response;
   try {
-    const response = await httpClientForCredentials.post(
+    response = await httpClientForCredentials.post(
       "http://localhost:8080/api/user/signup",
       {
         name: params.name,
@@ -11,11 +11,10 @@ export const signUp = async (params: any) => {
         password: params.password,
       }
     );
-    if (response.status === 201) {
-      result = { success: true };
-    }
-  } catch (error) {
-    result = { success: false };
+  } catch (err) {
+    console.log(err.response);
+    const message = err.response.data.message;
+    return message;
   }
-  return result;
+  return response;
 };

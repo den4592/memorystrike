@@ -8,6 +8,7 @@ import { logIn } from "../api/login";
 const Auth = () => {
   const auth = useContext(AuthContext);
   const history = useHistory();
+  const [error, setError] = useState<string>("");
 
   const [toggleValue, setToggleValue] = useState<boolean>(false);
   const [signUpValues, setSignUpValues] = useState({
@@ -78,20 +79,25 @@ const Auth = () => {
 
   const handleSubmit = async (e: any, value: string) => {
     e.preventDefault();
+    let res;
     switch (value) {
       case "sign-up":
-        const signUpResponse = await signUp(signUpValues);
-        if (signUpResponse.success) {
+        res = await signUp(signUpValues);
+        if (res.status === 200) {
           setIsFocusedSecond(false);
           setIsFocusedThird(false);
           setToggleValue(!toggleValue);
+        } else {
+          setError(res);
         }
         break;
       case "login":
-        const logInResponse = await logIn(loginValues);
-        if (logInResponse?.status === 200) {
-          auth.login(logInResponse.data.userId, logInResponse.data.token);
+        res = await logIn(loginValues);
+        if (res.status === 200) {
+          auth.login(res.data.userId, res.data.token);
           history.push("/memory");
+        } else {
+          setError(res);
         }
         break;
     }
@@ -161,6 +167,7 @@ const Auth = () => {
                     });
                   }}
                 />
+                <p className="input-container-error">{error ? error : ""}</p>
               </div>
               <button className="btn-registration">회원가입</button>
             </form>
@@ -205,6 +212,7 @@ const Auth = () => {
                     });
                   }}
                 />
+                <p className="input-container-error">{error ? error : ""}</p>
               </div>
               <button className="btn-registration">로그인</button>
             </form>

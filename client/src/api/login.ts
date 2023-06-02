@@ -10,6 +10,10 @@ export const logIn = async (params: any) => {
         password: params.password,
       }
     );
-  } catch (error) {}
+  } catch (err) {
+    console.log(err.response);
+    const message = err.response.data.message;
+    return message;
+  }
   return response;
 };
