@@ -1,14 +1,22 @@
 import "./index.scss";
 import { useHistory } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { AuthContext } from "../shared/context/auth.context";
 import { signUp } from "../api/signup";
 import { logIn } from "../api/login";
+import {
+  emailValidation,
+  nameValidation,
+  passwordValidation,
+} from "../api/utils/validation";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
   const history = useHistory();
   const [error, setError] = useState<string>("");
+  const emailInputEl = useRef<HTMLInputElement>(null);
+  const passwordInputEl = useRef<HTMLInputElement>(null);
+  const nameInputEl = useRef<HTMLInputElement>(null);
 
   const [toggleValue, setToggleValue] = useState<boolean>(false);
   const [signUpValues, setSignUpValues] = useState({
@@ -23,81 +31,69 @@ const Auth = () => {
   });
 
   useEffect(() => {
-    signUpValues.email && setIsFocusedFirst(true);
-    signUpValues.password && setIsFocusedSecond(true);
-    signUpValues.name && setIsFocusedThird(true);
-    loginValues.email && setIsFocusedFirst(true);
-    loginValues.password && setIsFocusedSecond(true);
-  }, [
-    loginValues.email,
-    loginValues.password,
-    signUpValues.email,
-    signUpValues.password,
-    signUpValues.name,
-  ]);
+    setError("");
+  }, [toggleValue]);
 
-  const handleChangeView = () => {
+  const handleChangeView = useCallback(() => {
+    if (loginValues) {
+      setLoginValues((prev) => {
+        return {
+          ...prev,
+          email: "",
+          password: "",
+        };
+      });
+    }
+    if (signUpValues) {
+      setSignUpValues((prev) => {
+        return {
+          ...prev,
+          name: "",
+          email: "",
+          password: "",
+        };
+      });
+    }
     setToggleValue(!toggleValue);
-    setLoginValues((prev) => {
-      return {
-        ...prev,
-        email: signUpValues.email,
-        password: signUpValues.password,
-      };
-    });
-  };
-
-  const [isFocusedFirst, setIsFocusedFirst] = useState(false);
-  const [isFocusedSecond, setIsFocusedSecond] = useState(false);
-  const [isFocusedThird, setIsFocusedThird] = useState(false);
-
-  const handleFocus = (value: number) => {
-    switch (value) {
-      case 1:
-        setIsFocusedFirst(true);
-        break;
-      case 2:
-        setIsFocusedSecond(true);
-        break;
-      case 3:
-        setIsFocusedThird(true);
-        break;
-    }
-  };
-
-  const handleBlur = (event: any, val: number) => {
-    if (!event.target.value && val === 1) {
-      setIsFocusedFirst(false);
-    }
-    if (!event.target.value && val === 2) {
-      setIsFocusedSecond(false);
-    }
-    if (!event.target.value && val === 3) {
-      setIsFocusedThird(false);
-    }
-  };
+  }, [toggleValue]);
 
   const handleSubmit = async (e: any, value: string) => {
     e.preventDefault();
     let res;
+
     switch (value) {
       case "sign-up":
-        res = await signUp(signUpValues);
-        if (res.status === 200) {
-          setIsFocusedSecond(false);
-          setIsFocusedThird(false);
-          setToggleValue(!toggleValue);
+        if (
+          emailValidation(signUpValues.email) &&
+          passwordValidation(signUpValues.password) &&
+          nameValidation(signUpValues.name)
+        ) {
+          res = await signUp(signUpValues);
+          if (res.status === 201) {
+            setToggleValue(!toggleValue);
+          } else {
+            setError(res);
+          }
         } else {
-          setError(res);
+          //TODO : 모달
+          alert("모든 항목들을 채워주세요.");
         }
         break;
       case "login":
-        res = await logIn(loginValues);
-        if (res.status === 200) {
-          auth.login(res.data.userId, res.data.token);
-          history.push("/memory");
+        if (
+          emailValidation(loginValues.email) &&
+          passwordValidation(loginValues.password)
+        ) {
+          res = await logIn(loginValues);
+          if (res.status === 200) {
+            auth.login(res.data.userId, res.data.token);
+            history.push("/memory");
+          } else {
+            setError(res);
+          }
         } else {
-          setError(res);
+          //TODO : 모달
+          alert("모든 항목들을 채워주세요.");
         }
         break;
     }
@@ -109,111 +105,185 @@ const Auth = () => {
         <div className="auth-container">
           {!toggleValue ? (
             <form onSubmit={(e) => handleSubmit(e, "sign-up")}>
-              <div
-                className={`input-container ${isFocusedFirst ? "focused" : ""}`}
-              >
-                <label className="input-label">이메일</label>
+              <div className="input-container">
                 <input
+                  ref={emailInputEl}
                   id="email"
                   type="email"
                   className="auth-input"
+                  placeholder="이메일"
                   value={signUpValues.email}
-                  onFocus={() => handleFocus(1)}
-                  onBlur={(e) => handleBlur(e, 1)}
                   onChange={(e) => {
+                    emailValidation(signUpValues.email);
                     setSignUpValues({
                       ...signUpValues,
                       email: e.target.value,
                     });
                   }}
                 />
+                <span className="input-container-error">
+                  {!emailValidation(signUpValues.email) &&
+                  signUpValues.email !== "" ? (
+                    <>
+                      <p>이메일 형식을 지켜주세요</p>
+                      {emailInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {emailInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
               </div>
-              <div
-                className={`input-container ${
-                  isFocusedSecond ? "focused" : ""
-                }`}
-              >
-                <label className="input-label">비밀번호</label>
+              <div className="input-container">
                 <input
+                  ref={passwordInputEl}
                   id="password"
                   type="password"
                   className="auth-input"
+                  placeholder="비밀번호"
                   value={signUpValues.password}
-                  onFocus={() => handleFocus(2)}
-                  onBlur={(e) => handleBlur(e, 2)}
                   onChange={(e) => {
+                    passwordValidation(signUpValues.password);
                     setSignUpValues({
                       ...signUpValues,
                       password: e.target.value,
                     });
                   }}
                 />
+                <span className="input-container-error">
+                  {!passwordValidation(signUpValues.password) &&
+                  signUpValues.password !== "" ? (
+                    <>
+                      <p>
+                        비밀번호는 숫자,문자,특수문자 포함 형태의 8~15자리여야
+                        합니다.
+                      </p>
+                      {passwordInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {passwordInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
               </div>
-              <div
-                className={`input-container ${isFocusedThird ? "focused" : ""}`}
-              >
-                <label className="input-label">이름</label>
+              <div className="input-container">
                 <input
+                  ref={nameInputEl}
                   id="name"
                   type="text"
                   className="auth-input"
                   value={signUpValues.name}
-                  onFocus={() => handleFocus(3)}
-                  onBlur={(e) => handleBlur(e, 3)}
+                  placeholder="이름"
                   onChange={(e) => {
+                    nameValidation(signUpValues.name);
                     setSignUpValues({
                       ...signUpValues,
                       name: e.target.value,
                     });
                   }}
                 />
-                <p className="input-container-error">{error ? error : ""}</p>
+                <span className="input-container-error">
+                  {/* {nameValidation(signUpValues.name) ? (
+                    <>
+                      <p>이름을 작성해주세요.</p>
+                      {nameInputEl.current?.classList.add("auth-input-outline")}
+                    </>
+                  ) : (
+                    <>
+                      {nameInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )} */}
+                </span>
               </div>
+              <p className="input-container-error">{error ? error : ""}</p>
               <button className="btn-registration">회원가입</button>
             </form>
           ) : (
             <form onSubmit={(e) => handleSubmit(e, "login")}>
-              <div
-                className={`input-container ${isFocusedFirst ? "focused" : ""}`}
-              >
-                <label className="input-label">이메일</label>
+              <div className="input-container">
                 <input
+                  ref={emailInputEl}
                   id="email"
                   type="email"
                   className="auth-input"
+                  placeholder="이메일"
                   value={loginValues.email}
-                  onFocus={() => handleFocus(1)}
-                  onBlur={(e) => handleBlur(e, 1)}
                   onChange={(e) => {
+                    emailValidation(loginValues.email);
                     setLoginValues({
                       ...loginValues,
                       email: e.target.value,
                     });
                   }}
                 />
+                <span className="input-container-error">
+                  {!emailValidation(loginValues.email) &&
+                  loginValues.email !== "" ? (
+                    <>
+                      <p>이메일 형식을 지켜주세요</p>
+                      {emailInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {emailInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
               </div>
-              <div
-                className={`input-container ${
-                  isFocusedSecond ? "focused" : ""
-                }`}
-              >
-                <label className="input-label">비밀번호</label>
+              <div className="input-container">
                 <input
+                  ref={passwordInputEl}
                   id="password"
                   type="password"
                   className="auth-input"
+                  placeholder="비밀번호"
                   value={loginValues.password}
-                  onFocus={() => handleFocus(2)}
-                  onBlur={(e) => handleBlur(e, 2)}
                   onChange={(e) => {
+                    passwordValidation(loginValues.password);
                     setLoginValues({
                       ...loginValues,
                       password: e.target.value,
                     });
                   }}
                 />
-                <p className="input-container-error">{error ? error : ""}</p>
+                <span className="input-container-error">
+                  {!passwordValidation(loginValues.password) &&
+                  loginValues.password !== "" ? (
+                    <>
+                      <p>
+                        비밀번호는 숫자,문자,특수문자 포함 형태의 8~15자리여야
+                        합니다.
+                      </p>
+                      {passwordInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {passwordInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
               </div>
+              <p className="input-container-error">{error ? error : ""}</p>
               <button className="btn-registration">로그인</button>
             </form>
           )}
