@@ -67,7 +67,9 @@ const Content = () => {
                   pathname: `/memory/shuffled`,
                   state: { topics: topics },
                 }}
-                className="btn content-main-btn-container-shuffle"
+                className={`btn content-main-btn-container-shuffle ${
+                  !topics.length && "disabled-link"
+                }`}
               >
                 토픽 셔플
                 <ShuffleIcon />

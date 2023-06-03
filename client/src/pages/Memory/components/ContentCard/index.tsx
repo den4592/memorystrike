@@ -147,7 +147,10 @@ const ContentCard = ({
         >
           <DeleteContent />
         </div>
-        <div className="content-card-options-edit" onClick={handleEdit}>
+        <div
+          className="content-card-options-edit"
+          onClick={() => setEnableEdit(!enableEdit)}
+        >
           <EditContent />
         </div>
         <Link
