@@ -28,35 +28,47 @@ const ConfirmModal = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [toggleRef]);
 
+  // 모달 오버레이에서 스크롤 방지
+  useEffect(() => {
+    document.body.style.cssText = `
+      position: fixed; 
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;`;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+    };
+  }, []);
+
   return (
-    <>
-      <ConfirmModalPortal>
-        {showModal && (
-          <div className="confirm-modal">
-            <div className="confirm-modal-mask " ref={toggleRef}></div>
-            <div className="confirm-modal-body">
-              <p className="confirm-modal-body-message">
-                정말로 삭제하시겠습니까?
-              </p>
-              <div className="confirm-modal-body-confirm-btns">
-                <button
-                  className="confirm-modal-body-confirm-btns-cancel confirm-modal-body-confirm-btns-btn"
-                  onClick={() => setShowModal(!showModal)}
-                >
-                  취소
-                </button>
-                <button
-                  className="confirm-modal-body-confirm-btns-delete confirm-modal-body-confirm-btns-btn"
-                  onClick={() => handleDelete(id)}
-                >
-                  삭제
-                </button>
-              </div>
+    <ConfirmModalPortal>
+      {showModal && (
+        <div className="confirm-modal">
+          <div className="confirm-modal-mask " ref={toggleRef}></div>
+          <div className="confirm-modal-body">
+            <p className="confirm-modal-body-message">
+              정말로 삭제하시겠습니까?
+            </p>
+            <div className="confirm-modal-body-confirm-btns">
+              <button
+                className="confirm-modal-body-confirm-btns-cancel confirm-modal-body-confirm-btns-btn"
+                onClick={() => setShowModal(!showModal)}
+              >
+                취소
+              </button>
+              <button
+                className="confirm-modal-body-confirm-btns-delete confirm-modal-body-confirm-btns-btn"
+                onClick={() => handleDelete(id)}
+              >
+                삭제
+              </button>
             </div>
           </div>
-        )}
-      </ConfirmModalPortal>
-    </>
+        </div>
+      )}
+    </ConfirmModalPortal>
   );
 };
 
