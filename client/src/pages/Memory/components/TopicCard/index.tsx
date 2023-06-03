@@ -1,17 +1,18 @@
-import { useState, memo, useContext } from "react";
+import { useState, memo, useContext, useCallback } from "react";
 import "./index.scss";
 import RemoveIcon from "../../../../assets/svgs/remove.svg";
 import EditIcon from "../../../../assets/svgs/edit.svg";
-import axios from "axios";
 import { editTopic } from "../../../../api/topic/editTopic";
 import { AuthContext } from "../../../../shared/context/auth.context";
 import { deleteTopic } from "../../../../api/topic/deleteTopic";
+import ConfirmModal from "../../../../shared/components/ConfirmModal";
 interface TopicCardProps {
   id: string;
   topic: string;
   description: string;
   updateTopics: boolean;
   setUpdateTopics: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoader: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TopicCard = ({
@@ -20,6 +21,7 @@ const TopicCard = ({
   description,
   updateTopics,
   setUpdateTopics,
+  setLoader,
 }: TopicCardProps) => {
   const auth = useContext(AuthContext);
   const [enableEdit, setEnableEdit] = useState<boolean>(false);
@@ -27,13 +29,14 @@ const TopicCard = ({
   const [descriptionText, setDescriptionText] = useState<string>(description);
   const [prevText, setPrevText] = useState<string>("");
   const [prevDesc, setPrevDesc] = useState<string>("");
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
-  const handleDelete = async (topicId: string) => {
+  const handleDelete = useCallback(async (topicId: string) => {
     const deleteTopicResponse = await deleteTopic(topicId, auth.token);
     if (deleteTopicResponse?.status === 200) {
       setUpdateTopics(!updateTopics);
     }
-  };
+  }, []);
 
   const handleEdit = async () => {
     setPrevText(topicText);
@@ -120,11 +123,17 @@ const TopicCard = ({
         </div>
         <div
           className="topic-card-sidebar-close"
-          onClick={() => handleDelete(id)}
+          onClick={() => setShowConfirmModal(!showConfirmModal)}
         >
           <RemoveIcon />
         </div>
       </div>
+      <ConfirmModal
+        showModal={showConfirmModal}
+        setShowModal={setShowConfirmModal}
+        handleDelete={handleDelete}
+        id={id}
+      />
     </div>
   );
 };

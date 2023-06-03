@@ -84,6 +84,7 @@ const Content = () => {
                 description={topic.description}
                 updateTopics={updateTopics}
                 setUpdateTopics={setUpdateTopics}
+                setLoader={setLoader}
               />
             );
           })}

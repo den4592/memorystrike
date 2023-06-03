@@ -15,7 +15,6 @@ const Modal = ({ showModal, setShowModal, message }: ModalProps) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (toggleRef.current?.contains(event.target as Node)) {
-        console.log("1");
         setShowModal(!showModal);
       }
     };
@@ -27,8 +26,8 @@ const Modal = ({ showModal, setShowModal, message }: ModalProps) => {
     <>
       <ModalPortal>
         {showModal && (
-          <div className="modal" ref={toggleRef}>
-            <div className="modal-mask"></div>
+          <div className="modal">
+            <div className="modal-mask" ref={toggleRef}></div>
             <div className="modal-body">
               <div className="modal-body-header">
                 <div

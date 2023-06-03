@@ -17,6 +17,7 @@ interface ContentCardProps {
   time: string;
   updateContents: boolean;
   setUpdateContents: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoader: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ContentCard = ({
@@ -26,6 +27,7 @@ const ContentCard = ({
   time,
   updateContents,
   setUpdateContents,
+  setLoader,
 }: ContentCardProps) => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
   const auth = useContext(AuthContext);
@@ -40,33 +42,54 @@ const ContentCard = ({
 
   const handleDelete = useCallback(
     async (contentId: string) => {
-      const deleteContentResponse = await deleteContent(contentId, auth.token);
-      if (deleteContentResponse?.status === 200) {
-        setUpdateContents(!updateContents);
-      }
+      try {
+        setLoader(true);
+        const deleteContentResponse = await deleteContent(
+          contentId,
+          auth.token
+        );
+        if (deleteContentResponse?.status === 200) {
+          setUpdateContents(!updateContents);
+        }
+      } catch (err) {}
+      setLoader(false);
     },
     [auth.token, setUpdateContents, updateContents]
   );
 
-  const handleEdit = async () => {
+  const handleEdit = useCallback(async () => {
     setPrevText(contentText);
     setPrevDesc(descriptionText);
+    let params;
     if (
       enableEdit === true &&
       (prevText !== contentText || prevDesc !== descriptionText)
     ) {
-      let params = {
+      params = {
         content: contentText,
         description: descriptionText,
         creator: userData.userId,
       };
+    }
+    try {
       const editContentResponse = await editContent(params, id, auth.token);
       if (editContentResponse?.status === 200) {
         setUpdateContents(!updateContents);
       }
-    }
-    setEnableEdit(!enableEdit);
-  };
+      setEnableEdit(!enableEdit);
+    } catch (error) {}
+  }, [
+    auth.token,
+    contentText,
+    descriptionText,
+    enableEdit,
+    id,
+    prevDesc,
+    prevText,
+    setUpdateContents,
+    updateContents,
+    userData.userId,
+  ]);
 
   return (
     <div className="content-card">
@@ -143,7 +166,7 @@ const ContentCard = ({
           showModal={showConfirmModal}
           setShowModal={setShowConfirmModal}
           handleDelete={handleDelete}
-          contentId={id}
+          id={id}
         />
       )}
     </div>

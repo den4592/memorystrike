@@ -66,6 +66,7 @@ const Memory = () => {
                   time={content.updatedAt}
                   updateContents={updateContents}
                   setUpdateContents={setUpdateContents}
+                  setLoader={setLoader}
                 />
               );
             })}

@@ -2,7 +2,7 @@ export interface Topic {
   contentId?: string;
   createdAt?: string;
   description: string;
-  id?: string;
+  id: string;
   topic: string;
   updatedAt?: string;
   timestamp: string;
