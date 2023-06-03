@@ -5,13 +5,13 @@ import { stateType } from "../Content";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ShuffledTopicCard from "../ShuffledTopicCard";
 import Timer from "../../../../shared/components/Timer";
-import axios from "axios";
 import CorrecIcon from "@/assets/svgs/check.svg";
 import ExclamationIcon from "@/assets/svgs/exclamation.svg";
 import IncorrectIcon from "@/assets/svgs/xmark.svg";
 import ShuffledResult from "../ShuffledResult";
 import { createStatistic } from "../../../../api/statistic/createStatistic";
 import { AuthContext } from "../../../../shared/context/auth.context";
+import Modal from "../../../../shared/components/Modal";
 
 export interface CardStatusCount {
   correct: number;
@@ -40,6 +40,7 @@ const ShuffledTopics = () => {
   const [cardStatuses, setCardStatuses] = useState<CardStatuses[]>([]);
   const [openedCardsCount, setOpenedCardsCount] = useState<number>(0);
   const [shuffledDuration, setShuffledDuration] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -125,7 +126,7 @@ const ShuffledTopics = () => {
         cardStatuses[i].uncertation === false &&
         cardStatuses[i].incorrect === false
       ) {
-        alert("모든 항목에 대해 상태를 부여해주세요.");
+        setShowModal(!showModal);
         return;
       }
     }
@@ -228,6 +229,13 @@ const ShuffledTopics = () => {
             </button>
           </div>
         </>
+      )}
+      {showModal && (
+        <Modal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          message="모든 항목에 대한 상태를 부여해 주세요."
+        />
       )}
     </div>
   );
