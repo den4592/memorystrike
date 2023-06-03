@@ -176,7 +176,7 @@ const getStatisticDatesByUserId = async (req, res, next) => {
     })
   ),
     res.json({
-      dates: dates.map((date) => date),
+      dates: dates.map((date) => date.toObject({ getters: true })),
     });
 };
 
