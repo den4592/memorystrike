@@ -16,6 +16,7 @@ export interface FilteredStatisticDates {
   statuses: Statuses | any | string;
   topic: string;
   timestamp: string;
+  id: string;
 }
 
 export interface Chart {

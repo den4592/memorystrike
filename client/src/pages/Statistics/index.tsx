@@ -1,14 +1,8 @@
 import { useCallback, useEffect, useMemo, useState, memo } from "react";
-import "./index.scss";
 import StatisticsChart from "./components/StatisticsChart";
 import StatisticsTable from "./components/StatisticsTable";
 import { getStatistics } from "../../api/statistic/getStatistics";
-import {
-  Chart,
-  FilteredStatisticDates,
-  StatisticDates,
-  Statuses,
-} from "../../types/statistics";
+import { FilteredStatisticDates, StatisticDates } from "../../types/statistics";
 import { Topic } from "../../types/topics";
 import { CalendarDatum } from "@nivo/calendar";
 
@@ -36,6 +30,7 @@ const Statistics = () => {
       setLoader(true);
       const getStatisticsResponse = await getStatistics(userData?.userId);
       setStatisticDates(getStatisticsResponse?.data.dates);
+
       setDateDay(new Date().toISOString().split("T")[0]);
       setShuffledDay([]);
       setLoader(false);
@@ -59,11 +54,12 @@ const Statistics = () => {
     setChartData(chartArr);
   };
 
-  const handleStatisticDates = () => {
+  const handleStatisticDates = useCallback(() => {
     const arr: Topic[] = [];
     let values = 0;
     for (let i = 0; i < statisticDates?.length; i++) {
       statisticDates[i].shuffled.forEach((item: FilteredStatisticDates) => {
+        console.log(item);
         if (item.statuses.correct === true) {
           item.statuses = "정답";
         }
@@ -83,7 +79,7 @@ const Statistics = () => {
       values += item.shuffled.length;
     });
     setDateValue(values);
-  };
+  }, [statisticDates]);
 
   useEffect(() => {
     handleChartData();
