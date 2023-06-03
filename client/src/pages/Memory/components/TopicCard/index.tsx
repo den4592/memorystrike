@@ -45,24 +45,37 @@ const TopicCard = ({
     [auth.token, setLoader, setUpdateTopics, updateTopics]
   );
 
-  const handleEdit = async () => {
-    setPrevText(topicText);
-    setPrevDesc(descriptionText);
-    if (
-      enableEdit === true &&
-      (prevText !== topicText || prevDesc !== descriptionText)
-    ) {
-      let params = {
-        topic: topicText,
-        description: descriptionText,
-      };
-      const editTopicResponse = await editTopic(params, id, auth.token);
-      if (editTopicResponse?.status === 200) {
-        setUpdateTopics(!updateTopics);
+  const handleEdit = useCallback(async () => {
+    try {
+      setPrevText(topicText);
+      setPrevDesc(descriptionText);
+      if (
+        enableEdit === true &&
+        (prevText !== topicText || prevDesc !== descriptionText)
+      ) {
+        let params = {
+          topic: topicText,
+          description: descriptionText,
+        };
+        const editTopicResponse = await editTopic(params, id, auth.token);
+        if (editTopicResponse?.status === 200) {
+          setUpdateTopics(!updateTopics);
+        }
       }
-    }
+    } catch (err) {}
+
     setEnableEdit(!enableEdit);
-  };
+  }, [
+    auth.token,
+    descriptionText,
+    enableEdit,
+    id,
+    prevDesc,
+    prevText,
+    setUpdateTopics,
+    topicText,
+    updateTopics,
+  ]);
 
   return (
     <div key={id} className="topic-card">

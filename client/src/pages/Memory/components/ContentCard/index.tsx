@@ -58,26 +58,27 @@ const ContentCard = ({
   );
 
   const handleEdit = useCallback(async () => {
-    setPrevText(contentText);
-    setPrevDesc(descriptionText);
-    let params;
-    if (
-      enableEdit === true &&
-      (prevText !== contentText || prevDesc !== descriptionText)
-    ) {
-      params = {
-        content: contentText,
-        description: descriptionText,
-        creator: userData.userId,
-      };
-    }
     try {
-      const editContentResponse = await editContent(params, id, auth.token);
-      if (editContentResponse?.status === 200) {
-        setUpdateContents(!updateContents);
+      setPrevText(contentText);
+      setPrevDesc(descriptionText);
+      if (
+        enableEdit === true &&
+        (prevText !== contentText || prevDesc !== descriptionText)
+      ) {
+        let params = {
+          content: contentText,
+          description: descriptionText,
+          creator: userData.userId,
+        };
+
+        const editContentResponse = await editContent(params, id, auth.token);
+        if (editContentResponse?.status === 200) {
+          setUpdateContents(!updateContents);
+        }
       }
-      setEnableEdit(!enableEdit);
-    } catch (error) {}
+    } catch (err) {}
+
+    setEnableEdit(!enableEdit);
   }, [
     auth.token,
     contentText,
@@ -147,10 +148,7 @@ const ContentCard = ({
         >
           <DeleteContent />
         </div>
-        <div
-          className="content-card-options-edit"
-          onClick={() => setEnableEdit(!enableEdit)}
-        >
+        <div className="content-card-options-edit" onClick={handleEdit}>
           <EditContent />
         </div>
         <Link
