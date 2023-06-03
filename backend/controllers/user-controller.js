@@ -1,4 +1,3 @@
-const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
@@ -19,14 +18,6 @@ const getUsers = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("잘못된 입력이 전달되었습니다. 데이터를 확인해 주세요", 422)
-    );
-  }
-
   const { name, email, password } = req.body;
 
   let existingUser;
@@ -106,7 +97,7 @@ const login = async (req, res, next) => {
     existingUser = await User.findOne({ email });
   } catch (err) {
     const error = new HttpError(
-      "로그인하지 못했습니다. 나중에 다시 시도해 주세요.",
+      "사용자를 찾을 수 없습니다. 회원가입을 진행해 주세요.",
       500
     );
     return next(error);
@@ -114,7 +105,7 @@ const login = async (req, res, next) => {
 
   if (!existingUser) {
     const error = new HttpError(
-      "잘못된 자격 증명입니다. 로그인할 수 없습니다.",
+      "사용자를 찾을 수 없습니다. 회원가입을 진행해 주세요.",
       401
     );
     return next(error);
@@ -125,7 +116,7 @@ const login = async (req, res, next) => {
     isValidPassword = await bcrypt.compare(password, existingUser.password);
   } catch (err) {
     const error = new HttpError(
-      "로그인 할 수 없습니다. 나중에 다시 시도해 주세요.",
+      "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.",
       500
     );
     return next(error);
@@ -133,7 +124,7 @@ const login = async (req, res, next) => {
 
   if (!isValidPassword) {
     const error = new HttpError(
-      "잘못된 자격 증명입니다. 로그인할 수 없습니다.",
+      "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.",
       401
     );
     return next(error);

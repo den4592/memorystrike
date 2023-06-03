@@ -15,7 +15,7 @@ router.post("/", [
   contentsController.createContent,
 ]);
 
-router.post("/:cid", contentsController.updateContentById);
+router.patch("/:cid", contentsController.updateContentById);
 
 router.delete("/:cid", contentsController.deleteContentById);
 
