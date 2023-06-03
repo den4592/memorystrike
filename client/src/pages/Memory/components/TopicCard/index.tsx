@@ -31,12 +31,19 @@ const TopicCard = ({
   const [prevDesc, setPrevDesc] = useState<string>("");
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
-  const handleDelete = useCallback(async (topicId: string) => {
-    const deleteTopicResponse = await deleteTopic(topicId, auth.token);
-    if (deleteTopicResponse?.status === 200) {
-      setUpdateTopics(!updateTopics);
-    }
-  }, []);
+  const handleDelete = useCallback(
+    async (topicId: string) => {
+      try {
+        setLoader(true);
+        const deleteTopicResponse = await deleteTopic(topicId, auth.token);
+        if (deleteTopicResponse?.status === 200) {
+          setUpdateTopics(!updateTopics);
+        }
+        setLoader(false);
+      } catch (error) {}
+    },
+    [auth.token, setLoader, setUpdateTopics, updateTopics]
+  );
 
   const handleEdit = async () => {
     setPrevText(topicText);
@@ -128,12 +135,14 @@ const TopicCard = ({
           <RemoveIcon />
         </div>
       </div>
-      <ConfirmModal
-        showModal={showConfirmModal}
-        setShowModal={setShowConfirmModal}
-        handleDelete={handleDelete}
-        id={id}
-      />
+      {showConfirmModal && (
+        <ConfirmModal
+          showModal={showConfirmModal}
+          setShowModal={setShowConfirmModal}
+          handleDelete={handleDelete}
+          id={id}
+        />
+      )}
     </div>
   );
 };

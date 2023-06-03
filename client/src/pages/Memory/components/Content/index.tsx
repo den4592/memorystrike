@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import "./index.scss";
 import { Link, useLocation } from "react-router-dom";
 import TopicForm from "../TopicForm";
@@ -94,4 +94,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default memo(Content);

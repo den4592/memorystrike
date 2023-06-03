@@ -51,10 +51,10 @@ const ContentCard = ({
         if (deleteContentResponse?.status === 200) {
           setUpdateContents(!updateContents);
         }
+        setLoader(false);
       } catch (err) {}
-      setLoader(false);
     },
-    [auth.token, setUpdateContents, updateContents]
+    [auth.token, setLoader, setUpdateContents, updateContents]
   );
 
   const handleEdit = useCallback(async () => {
