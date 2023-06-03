@@ -1,7 +1,6 @@
 @import "../../../../shared/common.scss";
 .shuffled-result {
   height: 90vh;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,10 +57,10 @@ $particles: 100;
 $width: 1000;
 $height: 1000;
 
-// Array of colours to randomly populate the particle colours.
+// Array of colors to randomly populate the particle colors.
 $colors: #2997ff, #3bceac, #f0cd27, #ff9c8f;
 
-// Get the random colour
+// Get the random color
 @function random-color() {
   @return nth($colors, random(4));
 }
@@ -85,10 +84,8 @@ $box-shadow: ();
     content: "";
     width: 4px;
     height: 7px;
-    animation: 1.5s explode ease-out 3 backwards,
-      1.5s gravity ease-in 3 backwards;
-    // animation-delay: 0.5;
-    // animation-duration: 1.25s;
+    animation: 1.5s explode ease-out 1 backwards,
+      1.5s gravity ease-in 1 backwards;
   }
 }
 
