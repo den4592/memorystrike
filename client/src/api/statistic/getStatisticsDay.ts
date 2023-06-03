@@ -6,6 +6,10 @@ export const getStatisticsDay = async (userId: any, day: any) => {
     response = await httpClient.get(
       `http://localhost:8080/api/statistics/${userId}/${day}`
     );
-  } catch (error) {}
+  } catch (err) {
+    console.log(err.response);
+    const message = err.response.data.message;
+    return message;
+  }
   return response;
 };

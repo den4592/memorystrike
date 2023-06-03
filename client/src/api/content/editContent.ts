@@ -10,6 +10,10 @@ export const editContent = async (params: any, id: string, token: any) => {
         headers: { Authorization: "Bearer" + token },
       }
     );
-  } catch (error) {}
+  } catch (err) {
+    console.log(err.response);
+    const message = err.response.data.message;
+    return message;
+  }
   return response;
 };

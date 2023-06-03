@@ -6,6 +6,10 @@ export const getTopics = async (contentId: any) => {
     response = await httpClient.get(
       `http://localhost:8080/api/topics/${contentId}`
     );
-  } catch (error) {}
+  } catch (err) {
+    console.log(err.response);
+    const message = err.response.data.message;
+    return message;
+  }
   return response;
 };

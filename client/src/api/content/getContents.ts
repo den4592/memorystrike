@@ -6,6 +6,10 @@ export const getContents = async (userId: any) => {
     response = await httpClient.get(
       `http://localhost:8080/api/contents/user/${userId}`
     );
-  } catch (error) {}
+  } catch (err) {
+    console.log(err.response);
+    const message = err.response.data.message;
+    return message;
+  }
   return response;
 };
