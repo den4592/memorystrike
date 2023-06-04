@@ -117,46 +117,51 @@ const ShuffledTopics = () => {
   }
 
   const handleSubmit = useCallback(async () => {
-    const arr = [];
+    try {
+      const arr = [];
 
-    //상태에 대한 부여가 이루어 지지 않았을 경우 return
-    for (let i = 0; i < cardStatuses.length; i++) {
-      if (
-        cardStatuses[i].correct === false &&
-        cardStatuses[i].uncertation === false &&
-        cardStatuses[i].incorrect === false
-      ) {
-        setShowModal(!showModal);
-        return;
+      //상태에 대한 부여가 이루어 지지 않았을 경우 return
+      for (let i = 0; i < cardStatuses.length; i++) {
+        if (
+          cardStatuses[i].correct === false &&
+          cardStatuses[i].uncertation === false &&
+          cardStatuses[i].incorrect === false
+        ) {
+          setShowModal(!showModal);
+          return;
+        }
       }
-    }
 
-    //토픽 카드와 해당 카드의 상태를 객체로 합친다
-    for (let i = 0; i < state.topics?.length; i++) {
-      let newArr = [...state.topics];
-      newArr[i].statuses = cardStatuses[i];
-      newArr[i].timestamp = getCurrentDate();
-      arr.push(newArr[i]);
-    }
+      //토픽 카드와 해당 카드의 상태를 객체로 합친다
+      for (let i = 0; i < state.topics?.length; i++) {
+        let newArr = [...state.topics];
+        newArr[i].statuses = cardStatuses[i];
+        newArr[i].timestamp = getCurrentDate();
+        arr.push(newArr[i]);
+      }
 
-    let time = shuffledDuration.split(":");
-    let seconds = +time[0] * 60 * 60 + +time[1] * 60 + +time[2];
+      let time = shuffledDuration.split(":");
+      let seconds = +time[0] * 60 * 60 + +time[1] * 60 + +time[2];
 
-    let params = {
-      creator: userData.userId,
-      shuffled: arr,
-      duration: seconds,
-      date: getCurrentDate().split("T")[0],
-    };
+      let params = {
+        creator: userData.userId,
+        shuffled: arr,
+        duration: seconds,
+        date: getCurrentDate().split("T")[0],
+      };
 
-    const createStatisticResponse = await createStatistic(params, auth.token);
-    if (createStatisticResponse?.status === 200) {
-      setChangeView(!changeView);
+      const res = await createStatistic(params, auth.token);
+      if (res?.status === 200) {
+        setChangeView(!changeView);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }, [
     auth.token,
     cardStatuses,
     changeView,
+    showModal,
     shuffledDuration,
     state.topics,
     userData.userId,

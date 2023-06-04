@@ -15,24 +15,25 @@ const CreateContent = ({
   const auth = useContext(AuthContext);
   const [contentText, setContentText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
-  const [error, setError] = useState<string>("");
 
   const userData = JSON.parse(localStorage.getItem("userData")!);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let params = {
-      content: contentText,
-      description: descriptionText,
-      creator: userData.userId,
-    };
-    const res = await createContent(params, auth.token);
-    if (res?.status === 200) {
-      setContentText("");
-      setDescriptionText("");
-      setUpdateContents(!updateContents);
-    } else {
-      setError(res);
+    try {
+      let params = {
+        content: contentText,
+        description: descriptionText,
+        creator: userData.userId,
+      };
+      const res = await createContent(params, auth.token);
+      if (res?.status === 200) {
+        setContentText("");
+        setDescriptionText("");
+        setUpdateContents(!updateContents);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 

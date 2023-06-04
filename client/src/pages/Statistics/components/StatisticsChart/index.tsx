@@ -44,15 +44,14 @@ const StatisticsChart = ({
   const fetchStatisticsDay = useCallback(async () => {
     try {
       setLoader(true);
-      const getStatisticsDayResponse = await getStatisticsDay(
-        userData.userId,
-        dayDateCount.day
-      );
-      if (getStatisticsDayResponse?.status === 200) {
-        setShuffledDay(getStatisticsDayResponse?.data);
+      const res = await getStatisticsDay(userData.userId, dayDateCount.day);
+      if (res?.status === 200) {
+        setShuffledDay(res?.data);
       }
       setLoader(false);
-    } catch (error) {}
+    } catch (err) {
+      console.log(err);
+    }
   }, [dayDateCount.day, setLoader, userData.userId]);
 
   useEffect(() => {

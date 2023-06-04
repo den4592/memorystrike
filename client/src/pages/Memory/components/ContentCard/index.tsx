@@ -44,15 +44,14 @@ const ContentCard = ({
     async (contentId: string) => {
       try {
         setLoader(true);
-        const deleteContentResponse = await deleteContent(
-          contentId,
-          auth.token
-        );
-        if (deleteContentResponse?.status === 200) {
+        const res = await deleteContent(contentId, auth.token);
+        if (res?.status === 200) {
           setUpdateContents(!updateContents);
         }
         setLoader(false);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     },
     [auth.token, setLoader, setUpdateContents, updateContents]
   );
@@ -71,12 +70,14 @@ const ContentCard = ({
           creator: userData.userId,
         };
 
-        const editContentResponse = await editContent(params, id, auth.token);
-        if (editContentResponse?.status === 200) {
+        const res = await editContent(params, id, auth.token);
+        if (res?.status === 200) {
           setUpdateContents(!updateContents);
         }
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
 
     setEnableEdit(!enableEdit);
   }, [

@@ -21,12 +21,14 @@ const Memory = () => {
   const fetchContents = async () => {
     try {
       setLoader(true);
-      const getContentsResponse = await getContents(userData.userId);
-      if (getContentsResponse?.status === 200) {
-        setContents(getContentsResponse.data.contents);
+      const res = await getContents(userData.userId);
+      if (res?.status === 200) {
+        setContents(res.data.contents);
       }
       setLoader(false);
-    } catch (error) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

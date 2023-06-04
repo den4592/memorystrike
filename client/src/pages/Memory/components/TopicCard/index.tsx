@@ -40,7 +40,9 @@ const TopicCard = ({
           setUpdateTopics(!updateTopics);
         }
         setLoader(false);
-      } catch (error) {}
+      } catch (err) {
+        console.log(err);
+      }
     },
     [auth.token, setLoader, setUpdateTopics, updateTopics]
   );
@@ -57,12 +59,14 @@ const TopicCard = ({
           topic: topicText,
           description: descriptionText,
         };
-        const editTopicResponse = await editTopic(params, id, auth.token);
-        if (editTopicResponse?.status === 200) {
+        const res = await editTopic(params, id, auth.token);
+        if (res?.status === 200) {
           setUpdateTopics(!updateTopics);
         }
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
 
     setEnableEdit(!enableEdit);
   }, [

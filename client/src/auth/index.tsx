@@ -8,7 +8,7 @@ import {
   emailValidation,
   nameValidation,
   passwordValidation,
-} from "../api/utils/validation";
+} from "../utils/validation";
 import Modal from "../shared/components/Modal";
 
 const Auth = () => {

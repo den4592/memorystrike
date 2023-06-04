@@ -21,22 +21,26 @@ const TopicForm = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (topicText === "" || descriptionText === "") {
-      alert("필수 항목들을 입력해 주세요.");
-      return;
-    }
+    try {
+      if (topicText === "" || descriptionText === "") {
+        alert("필수 항목들을 입력해 주세요.");
+        return;
+      }
 
-    let params = {
-      topic: topicText,
-      description: descriptionText,
-      contentId: contentId,
-    };
+      let params = {
+        topic: topicText,
+        description: descriptionText,
+        contentId: contentId,
+      };
 
-    const createTopicResponse = await createTopic(params, auth.token);
-    if (createTopicResponse?.status === 200) {
-      setTopicText("");
-      setDescriptionText("");
-      setUpdateTopics(!updateTopics);
+      const res = await createTopic(params, auth.token);
+      if (res?.status === 200) {
+        setTopicText("");
+        setDescriptionText("");
+        setUpdateTopics(!updateTopics);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 

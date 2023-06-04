@@ -28,13 +28,15 @@ const Statistics = () => {
   const fetchStatistics = useCallback(async () => {
     try {
       setLoader(true);
-      const getStatisticsResponse = await getStatistics(userData?.userId);
-      setStatisticDates(getStatisticsResponse?.data.dates);
+      const res = await getStatistics(userData?.userId);
+      setStatisticDates(res?.data.dates);
 
       setDateDay(new Date().toISOString().split("T")[0]);
       setShuffledDay([]);
       setLoader(false);
-    } catch (error) {}
+    } catch (err) {
+      console.log(err);
+    }
   }, [userData?.userId]);
 
   useEffect(() => {
@@ -59,7 +61,6 @@ const Statistics = () => {
     let values = 0;
     for (let i = 0; i < statisticDates?.length; i++) {
       statisticDates[i].shuffled.forEach((item: FilteredStatisticDates) => {
-        console.log(item);
         if (item.statuses.correct === true) {
           item.statuses = "정답";
         }
