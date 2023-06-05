@@ -4,7 +4,7 @@ export const getContents = async (userId: any) => {
   let response;
   try {
     response = await httpClient.get(
-      `http://localhost:8080/api/contents/user/${userId}`
+      `${import.meta.env.VITE_SERVER_URL}/contents/user/${userId}`
     );
   } catch (err) {
     console.log(err.response);

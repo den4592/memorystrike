@@ -4,7 +4,7 @@ export const editContent = async (params: any, id: string, token: any) => {
   let response;
   try {
     response = await httpClientForCredentials.patch(
-      `http://localhost:8080/api/contents/${id}`,
+      `${import.meta.env.VITE_SERVER_URL}/contents/${id}`,
       params,
       {
         headers: { Authorization: "Bearer" + token },

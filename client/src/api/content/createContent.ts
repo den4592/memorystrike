@@ -4,7 +4,7 @@ export const createContent = async (params: any, token: any) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
-      "http://localhost:8080/api/contents",
+      `${import.meta.env.VITE_SERVER_URL}/contents`,
       params,
       {
         headers: { Authorization: "Bearer" + token },
