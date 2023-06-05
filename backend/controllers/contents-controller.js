@@ -9,6 +9,7 @@ const createContent = async (req, res, next) => {
   if (!errors.isEmpty()) {
     return next(new HttpError("콘텐츠를 입력해 주세요.", 422));
   }
+
   const { content, description, creator } = req.body;
   let createdContent;
 
