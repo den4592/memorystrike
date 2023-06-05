@@ -7,15 +7,15 @@ import {
   Redirect,
 } from "react-router-dom";
 import "./index.scss";
-import { AuthContext } from "./shared/context/auth.context";
-import useAuth from "./hooks/auth-hook";
 import Auth from "./auth";
+import { AuthContext } from "./shared/context/auth.context";
 import Sidebar from "./shared/components/Sidebar";
-import Statistics from "./pages/Statistics";
 import Memory from "./pages/Memory";
+import Statistics from "./pages/Statistics";
 import Ask from "./pages/Ask";
 import Content from "./pages/Memory/components/Content";
 import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
+import useAuth from "./hooks/auth-hook";
 
 function App() {
   const { token, login, logout, userId } = useAuth();

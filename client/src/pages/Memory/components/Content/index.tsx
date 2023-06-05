@@ -18,9 +18,9 @@ const Content = () => {
   const [updateTopics, setUpdateTopics] = useState<boolean>(false);
   const { state } = useLocation<stateType>();
 
-  // const handleBack = () => {
-  //   window.history.back();
-  // };
+  const handleBack = () => {
+    window.history.back();
+  };
 
   const fetchTopics = async () => {
     try {
@@ -43,13 +43,11 @@ const Content = () => {
         <span className="loader"></span>
       ) : (
         <>
-          <Link to="/memory">
-            <div className="content-header">
-              <div className="content-header-back">
-                <BackIcon />
-              </div>
+          <div className="content-header">
+            <div className="content-header-back" onClick={handleBack}>
+              <BackIcon />
             </div>
-          </Link>
+          </div>
 
           <p className="content-title">카테고리 : {state.content}</p>
 
