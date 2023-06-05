@@ -4,7 +4,7 @@ export const getStatistics = async (userId: any) => {
   let response;
   try {
     response = await httpClient.get(
-      `http://localhost:8080/api/statistics/${userId}`
+      `${import.meta.env.VITE_SERVER_URL}/statistics/${userId}`
     );
   } catch (err) {
     console.log(err.response);

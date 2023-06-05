@@ -4,7 +4,7 @@ export const createStatistic = async (params: any, token: any) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
-      "http://localhost:8080/api/statistics",
+      `${import.meta.env.VITE_SERVER_URL}/statistics`,
       params,
       {
         headers: { Authorization: "Bearer" + token },

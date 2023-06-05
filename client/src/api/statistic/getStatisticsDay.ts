@@ -4,7 +4,7 @@ export const getStatisticsDay = async (userId: any, day: any) => {
   let response;
   try {
     response = await httpClient.get(
-      `http://localhost:8080/api/statistics/${userId}/${day}`
+      `${import.meta.env.VITE_SERVER_URL}/statistics/${userId}/${day}`
     );
   } catch (err) {
     console.log(err.response);

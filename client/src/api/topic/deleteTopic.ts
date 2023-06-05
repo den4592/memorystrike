@@ -4,7 +4,7 @@ export const deleteTopic = async (topicId: string, token: any) => {
   let response;
   try {
     response = await httpClientForCredentials.delete(
-      `http://localhost:8080/api/topics/${topicId}`,
+      `${import.meta.env.VITE_SERVER_URL}/topics/${topicId}`,
       {
         headers: { Authorization: "Bearer" + token },
       }

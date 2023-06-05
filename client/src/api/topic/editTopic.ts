@@ -4,7 +4,7 @@ export const editTopic = async (params: any, topicId: string, token: any) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
-      `http://localhost:8080/api/topics/${topicId}`,
+      `${import.meta.env.VITE_SERVER_URL}/topics/${topicId}`,
       params,
       {
         headers: { Authorization: "Bearer" + token },
