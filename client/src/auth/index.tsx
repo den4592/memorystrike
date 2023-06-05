@@ -140,6 +140,9 @@ const Auth = () => {
   return (
     <>
       <div className="auth">
+        <h1 className="auth-title">
+          Memory Strike 복습을 위한 웹 애플리케이션
+        </h1>
         {loader && <span className="loader"></span>}
 
         <div className="auth-brain">
