@@ -7,7 +7,6 @@ import {
   Redirect,
 } from "react-router-dom";
 import "./index.scss";
-
 import Auth from "./auth";
 import { AuthContext } from "./shared/context/auth.context";
 import Sidebar from "./shared/components/Sidebar";

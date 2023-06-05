@@ -1,6 +1,13 @@
 import "./index.scss";
 import { useHistory } from "react-router-dom";
-import { useContext, useEffect, useState, useRef, useCallback } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  Suspense,
+} from "react";
 import { AuthContext } from "../shared/context/auth.context";
 import { signUp } from "../api/signup";
 import { logIn } from "../api/login";
@@ -10,8 +17,37 @@ import {
   passwordValidation,
 } from "../utils/validation";
 import Modal from "../shared/components/Modal";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { useProgress } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+
+function Model(props: any) {
+  const gltf = useLoader(GLTFLoader, "/brain/memory_strike_brain.glb");
+
+  return (
+    <mesh {...props}>
+      <primitive scale={0.002} object={gltf.scene} />
+    </mesh>
+  );
+}
+
+const Loader = ({ loader, setLoader }: any) => {
+  const { active, progress, errors, item, loaded, total } = useProgress();
+
+  useEffect(() => {
+    setLoader(true);
+    if (progress === 100) {
+      setLoader(false);
+    }
+  }, [active, progress, setLoader]);
+
+  return <>{loader}</>;
+};
 
 const Auth = () => {
+  const { active, progress, errors, item, loaded, total } = useProgress();
+  const [loader, setLoader] = useState<boolean>(false);
   const auth = useContext(AuthContext);
   const history = useHistory();
   const [error, setError] = useState<string>("");
@@ -104,6 +140,26 @@ const Auth = () => {
   return (
     <>
       <div className="auth">
+        {loader && <span className="loader"></span>}
+
+        <div className="auth-brain">
+          <Canvas flat>
+            <orthographicCamera position={[0, 0, 0]} />
+            <OrbitControls
+              enableZoom={false}
+              rotateSpeed={2}
+              autoRotate={true}
+              autoRotateSpeed={5}
+            />
+            <ambientLight />
+            <spotLight position={[0, 10, 0]} angle={1} />
+            <Suspense fallback={null}>
+              <Model position={[0, -3, 2]} rotation={[-1, 0, 0]} />
+            </Suspense>
+            <Loader loader={loader} setLoader={setLoader} />
+          </Canvas>
+        </div>
+
         <div className="auth-container">
           {!toggleValue ? (
             <form onSubmit={(e) => handleSubmit(e, "sign-up")}>
