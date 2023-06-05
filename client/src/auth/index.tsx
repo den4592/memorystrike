@@ -17,13 +17,13 @@ import {
   passwordValidation,
 } from "../utils/validation";
 import Modal from "../shared/components/Modal";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useProgress } from "@react-three/drei";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 
 function Model(props: any) {
-  const gltf = useLoader(GLTFLoader, "/brain/memory_strike_brain.glb");
+  const gltf = useLoader(GLTFLoader, "dist/brain/memory_strike_brain.glb");
 
   return (
     <mesh {...props}>
@@ -46,7 +46,6 @@ const Loader = ({ loader, setLoader }: any) => {
 };
 
 const Auth = () => {
-  const { active, progress, errors, item, loaded, total } = useProgress();
   const [loader, setLoader] = useState<boolean>(false);
   const auth = useContext(AuthContext);
   const history = useHistory();
