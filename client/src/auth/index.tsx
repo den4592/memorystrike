@@ -23,7 +23,7 @@ import { useProgress } from "@react-three/drei";
 import { OrbitControls } from "@react-three/drei";
 
 function Model(props: any) {
-  const gltf = useLoader(GLTFLoader, "brain/memory_strike_brain.glb");
+  const gltf = useLoader(GLTFLoader, "memory_strike_brain.glb");
 
   return (
     <mesh {...props}>
