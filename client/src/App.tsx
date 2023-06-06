@@ -62,7 +62,7 @@ function App() {
           ) : (
             <Switch>
               <Route exact path="/login" component={() => <Auth />} />
-              {/* <Redirect to="/login" /> */}
+              <Redirect to="/login" />
             </Switch>
           )}
         </Router>
