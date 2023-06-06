@@ -22,6 +22,7 @@
     "babel-plugin-macros": "^3.1.0",
     "cors": "^2.8.5",
     "fbx2gltf": "^0.9.7-p1",
+    "gltfjsx": "^6.2.3",
     "nivo": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
