@@ -21,9 +21,10 @@ import { Canvas, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useProgress } from "@react-three/drei";
 import { OrbitControls } from "@react-three/drei";
+import meshUrl from "../assets/memory_strike_brain.glb?url";
 
 function Model(props: any) {
-  const gltf = useLoader(GLTFLoader, "../memory_strike_brain.glb");
+  const gltf = useLoader(GLTFLoader, meshUrl);
 
   return (
     <mesh {...props}>
