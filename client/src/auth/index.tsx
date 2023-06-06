@@ -21,14 +21,16 @@ import { Canvas, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useProgress } from "@react-three/drei";
 import { OrbitControls } from "@react-three/drei";
-import meshUrl from "../assets/memory_strike_brain.glb?url";
 
 function Model(props: any) {
-  const gltf = useLoader(GLTFLoader, meshUrl);
+  const gltf = useLoader(
+    GLTFLoader,
+    "https://s3-us-west-2.amazonaws.com/s.cdpn.io/39255/ladybug.gltf"
+  );
 
   return (
     <mesh {...props}>
-      <primitive scale={0.002} object={gltf.scene} />
+      <primitive object={gltf.scene} />
     </mesh>
   );
 }
