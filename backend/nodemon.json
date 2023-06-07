@@ -1,8 +1,0 @@
-{
-  "env": {
-    "DB_USER": "den4592",
-    "DB_PASSWORD": "4592",
-    "DB_NAME": "memorystrike",
-    "JWT_KEY": "supersecret_dont_share"
-  }
-}
