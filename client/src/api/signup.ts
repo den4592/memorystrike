@@ -4,7 +4,7 @@ export const signUp = async (params: any) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
-      "http://localhost:8080/api/user/signup",
+      "http://3.39.190.28:8080/api/user/signup",
       {
         name: params.name,
         email: params.email,
