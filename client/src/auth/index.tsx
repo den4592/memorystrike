@@ -25,12 +25,12 @@ import { OrbitControls } from "@react-three/drei";
 function Model(props: any) {
   const gltf = useLoader(
     GLTFLoader,
-    "https://s3-us-west-2.amazonaws.com/s.cdpn.io/39255/ladybug.gltf"
+    "https://memorystrike.s3.ap-northeast-2.amazonaws.com/memory_strike_brain.glb"
   );
 
   return (
     <mesh {...props}>
-      <primitive object={gltf.scene} />
+      <primitive scale={0.002} object={gltf.scene} />
     </mesh>
   );
 }
