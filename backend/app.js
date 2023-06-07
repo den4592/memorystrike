@@ -19,16 +19,8 @@ const statisticRoutes = require("./routes/statistics-routes");
 
 app.use(bodyParser.json());
 
-app.get("/download", function (req, res) {
-  const file = `${__dirname}/model/scene.gltf`;
-  res.download(file); // Set disposition and send it.
-});
-
 app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "http://127.0.0.1:5173, https://www.memorystrike.com"
-  ); // 모든 출처(origin)을 허용
+  res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5173"); // 모든 출처(origin)을 허용
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
