@@ -6,7 +6,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "httsp://memorystrike.com", // 접근 권한을 부여하는 도메인
+    origin: "https://memorystrike.com", // 접근 권한을 부여하는 도메인
     credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
     optionsSuccessStatus: 200, // 응답 상태 200으로 설정
   })
@@ -20,7 +20,7 @@ const statisticRoutes = require("./routes/statistics-routes");
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "httsp://memorystrike.com"); // 모든 출처(origin)을 허용
+  res.setHeader("Access-Control-Allow-Origin", "https://memorystrike.com"); // 모든 출처(origin)을 허용
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
