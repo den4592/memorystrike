@@ -64,15 +64,9 @@
 
 .btn-registration {
   width: 100%;
-  background-image: linear-gradient(
-    to right,
-    #35b5f0,
-    #f6db4a,
-    #f6db4a,
-    #fab1fd
-  );
+  background-image: linear-gradient(to right, #35b5f0, #4a83f6, #fab1fd);
   background-size: 300% 100%;
-  box-shadow: 0 4px 15px 0 #fab1fd;
+  box-shadow: 0 7px 15px 0 #fab1fd;
   border-radius: 50px;
   border: none;
   padding: 0.5rem;

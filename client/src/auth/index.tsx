@@ -113,6 +113,7 @@ const Auth = () => {
             setToggleValue(!toggleValue);
           } else {
             setError(res);
+            setShowModal(!showModal);
           }
         } else {
           setError("모든 항목들을 채워주세요.");
@@ -130,6 +131,7 @@ const Auth = () => {
             history.push("/memory");
           } else {
             setError(res);
+            setShowModal(!showModal);
           }
         } else {
           setError("모든 항목들을 채워주세요.");
