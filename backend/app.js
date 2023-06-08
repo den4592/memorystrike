@@ -20,6 +20,7 @@ const statisticRoutes = require("./routes/statistics-routes");
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://memorystrike.com"); // 모든 출처(origin)을 허용
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
