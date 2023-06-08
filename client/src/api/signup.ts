@@ -4,7 +4,7 @@ export const signUp = async (params: any) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
-      "http://3.39.190.28:8080/api/user/signup",
+      `${import.meta.env.VITE_SERVER_URL}/user/signup`,
       {
         name: params.name,
         email: params.email,

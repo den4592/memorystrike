@@ -4,7 +4,7 @@ export const logIn = async (params: any) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
-      "https://api.memorystrike.com/api/user/login",
+      `${import.meta.env.VITE_SERVER_URL}/user/login`,
       {
         email: params.email,
         password: params.password,
