@@ -1,4 +1,3 @@
-import "./index.scss";
 import "./reset.css";
 import {
   BrowserRouter as Router,
@@ -12,7 +11,6 @@ import { AuthContext } from "./shared/context/auth.context";
 import Sidebar from "./shared/components/Sidebar";
 import Memory from "./pages/Memory";
 import Statistics from "./pages/Statistics";
-import Ask from "./pages/Ask";
 import Content from "./pages/Memory/components/Content";
 import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
 import useAuth from "./hooks/auth-hook";
@@ -54,7 +52,7 @@ function App() {
                       path="/statistics"
                       component={() => <Statistics />}
                     />
-                    <Route exact path="/ask" component={() => <Ask />} />
+                    <Redirect from="/*" to="/memory" />
                   </div>
                 </div>
               </>
