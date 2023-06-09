@@ -2,20 +2,22 @@
 .howtouse-modal {
   &-body {
     border-radius: 10px;
-    border: 3px solid $color-blue;
+    border: 3px solid $color-yellow;
     background: white;
     width: 100%;
     max-width: 350px;
     min-width: 200px;
-    height: 400px;
+    height: 250px;
     z-index: 3;
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    left: 20px;
+    bottom: 20px;
+    overflow-y: scroll;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 32px 0 rgba(31, 104, 135, 0.37);
     &-header {
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
-      background-color: #fff;
       display: flex;
       justify-content: end;
       &-btn {
@@ -35,6 +37,13 @@
         text-align: center;
         font-weight: bold;
         font-size: 1.1rem;
+      }
+      &-list {
+        &-item {
+          padding: 10px;
+          line-height: 1.5;
+          word-break: keep-all;
+        }
       }
     }
   }
