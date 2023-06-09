@@ -21,7 +21,7 @@ const Memory = () => {
 
   const [text, setText] = useState("");
   const [fullText, setFullText] = useState(
-    `MemoryStrike에 오신것을 환영합니다.\n
+    `MemoryStrike에 오신 것을 환영합니다!\n
     MemoryStrike는 학습자가 공부한 내용을 복습 및 셀프 테스팅을 할 수 있는 서비스를 제공합니다.\n 
     복습을 직접 종이에 쓰면서 하는것보다 비교적 쉽게 할 수 있다는 부분이 MemoryStrike의 큰 메리트입니다.\n
     본인이 복습을 하고자 하는 주제와 해당 주제에 대한 설명만 기재하면 MemoryStrike는 이를 기억하여 계속해서 제공해줄 것입니다.\n
@@ -56,7 +56,7 @@ const Memory = () => {
       setTimeout(() => {
         setText(text + fullText[index]);
         setIndex(index + 1);
-      }, 1);
+      }, 35);
     }
     if (buttonRef.current && index >= fullText.length) {
       buttonRef.current.style.display = "block";
