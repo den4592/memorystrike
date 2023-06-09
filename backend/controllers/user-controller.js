@@ -17,6 +17,21 @@ const getUsers = async (req, res, next) => {
   res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
+const getUserById = async (req, res, next) => {
+  const userId = req.params.uid;
+  let user;
+  try {
+    user = await User.findOne({ _id: userId }, "-password");
+  } catch (err) {
+    const error = new HttpError(
+      "사용자가 존재하지 않습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
+    return error;
+  }
+  res.json({ user });
+};
+
 const signup = async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -55,6 +70,7 @@ const signup = async (req, res, next) => {
     name,
     email,
     password: hashedPassword,
+    isFirstLogin: true,
     contents: [],
     statistics: [],
   });
@@ -153,5 +169,6 @@ const login = async (req, res, next) => {
 };
 
 exports.getUsers = getUsers;
+exports.getUserById = getUserById;
 exports.signup = signup;
 exports.login = login;

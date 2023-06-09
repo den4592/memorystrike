@@ -7,6 +7,8 @@ const userController = require("../controllers/user-controller");
 
 router.get("/", userController.getUsers);
 
+router.get("/:uid", userController.getUserById);
+
 router.post(
   "/signup",
   [
