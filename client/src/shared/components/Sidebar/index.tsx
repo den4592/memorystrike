@@ -50,12 +50,18 @@ const Sidebar = () => {
   return (
     <>
       <div className={isActive ? "sidebar active" : "sidebar"} ref={toggleRef}>
-        <Link to="/memory">
+        <Link to="/memory" className="sidebar-link">
           <img src={Logo} alt="logo" className="sidebar-logo" />
         </Link>
-        <Link to="/memory">메모리</Link>
-        <Link to="/statistics">통계</Link>
-        <Link to="/ask">물어보기</Link>
+        <Link to="/memory" className="sidebar-link ">
+          메모리
+        </Link>
+        <Link to="/statistics" className="sidebar-link">
+          통계
+        </Link>
+        <Link to="/" className="sidebar-link sidebar-link-how-to-use">
+          ?
+        </Link>
         <button className="sidebar-logout-btn" onClick={() => auth.logout()}>
           로그아웃
         </button>

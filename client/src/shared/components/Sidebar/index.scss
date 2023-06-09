@@ -11,8 +11,12 @@
   overflow-x: hidden;
   transition: 0.3s;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  gap: 25px;
   &-logout-btn {
-    margin: 16px 0;
     padding: 10px 15px;
     border: 2px solid #fff;
     border-radius: 10px;
@@ -29,19 +33,46 @@
   &-logo {
     width: 40%;
   }
-  a {
-    display: block;
+  &-link {
     color: white;
-    padding: 16px;
     text-decoration: none;
     text-align: center;
     &:nth-child(1) {
       margin-top: 3rem;
     }
-    &:hover {
-      background-color: #ddd;
-      color: black;
+    &-how-to-use {
+      width: 15px;
+      height: 15px;
+      padding: 15px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0074b7;
+      border-radius: 50%;
+      border: 1px solid $color-pink;
+      color: $color-pink;
+      animation: updown 2s ease-in infinite;
+      &:hover {
+        background-color: $color-yellow;
+        color: #fff !important;
+      }
     }
+    &:hover {
+      color: $color-pink;
+    }
+  }
+}
+
+@keyframes updown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 
