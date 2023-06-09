@@ -151,7 +151,7 @@ const Memory = () => {
           <div className="welcome-message-container">
             <p className="welcome-message-container-text">{text}</p>
             <button
-              onClick={() => handleCloseWelcomeMessage()}
+              onClick={handleCloseWelcomeMessage}
               ref={buttonRef}
               className="welcome-message-container-btn btn"
             >

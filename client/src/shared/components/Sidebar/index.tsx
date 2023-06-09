@@ -32,7 +32,8 @@ const Sidebar = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         toggleRef.current &&
-        toggleRef.current.contains(event.target as Node)
+        !toggleRef.current.contains(event.target as Node) &&
+        window.innerWidth < 768
       ) {
         setIsActive(false);
       }
@@ -49,8 +50,8 @@ const Sidebar = () => {
   }, [handleResize]);
 
   return (
-    <>
-      <div className={isActive ? "sidebar active" : "sidebar"} ref={toggleRef}>
+    <div ref={toggleRef}>
+      <div className={isActive ? "sidebar active" : "sidebar"}>
         <Link to="/memory" className="sidebar-link">
           <img src={Logo} alt="logo" className="sidebar-logo" />
         </Link>
@@ -79,7 +80,7 @@ const Sidebar = () => {
           setShowModal={setShowHowToUseModal}
         />
       )}
-    </>
+    </div>
   );
 };
 
