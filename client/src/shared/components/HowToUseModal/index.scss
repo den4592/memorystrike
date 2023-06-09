@@ -7,7 +7,7 @@
     width: 100%;
     max-width: 350px;
     min-width: 200px;
-    height: 250px;
+    height: 300px;
     z-index: 3;
     position: fixed;
     left: 20px;
@@ -37,6 +37,7 @@
         text-align: center;
         font-weight: bold;
         font-size: 1.1rem;
+        padding-bottom: 10px;
       }
       &-list {
         &-item {
