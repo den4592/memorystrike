@@ -1,15 +1,28 @@
 import "./index.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import CreateContent from "./components/CreateContent";
 import ContentCard from "../Memory/components/ContentCard";
 import { getContents } from "../../api/content/getContents";
 import { Content } from "../../types/contents";
+import { getStatistics } from "../../api/statistic/getStatistics";
 
 const Memory = () => {
   const [toggle, setToggle] = useState<boolean>(false);
   const [updateContents, setUpdateContents] = useState<boolean>(false);
   const [contents, setContents] = useState([]);
   const [loader, setLoader] = useState<boolean>(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
+  const toggleRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!toggleRef.current?.contains(event.target as Node)) {
+        setShowWelcomeMessage(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [toggleRef]);
 
   const createContentFromDefault = () => {
     window.scrollTo(0, 0);
@@ -17,6 +30,13 @@ const Memory = () => {
   };
 
   const userData = JSON.parse(localStorage.getItem("userData")!);
+
+  const fetchStatistics = useCallback(async () => {
+    const res = await getStatistics(userData?.userId);
+    if (res.data.dates.length === 0 && contents.length === 0) {
+      setShowWelcomeMessage(true);
+    }
+  }, [userData?.userId]);
 
   const fetchContents = async () => {
     try {
@@ -33,6 +53,7 @@ const Memory = () => {
 
   useEffect(() => {
     fetchContents();
+    fetchStatistics();
   }, [updateContents, userData.userId]);
 
   return (
@@ -80,6 +101,11 @@ const Memory = () => {
             </div>
           </div>
         </>
+      )}
+      {showWelcomeMessage && (
+        <div ref={toggleRef} className="welcome-message">
+          This is welcome message.
+        </div>
       )}
     </div>
   );
