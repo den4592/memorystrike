@@ -1,7 +1,7 @@
 import "./index.scss";
 import { useEffect, useRef, memo } from "react";
 import "./index.scss";
-import { ConfirmModalPortal } from "../ConfirmModalPortal";
+import { ConfirmModalPortal } from "./ConfirmModalPortal";
 
 interface ModalProps {
   showModal: boolean;

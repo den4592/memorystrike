@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Logo from "../../../assets/images/memorystrike_logo.png";
 import "./index.scss";
 import { AuthContext } from "../../context/auth.context";
+import HowToUseModal from "../HowToUseModal";
 
 interface SidebarState {
   isActive: boolean;
@@ -13,6 +14,7 @@ const Sidebar = () => {
   const auth = useContext(AuthContext);
   const [isActive, setIsActive] = useState<SidebarState["isActive"]>(true);
   const toggleRef = useRef<HTMLDivElement>(null);
+  const [showHowToUseModal, setShowHowToUseModal] = useState<boolean>(false);
 
   const toggleSidebar = () => {
     setIsActive(!isActive);
@@ -59,9 +61,12 @@ const Sidebar = () => {
         <Link to="/statistics" className="sidebar-link">
           통계
         </Link>
-        <Link to="/" className="sidebar-link sidebar-link-how-to-use">
+        <button
+          className="sidebar-link sidebar-link-how-to-use"
+          onClick={() => setShowHowToUseModal(!showHowToUseModal)}
+        >
           ?
-        </Link>
+        </button>
         <button className="sidebar-logout-btn" onClick={() => auth.logout()}>
           로그아웃
         </button>
@@ -69,6 +74,12 @@ const Sidebar = () => {
       <button className="sidebar-toggle" onClick={toggleSidebar}>
         <FaBars />
       </button>
+      {showHowToUseModal && (
+        <HowToUseModal
+          showModal={showHowToUseModal}
+          setShowModal={setShowHowToUseModal}
+        />
+      )}
     </>
   );
 };
