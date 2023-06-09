@@ -5,6 +5,7 @@ import ContentCard from "../Memory/components/ContentCard";
 import { getContents } from "../../api/content/getContents";
 import { Content } from "../../types/contents";
 import { getStatistics } from "../../api/statistic/getStatistics";
+import { TypeAnimation } from "react-type-animation";
 
 const Memory = () => {
   const [toggle, setToggle] = useState<boolean>(false);
@@ -13,6 +14,34 @@ const Memory = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
   const toggleRef = useRef<HTMLDivElement>(null);
+
+  const [text, setText] = useState("");
+  const [fullText, setFullText] = useState(
+    `MemoryStrike에 오신것을 환영합니다.\n
+    MemoryStrike는 학습자가 공부한 내용을 복습 및 셀프 테스팅을 할 수 있는 서비스를 제공합니다.\n 
+    복습을 직접 종이에 쓰면서 하는것보다 비교적 쉽게 할 수 있다는 부분이 MemoryStrike의 큰 메리트입니다.\n
+    본인이 복습을 하고자 하는 주제와 해당 주제에 대한 설명만 기재하면 MemoryStrike는 이를 기억하여 계속해서 제공해줄 것입니다.\n
+    MemoryStrike는 메타인지 능력을 향상 시킬 수 있습니다.\n
+    이때까지 복습을 진행하면서 본인이 이해를 했다고 생각한 부분이 기억이 나지 않았던 경험이 있으신가요? 그렇다면 MemoryStrike는 당신을 위한 솔루션입니다.\n
+    MemoryStrike에서는 본인이 학습한 내용을 바탕으로 통계 데이터를 제공하여, 본인이 어떤 부분을 제대로 이해를 하고 넘어갔는지, 또는 잘 모르는지에 대해서 확인할 수 있습니다.\n
+    그러면 바로 시작해볼까요?\n
+    좌측에 물음표(?) 버튼을 눌러보세요.\n
+    서비스 이용 방법에 대해 알려드릴게요.\n
+    그러면 행운을 빌게요!
+    `
+  );
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (index < fullText.length) {
+      setTimeout(() => {
+        setText(text + fullText[index]);
+        setIndex(index + 1);
+      }, 40);
+    } else {
+      setFullText("");
+    }
+  }, [index]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,6 +64,8 @@ const Memory = () => {
     const res = await getStatistics(userData?.userId);
     if (res.data.dates.length === 0 && contents.length === 0) {
       setShowWelcomeMessage(true);
+    } else {
+      setShowWelcomeMessage(false);
     }
   }, [userData?.userId]);
 
@@ -104,7 +135,9 @@ const Memory = () => {
       )}
       {showWelcomeMessage && (
         <div ref={toggleRef} className="welcome-message">
-          This is welcome message.
+          <div className="welcome-message-container">
+            <p className="welcome-message-container-text">{text}</p>
+          </div>
         </div>
       )}
     </div>
