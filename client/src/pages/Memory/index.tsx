@@ -1,16 +1,21 @@
 import "./index.scss";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import CreateContent from "./components/CreateContent";
 import ContentCard from "../Memory/components/ContentCard";
 import { getContents } from "../../api/content/getContents";
 import { Content } from "../../types/contents";
+import { getUser } from "../../api/user/getUser";
+import { changeFirstLoginStatus } from "../../api/user/changeFirstLoginStatus";
+import { AuthContext } from "../../shared/context/auth.context";
 
 const Memory = () => {
+  const userData = JSON.parse(localStorage.getItem("userData")!);
+  const auth = useContext(AuthContext);
   const [toggle, setToggle] = useState<boolean>(false);
   const [updateContents, setUpdateContents] = useState<boolean>(false);
   const [contents, setContents] = useState([]);
   const [loader, setLoader] = useState<boolean>(false);
-  const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
   const toggleRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<any>(null);
 
@@ -31,13 +36,29 @@ const Memory = () => {
   );
   const [index, setIndex] = useState(0);
 
+  const handleGetUser = useCallback(async () => {
+    try {
+      const res = await getUser(userData.userId);
+      if (res.data.user.isFirstLogin === true) {
+        setShowWelcomeMessage(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    handleGetUser();
+  }, [userData?.userId]);
+
   useEffect(() => {
     if (index < fullText.length) {
       setTimeout(() => {
         setText(text + fullText[index]);
         setIndex(index + 1);
-      }, 40);
-    } else {
+      }, 1);
+    }
+    if (buttonRef.current && index >= fullText.length) {
       buttonRef.current.style.display = "block";
     }
   }, [index]);
@@ -57,8 +78,6 @@ const Memory = () => {
     setToggle(true);
   };
 
-  const userData = JSON.parse(localStorage.getItem("userData")!);
-
   const fetchContents = async () => {
     try {
       setLoader(true);
@@ -75,6 +94,11 @@ const Memory = () => {
   useEffect(() => {
     fetchContents();
   }, [updateContents, userData.userId]);
+
+  const handleCloseWelcomeMessage = async () => {
+    await changeFirstLoginStatus(userData?.userId, auth.token);
+    setShowWelcomeMessage(false);
+  };
 
   return (
     <div className="memory">
@@ -127,7 +151,7 @@ const Memory = () => {
           <div className="welcome-message-container">
             <p className="welcome-message-container-text">{text}</p>
             <button
-              onClick={() => setShowWelcomeMessage(false)}
+              onClick={() => handleCloseWelcomeMessage()}
               ref={buttonRef}
               className="welcome-message-container-btn btn"
             >

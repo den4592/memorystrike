@@ -32,6 +32,28 @@ const getUserById = async (req, res, next) => {
   res.json({ user });
 };
 
+const changeFirstLoginStatus = async (req, res, next) => {
+  const userId = req.params.uid;
+  try {
+    await User.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          isFirstLogin: false,
+        },
+      }
+    );
+  } catch (err) {
+    const error = new HttpError(
+      "사용자를 업데이트 할 수 없습니다. 나중에 다시 시도해 주세요.",
+      500
+    );
+    return next(error);
+  }
+
+  res.json("성공적으로 변경하였습니다!");
+};
+
 const signup = async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -170,5 +192,6 @@ const login = async (req, res, next) => {
 
 exports.getUsers = getUsers;
 exports.getUserById = getUserById;
+exports.changeFirstLoginStatus = changeFirstLoginStatus;
 exports.signup = signup;
 exports.login = login;

@@ -21,7 +21,6 @@ const Sidebar = () => {
   };
 
   const handleResize = useCallback(() => {
-    setIsActive(false);
     if (window.innerWidth < 768) {
       setIsActive(false);
     } else {
@@ -33,12 +32,12 @@ const Sidebar = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         toggleRef.current &&
-        !toggleRef.current.contains(event.target as Node) &&
-        window.innerWidth < 768
+        toggleRef.current.contains(event.target as Node)
       ) {
         setIsActive(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [toggleRef]);
