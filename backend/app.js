@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-
 const { MONGODB_ID, MONGODB_PASSWORD, MONGODB_COLLECTION } = process.env;
 
 app.use(

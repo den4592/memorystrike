@@ -1,6 +1,7 @@
 import { httpClientForCredentials } from "./index";
+import { LogIn } from "../types/user";
 
-export const logIn = async (params: any) => {
+export const logIn = async (params: LogIn) => {
   let response;
   try {
     response = await httpClientForCredentials.post(

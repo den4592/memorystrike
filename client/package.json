@@ -41,7 +41,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite --host 127.0.0.1",
+    "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },

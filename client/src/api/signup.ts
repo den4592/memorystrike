@@ -1,6 +1,7 @@
 import { httpClientForCredentials } from "./index";
+import { SignUp } from "../types/user";
 
-export const signUp = async (params: any) => {
+export const signUp = async (params: SignUp) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
