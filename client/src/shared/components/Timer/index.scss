@@ -5,16 +5,21 @@
   &-container {
     display: flex;
     align-items: center;
-    &-text {
-      color: black;
-      padding: 0 5px;
-    }
-    &-btn-play {
+    &-left {
       display: flex;
+      gap: 5px;
+      width: 70px;
+      &-text {
+        color: black;
+      }
+    }
+    &-right {
       width: 30px;
-      &:hover {
-        cursor: pointer;
-        fill: red;
+      &-btn-play {
+        &:hover {
+          cursor: pointer;
+          fill: red;
+        }
       }
     }
   }

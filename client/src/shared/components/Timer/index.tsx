@@ -46,26 +46,32 @@ const Timer = ({
   return (
     <div className="timer">
       <div className="timer-container">
-        <div className="timer-container-text">{hours}</div>:
-        <div className="timer-container-text">{minutes}</div>:
-        <div className="timer-container-text">{seconds}</div>
-        <div
-          className="timer-container-btn-play"
-          onClick={
-            isRunning
-              ? () => {
-                  pause();
-                  setPlayTimer(false);
-                  setPauseTimer(true);
-                }
-              : () => {
-                  start();
-                  setPlayTimer(true);
-                  setPauseTimer(false);
-                }
-          }
-        >
-          {isRunning ? <PauseButton /> : <PlayButton />}
+        <div className="timer-container-left">
+          <p className="timer-container-left-text">{hours}</p>
+          <p className="timer-container-left-text">:</p>
+          <p className="timer-container-left-text">{minutes}</p>
+          <p className="timer-container-left-text">:</p>
+          <p className="timer-container-left-text">{seconds}</p>
+        </div>
+        <div className="timer-container-right">
+          <div
+            className="timer-container-right-btn-play"
+            onClick={
+              isRunning
+                ? () => {
+                    pause();
+                    setPlayTimer(false);
+                    setPauseTimer(true);
+                  }
+                : () => {
+                    start();
+                    setPlayTimer(true);
+                    setPauseTimer(false);
+                  }
+            }
+          >
+            {isRunning ? <PauseButton /> : <PlayButton />}
+          </div>
         </div>
       </div>
     </div>

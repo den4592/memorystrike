@@ -5,11 +5,13 @@
   padding: 40px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: #fff;
   &-container {
     &-label {
       display: block;
       padding: 20px 0;
       font-weight: bold;
+      color: #000;
     }
     &-input {
       padding: 10px;

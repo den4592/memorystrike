@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import "./index.scss";
 import Auth from "./auth";
+import { useState } from "react";
 import { AuthContext } from "./shared/context/auth.context";
 import Sidebar from "./shared/components/Sidebar";
 import Memory from "./pages/Memory";
@@ -17,8 +18,9 @@ import useAuth from "./hooks/auth-hook";
 
 function App() {
   const { token, login, logout, userId } = useAuth();
+  const [isDarkMode, setIsDarkMode] = useState(false);
   return (
-    <div className="App">
+    <div className={`App ${isDarkMode && "dark-mode"}`}>
       <AuthContext.Provider
         value={{
           isLoggedIn: !!token,
@@ -34,7 +36,10 @@ function App() {
               <>
                 <div className="main">
                   <div className="main-container">
-                    <Sidebar />
+                    <Sidebar
+                      isDarkMode={isDarkMode}
+                      setIsDarkMode={setIsDarkMode}
+                    />
                     <Route exact path="/memory" component={() => <Memory />} />
                     <Redirect from="/*" to="/memory" />
                     <Route

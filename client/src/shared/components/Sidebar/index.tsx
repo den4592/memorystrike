@@ -5,16 +5,26 @@ import Logo from "../../../assets/images/memorystrike_logo.png";
 import "./index.scss";
 import { AuthContext } from "../../context/auth.context";
 import HowToUseModal from "../HowToUseModal";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
+
+interface SidebarProps {
+  isDarkMode: boolean;
+  setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 interface SidebarState {
   isActive: boolean;
 }
 
-const Sidebar = () => {
+const Sidebar = ({ isDarkMode, setIsDarkMode }: SidebarProps) => {
   const auth = useContext(AuthContext);
   const [isActive, setIsActive] = useState<SidebarState["isActive"]>(true);
   const toggleRef = useRef<HTMLDivElement>(null);
   const [showHowToUseModal, setShowHowToUseModal] = useState<boolean>(false);
+
+  const toggleDarkMode = (checked: boolean) => {
+    setIsDarkMode(checked);
+  };
 
   const toggleSidebar = () => {
     setIsActive(!isActive);
@@ -67,6 +77,13 @@ const Sidebar = () => {
         >
           ?
         </button>
+        <DarkModeSwitch
+          moonColor="white"
+          sunColor="yellow"
+          checked={isDarkMode}
+          onChange={toggleDarkMode}
+          size={30}
+        />
         <button className="sidebar-logout-btn" onClick={() => auth.logout()}>
           로그아웃
         </button>
@@ -74,6 +91,7 @@ const Sidebar = () => {
       <button className="sidebar-toggle" onClick={toggleSidebar}>
         <FaBars />
       </button>
+
       {showHowToUseModal && (
         <HowToUseModal
           showModal={showHowToUseModal}

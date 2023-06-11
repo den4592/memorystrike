@@ -10,7 +10,13 @@
   font-family: "Noto Sans KR", sans-serif;
 }
 
+.dark-mode {
+  color: #fff;
+  background-color: rgb(34, 56, 85);
+}
+
 .main {
+  min-height: 100vh;
   min-width: 400px;
   padding-left: 200px;
   display: flex;
