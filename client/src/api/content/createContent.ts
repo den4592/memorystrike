@@ -1,6 +1,10 @@
+import { ContentParams } from "../../types/contents";
 import { httpClientForCredentials } from "../index";
 
-export const createContent = async (params: any, token: any) => {
+export const createContent = async (
+  params: ContentParams,
+  token: string | null
+) => {
   let response;
   try {
     response = await httpClientForCredentials.post(

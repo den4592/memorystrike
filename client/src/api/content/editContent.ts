@@ -1,6 +1,11 @@
+import { ContentParams } from "../../types/contents";
 import { httpClientForCredentials } from "../index";
 
-export const editContent = async (params: any, id: string, token: any) => {
+export const editContent = async (
+  params: ContentParams,
+  id: string,
+  token: string | null
+) => {
   let response;
   try {
     response = await httpClientForCredentials.patch(

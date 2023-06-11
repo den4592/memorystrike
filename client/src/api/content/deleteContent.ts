@@ -1,6 +1,9 @@
 import { httpClientForCredentials } from "../index";
 
-export const deleteContent = async (contentId: string, token: any) => {
+export const deleteContent = async (
+  contentId: string,
+  token: string | null
+) => {
   let response;
   try {
     response = await httpClientForCredentials.delete(

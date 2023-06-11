@@ -1,6 +1,6 @@
 import { httpClient } from "../index";
 
-export const getContents = async (userId: any) => {
+export const getContents = async (userId: string) => {
   let response;
   try {
     response = await httpClient.get(

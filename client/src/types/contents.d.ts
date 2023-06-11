@@ -7,3 +7,9 @@ export interface Content {
   topics: any[];
   updatedAt: string;
 }
+
+export interface ContentParams {
+  content: string;
+  description: string;
+  creator: string;
+}

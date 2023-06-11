@@ -1,6 +1,9 @@
 import { httpClientForCredentials } from "../index";
 
-export const changeFirstLoginStatus = async (userId: string, token: any) => {
+export const changeFirstLoginStatus = async (
+  userId: string,
+  token: string | null
+) => {
   let response;
   try {
     response = await httpClientForCredentials.post(

@@ -1,6 +1,6 @@
 import { httpClient } from "../index";
 
-export const getStatistics = async (userId: any) => {
+export const getStatistics = async (userId: string) => {
   let response;
   try {
     response = await httpClient.get(
