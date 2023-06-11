@@ -77,9 +77,19 @@ const StatisticsChart = ({
     fetchStatisticsDay();
   }, [dayDateCount.day]);
 
+  const theme = {
+    labels: {
+      text: {
+        fontSize: 12,
+        fill: "#65748f",
+      },
+    },
+  };
+
   return (
     <div className="statistics-chart">
       <ResponsiveCalendar
+        theme={theme}
         onClick={(data) => {
           setDayDateCount((prev: Chart) => {
             return { ...prev, day: data.day, value: data.value };
