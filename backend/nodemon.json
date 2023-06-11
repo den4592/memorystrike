@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGODB_ID": "den4592",
+    "MONGODB_PASSWORD": "4592",
+    "MONGODB_COLLECTION": "memorystrike"
+  }
+}

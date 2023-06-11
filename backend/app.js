@@ -3,16 +3,12 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config({ path: __dirname + "/.env" });
+
 const { MONGODB_ID, MONGODB_PASSWORD, MONGODB_COLLECTION } = process.env;
 
 app.use(
   cors({
-    origin: [
-      "https://www.memorystrike.com",
-      "http://localhost:5173",
-      "http://localhost:4173",
-    ], // 접근 권한을 부여하는 도메인
+    origin: ["https://www.memorystrike.com", "http://localhost:5173"], // 접근 권한을 부여하는 도메인
     credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
     optionsSuccessStatus: 200, // 응답 상태 200으로 설정
   })
