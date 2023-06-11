@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import "./index.scss";
 import Auth from "./auth";
-import { useState } from "react";
 import { AuthContext } from "./shared/context/auth.context";
 import Sidebar from "./shared/components/Sidebar";
 import Memory from "./pages/Memory";
@@ -15,10 +14,11 @@ import Statistics from "./pages/Statistics";
 import Content from "./pages/Memory/components/Content";
 import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
 import useAuth from "./hooks/auth-hook";
+import { useDarkMode } from "./hooks/useDarkMode";
 
 function App() {
   const { token, login, logout, userId } = useAuth();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   return (
     <div className={`App ${isDarkMode && "dark-mode"}`}>
       <AuthContext.Provider
@@ -38,7 +38,7 @@ function App() {
                   <div className="main-container">
                     <Sidebar
                       isDarkMode={isDarkMode}
-                      setIsDarkMode={setIsDarkMode}
+                      setIsDarkMode={toggleDarkMode}
                     />
                     <Route exact path="/memory" component={() => <Memory />} />
                     <Redirect from="/*" to="/memory" />

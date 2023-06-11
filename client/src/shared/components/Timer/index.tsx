@@ -36,10 +36,6 @@ const Timer = ({
   }, [hours, minutes, seconds, setShuffledDuration]);
 
   useEffect(() => {
-    console.log("1");
-  }, [handleDuration]);
-
-  useEffect(() => {
     handlePlayButtonOnCardOpen();
   }, [playTimer, pauseTimer]);
 
