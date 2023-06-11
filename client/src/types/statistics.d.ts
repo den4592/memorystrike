@@ -28,3 +28,10 @@ export interface Column {
   Header: string;
   accessor: string;
 }
+
+export interface StatisticParams {
+  creator: string;
+  shuffled: FilteredStatisticDates[];
+  duration: number;
+  date: string;
+}

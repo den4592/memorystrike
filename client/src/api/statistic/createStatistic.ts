@@ -1,6 +1,10 @@
+import { StatisticParams } from "../../types/statistics";
 import { httpClientForCredentials } from "../index";
 
-export const createStatistic = async (params: any, token: any) => {
+export const createStatistic = async (
+  params: StatisticParams,
+  token: string | null
+) => {
   let response;
   try {
     response = await httpClientForCredentials.post(
