@@ -1,10 +1,10 @@
-import { httpClientForCredentials } from "./index";
+import { httpClient } from "./index";
 import { SignUp } from "../types/user";
 
 export const signUp = async (params: SignUp) => {
   let response;
   try {
-    response = await httpClientForCredentials.post(
+    response = await httpClient.post(
       `${import.meta.env.VITE_SERVER_URL}/user/signup`,
       {
         name: params.name,
