@@ -1,6 +1,11 @@
+import { TopicParams } from "../../types/topics";
 import { httpClientForCredentials } from "../index";
 
-export const editTopic = async (params: any, topicId: string, token: any) => {
+export const editTopic = async (
+  params: TopicParams,
+  topicId: string,
+  token: string | null
+) => {
   let response;
   try {
     response = await httpClientForCredentials.post(

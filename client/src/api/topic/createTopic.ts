@@ -1,6 +1,10 @@
+import { TopicParams } from "../../types/topics";
 import { httpClientForCredentials } from "../index";
 
-export const createTopic = async (params: any, token: any) => {
+export const createTopic = async (
+  params: TopicParams,
+  token: string | null
+) => {
   let response;
   try {
     response = await httpClientForCredentials.post(

@@ -7,3 +7,9 @@ export interface Topic {
   updatedAt?: string;
   timestamp: string;
 }
+
+export interface TopicParams {
+  topic: string;
+  description: string;
+  contentId?: string;
+}

@@ -1,6 +1,6 @@
 import { httpClientForCredentials } from "../index";
 
-export const deleteTopic = async (topicId: string, token: any) => {
+export const deleteTopic = async (topicId: string, token: string | null) => {
   let response;
   try {
     response = await httpClientForCredentials.delete(

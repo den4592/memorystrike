@@ -1,6 +1,6 @@
 import { httpClient } from "../index";
 
-export const getTopics = async (contentId: any) => {
+export const getTopics = async (contentId: string) => {
   let response;
   try {
     response = await httpClient.get(
