@@ -3,12 +3,14 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config({ path: __dirname + "/.env" });
+const { MONGODB_ID, MONGODB_PASSWORD, MONGODB_COLLECTION } = process.env;
 
 app.use(
   cors({
     origin: [
       "https://www.memorystrike.com",
-      "http://127.0.0.1:5173",
+      "http://localhost:5173",
       "http://localhost:4173",
     ], // 접근 권한을 부여하는 도메인
     credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
@@ -57,7 +59,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://den4592:4592@cluster0.wh8iel1.mongodb.net/memorystrike?retryWrites=true&w=majority`,
+    `mongodb+srv://${MONGODB_ID}:${MONGODB_PASSWORD}@cluster0.wh8iel1.mongodb.net/${MONGODB_COLLECTION}?retryWrites=true&w=majority`,
     { autoIndex: false }
   )
   .then(() => {
