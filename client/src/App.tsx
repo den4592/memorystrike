@@ -13,6 +13,7 @@ import Memory from "./pages/Memory";
 import Statistics from "./pages/Statistics";
 import Content from "./pages/Memory/components/Content";
 import ShuffledTopics from "./pages/Memory/components/ShuffledTopics";
+import Footer from "./shared/components/Footer";
 import useAuth from "./hooks/auth-hook";
 import { useDarkMode } from "./hooks/useDarkMode";
 
@@ -60,6 +61,7 @@ function App() {
                     <Redirect from="/*" to="/memory" />
                   </div>
                 </div>
+                <Footer />
               </>
             </Switch>
           ) : (
