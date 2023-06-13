@@ -6,6 +6,16 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  overflow: auto;
+  height: 100%;
+}
+
 .dark-mode {
   color: #fff;
   background-color: rgb(34, 56, 85);
@@ -17,6 +27,8 @@
   padding-left: 200px;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+
   &-container {
     width: 100%;
     max-width: 1000px;

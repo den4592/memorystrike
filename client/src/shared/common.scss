@@ -2,8 +2,20 @@ $color-blue: #76abdf;
 $color-yellow: #f6db4a;
 $color-pink: #fbb2fe;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
 body {
-  // background-color: #f8f9fb;
+  overflow: auto;
+  height: 100%;
 }
 
 .btn {
