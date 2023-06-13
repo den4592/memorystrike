@@ -84,6 +84,16 @@ const StatisticsChart = ({
         fill: "#65748f",
       },
     },
+    axis: {
+      legend: {
+        text: {
+          fontSize: 12,
+          fill: "#333333",
+          outlineWidth: 0,
+          outlineColor: "transparent",
+        },
+      },
+    },
   };
 
   return (
@@ -123,11 +133,11 @@ const StatisticsChart = ({
       />
 
       {dateValue ? (
-        <p>
+        <p className="statistics-chart-date">
           ~ {dateDay} : {dateValue}
         </p>
       ) : (
-        <p>
+        <p className="statistics-chart-date">
           {dayDateCount.day} : {dayDateCount.value}
         </p>
       )}

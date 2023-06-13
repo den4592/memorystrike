@@ -1,21 +1,5 @@
 @import "./shared/common.scss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  overflow: hidden;
-  height: 100%;
-}
-
-body {
-  overflow: auto;
-  height: 100%;
-}
-
 .dark-mode {
   color: #fff;
   background-color: rgb(34, 56, 85);
