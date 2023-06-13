@@ -2,15 +2,11 @@
 
 footer {
   width: 100%;
-  height: 110px; /* 내용물에 따라 알맞는 값 설정 */
-
+  height: 110px;
+  margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   background-color: $color-blue;
-
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
 }
