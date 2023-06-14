@@ -12,11 +12,10 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
-
+  margin: 0 2rem;
   &-container {
     width: 100%;
     max-width: 1000px;
-    margin: 0 2rem;
   }
 }
 

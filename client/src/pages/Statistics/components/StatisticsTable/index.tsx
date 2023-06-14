@@ -16,7 +16,6 @@ import React, {
 import "./index.scss";
 import { Link } from "react-router-dom";
 import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
-import { FilteredStatisticDates } from "../../../../types/statistics";
 
 interface Props {
   indeterminate?: boolean;
@@ -31,7 +30,6 @@ const useCombinedRefs = (
   useEffect(() => {
     refs.forEach((ref: any) => {
       if (!ref) return;
-
       if (typeof ref === "function") {
         ref(targetRef.current!);
       } else {
@@ -80,8 +78,6 @@ const StatisticsTable = ({ columns, data }: UseTableOptions<any>) => {
     page,
     prepareRow,
     selectedFlatRows,
-
-    //
     canPreviousPage,
     canNextPage,
     pageOptions,
