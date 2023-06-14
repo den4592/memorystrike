@@ -44,7 +44,7 @@ const ShuffledTopics = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [changeView]);
 
   const shuffle = useMemo(() => {
     for (let index = state.topics?.length - 1; index > 0; index--) {

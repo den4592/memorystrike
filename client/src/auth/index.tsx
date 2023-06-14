@@ -40,7 +40,7 @@ function Model(props: any) {
 }
 
 const Loader = ({ loader, setLoader }: any) => {
-  const { active, progress, errors, item, loaded, total } = useProgress();
+  const { active, progress } = useProgress();
 
   useEffect(() => {
     setLoader(true);
