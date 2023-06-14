@@ -16,6 +16,8 @@ import React, {
 import "./index.scss";
 import { Link } from "react-router-dom";
 import ShuffleIcon from "../../../../assets/svgs/shuffle.svg";
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip as ReactTooltip, Tooltip } from "react-tooltip";
 
 interface Props {
   indeterminate?: boolean;
@@ -160,6 +162,7 @@ const StatisticsTable = ({ columns, data }: UseTableOptions<any>) => {
                         {...column.getHeaderProps(
                           column.getSortByToggleProps()
                         )}
+                        title=""
                       >
                         {column.render("Header")}
                         <span>
@@ -196,7 +199,11 @@ const StatisticsTable = ({ columns, data }: UseTableOptions<any>) => {
                     >
                       {row.cells.map((cell) => {
                         return (
-                          <td {...cell.getCellProps()}>
+                          <td
+                            {...cell.getCellProps()}
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content={cell.value}
+                          >
                             {cell.render("Cell")}
                           </td>
                         );
@@ -268,6 +275,7 @@ const StatisticsTable = ({ columns, data }: UseTableOptions<any>) => {
           "선택한 날짜에 해당하는 데이터가 존재하지 않습니다."
         </p>
       )}
+      <Tooltip id="my-tooltip" className="tooltip" />
     </div>
   );
 };
