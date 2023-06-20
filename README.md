@@ -27,7 +27,6 @@ MemoryStrike는 학습자가 공부한 내용을 복습 및 셀프 테스팅을 
 ```
 git clone https://github.com/den4592/memorystrike.git
 cd memorystrike
-npm install
 ```
 
 클라이언트 :  
