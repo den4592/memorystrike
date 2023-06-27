@@ -17,7 +17,6 @@ import Footer from "./shared/components/Footer";
 import useAuth from "./hooks/auth-hook";
 import ScrollToTop from "./utils/ScrollToTop";
 import { useDarkMode } from "./hooks/useDarkMode";
-import { Fragment } from "react";
 
 function App() {
   const { token, login, logout, userId } = useAuth();
