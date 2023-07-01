@@ -9,6 +9,23 @@ MemoryStrike는 학습자가 공부한 내용을 복습 및 셀프 테스팅을 
 본인이 복습을 하고자 하는 주제와 해당 주제에 대한 설명만 기재하면 MemoryStrike는 이를 기억하여 계속해서 제공해줄 것입니다.
 이때까지 복습을 진행하면서 본인이 이해를 했다고 생각한 부분이 기억이 나지 않았던 경험이 있으신가요? 그렇다면 MemoryStrike는 당신을 위한 솔루션입니다.
 
+# 실제 서비스 화면
+회원가입/로그인 :  
+<img src="https://github.com/den4592/memorystrike/assets/50400631/e58c7391-38f4-42a0-b718-46ce96da8fa9">
+
+메인화면 - 메모리 :  
+<img src="https://github.com/den4592/memorystrike/assets/50400631/550e280b-5b13-4156-a21a-07ebdd87067d">
+
+메모리 - 카테고리 :
+<img src="https://github.com/den4592/memorystrike/assets/50400631/348b8bda-86b2-419b-9e7f-e12aca6674d2">
+
+카테고리 - 토픽 :
+<img src="https://github.com/den4592/memorystrike/assets/50400631/765a19b6-fb4c-47b4-8ddb-6ddc43dfe647d2">
+
+통계 :  
+<img src="https://github.com/den4592/memorystrike/assets/50400631/9b295443-f9b7-4950-9aeb-c44a98d7b33b">
+
+
 # 기술 스택
 <strong>Front End :</strong>  
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
