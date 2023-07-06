@@ -22,10 +22,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useProgress } from "@react-three/drei";
 import { OrbitControls } from "@react-three/drei";
 
-import { Slide } from "react-awesome-reveal";
-import { keyframes } from "@emotion/react";
-import { Reveal } from "react-awesome-reveal";
-
 function Model(props: any) {
   const gltf = useLoader(
     GLTFLoader,
@@ -51,18 +47,6 @@ const Loader = ({ loader, setLoader }: any) => {
 
   return <>{loader}</>;
 };
-
-const customAnimation = keyframes`
-  from {
-    opacity: 0;
-    transform:translate(0,100%)
-  }
-
-  to {
-    opacity: 1;
-    transform:translate(0,0)
-  }
-`;
 
 const Auth = () => {
   const [loader, setLoader] = useState<boolean>(false);
@@ -160,14 +144,10 @@ const Auth = () => {
   return (
     <>
       <div className="auth">
-        <Slide cascade>
-          <div className="auth-title">
-            <h1 className="auth-title-main">Memory Strike</h1>
-            <p className="auth-title-sub">
-              복습 · 셀프 테스팅을 위한 웹 서비스
-            </p>
-          </div>
-        </Slide>
+        <div className="auth-title">
+          <h1 className="auth-title-main">Memory Strike</h1>
+          <p className="auth-title-sub">복습 · 셀프 테스팅을 위한 웹 서비스</p>
+        </div>
 
         {loader && <span className="loader"></span>}
         <div className="auth-brain">
@@ -187,184 +167,183 @@ const Auth = () => {
             <Loader loader={loader} setLoader={setLoader} />
           </Canvas>
         </div>
-        <Reveal keyframes={customAnimation}>
-          <div className="auth-container">
-            {!toggleValue ? (
-              <form onSubmit={(e) => handleSubmit(e, "sign-up")}>
-                <div className="input-container">
-                  <input
-                    ref={emailInputEl}
-                    id="email"
-                    type="email"
-                    className="auth-input"
-                    placeholder="이메일"
-                    value={signUpValues.email}
-                    onChange={(e) => {
-                      emailValidation(signUpValues.email);
-                      setSignUpValues({
-                        ...signUpValues,
-                        email: e.target.value,
-                      });
-                    }}
-                  />
-                  <span className="input-container-error">
-                    {!emailValidation(signUpValues.email) &&
-                    signUpValues.email !== "" ? (
-                      <>
-                        <p>이메일 형식을 지켜주세요</p>
-                        {emailInputEl.current?.classList.add(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        {emailInputEl.current?.classList.remove(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    )}
-                  </span>
-                </div>
-                <div className="input-container">
-                  <input
-                    ref={passwordInputEl}
-                    id="password"
-                    type="password"
-                    className="auth-input"
-                    placeholder="비밀번호"
-                    value={signUpValues.password}
-                    onChange={(e) => {
-                      passwordValidation(signUpValues.password);
-                      setSignUpValues({
-                        ...signUpValues,
-                        password: e.target.value,
-                      });
-                    }}
-                  />
-                  <span className="input-container-error">
-                    {!passwordValidation(signUpValues.password) &&
-                    signUpValues.password !== "" ? (
-                      <>
-                        <p>
-                          비밀번호는 숫자,문자,특수문자 포함 형태의 8~15자리여야
-                          합니다.
-                        </p>
-                        {passwordInputEl.current?.classList.add(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        {passwordInputEl.current?.classList.remove(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    )}
-                  </span>
-                </div>
-                <div className="input-container">
-                  <input
-                    ref={nameInputEl}
-                    id="name"
-                    type="text"
-                    className="auth-input"
-                    value={signUpValues.name}
-                    placeholder="이름"
-                    onChange={(e) => {
-                      nameValidation(signUpValues.name);
-                      setSignUpValues({
-                        ...signUpValues,
-                        name: e.target.value,
-                      });
-                    }}
-                  />
-                </div>
-                <button className="btn-registration">회원가입</button>
-              </form>
-            ) : (
-              <form onSubmit={(e) => handleSubmit(e, "login")}>
-                <div className="input-container">
-                  <input
-                    ref={emailInputEl}
-                    id="email"
-                    type="email"
-                    className="auth-input"
-                    placeholder="이메일"
-                    value={loginValues.email}
-                    onChange={(e) => {
-                      emailValidation(loginValues.email);
-                      setLoginValues({
-                        ...loginValues,
-                        email: e.target.value,
-                      });
-                    }}
-                  />
-                  <span className="input-container-error">
-                    {!emailValidation(loginValues.email) &&
-                    loginValues.email !== "" ? (
-                      <>
-                        <p>이메일 형식을 지켜주세요</p>
-                        {emailInputEl.current?.classList.add(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        {emailInputEl.current?.classList.remove(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    )}
-                  </span>
-                </div>
-                <div className="input-container">
-                  <input
-                    ref={passwordInputEl}
-                    id="password"
-                    type="password"
-                    className="auth-input"
-                    placeholder="비밀번호"
-                    value={loginValues.password}
-                    onChange={(e) => {
-                      passwordValidation(loginValues.password);
-                      setLoginValues({
-                        ...loginValues,
-                        password: e.target.value,
-                      });
-                    }}
-                  />
-                  <span className="input-container-error">
-                    {!passwordValidation(loginValues.password) &&
-                    loginValues.password !== "" ? (
-                      <>
-                        <p>
-                          비밀번호는 숫자,문자,특수문자 포함 형태의 8~15자리여야
-                          합니다.
-                        </p>
-                        {passwordInputEl.current?.classList.add(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        {passwordInputEl.current?.classList.remove(
-                          "auth-input-outline"
-                        )}
-                      </>
-                    )}
-                  </span>
-                </div>
-                <button className="btn-registration">로그인</button>
-              </form>
-            )}
-            <span
-              className="auth-container-view-toggle"
-              onClick={handleChangeView}
-            >
-              {toggleValue ? "가입하기" : "로그인하기"}
-            </span>
-          </div>
-        </Reveal>
+
+        <div className="auth-container">
+          {!toggleValue ? (
+            <form onSubmit={(e) => handleSubmit(e, "sign-up")}>
+              <div className="input-container">
+                <input
+                  ref={emailInputEl}
+                  id="email"
+                  type="email"
+                  className="auth-input"
+                  placeholder="이메일"
+                  value={signUpValues.email}
+                  onChange={(e) => {
+                    emailValidation(signUpValues.email);
+                    setSignUpValues({
+                      ...signUpValues,
+                      email: e.target.value,
+                    });
+                  }}
+                />
+                <span className="input-container-error">
+                  {!emailValidation(signUpValues.email) &&
+                  signUpValues.email !== "" ? (
+                    <>
+                      <p>이메일 형식을 지켜주세요</p>
+                      {emailInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {emailInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
+              </div>
+              <div className="input-container">
+                <input
+                  ref={passwordInputEl}
+                  id="password"
+                  type="password"
+                  className="auth-input"
+                  placeholder="비밀번호"
+                  value={signUpValues.password}
+                  onChange={(e) => {
+                    passwordValidation(signUpValues.password);
+                    setSignUpValues({
+                      ...signUpValues,
+                      password: e.target.value,
+                    });
+                  }}
+                />
+                <span className="input-container-error">
+                  {!passwordValidation(signUpValues.password) &&
+                  signUpValues.password !== "" ? (
+                    <>
+                      <p>
+                        비밀번호는 숫자,문자,특수문자 포함 형태의 8~15자리여야
+                        합니다.
+                      </p>
+                      {passwordInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {passwordInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
+              </div>
+              <div className="input-container">
+                <input
+                  ref={nameInputEl}
+                  id="name"
+                  type="text"
+                  className="auth-input"
+                  value={signUpValues.name}
+                  placeholder="이름"
+                  onChange={(e) => {
+                    nameValidation(signUpValues.name);
+                    setSignUpValues({
+                      ...signUpValues,
+                      name: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <button className="btn-registration">회원가입</button>
+            </form>
+          ) : (
+            <form onSubmit={(e) => handleSubmit(e, "login")}>
+              <div className="input-container">
+                <input
+                  ref={emailInputEl}
+                  id="email"
+                  type="email"
+                  className="auth-input"
+                  placeholder="이메일"
+                  value={loginValues.email}
+                  onChange={(e) => {
+                    emailValidation(loginValues.email);
+                    setLoginValues({
+                      ...loginValues,
+                      email: e.target.value,
+                    });
+                  }}
+                />
+                <span className="input-container-error">
+                  {!emailValidation(loginValues.email) &&
+                  loginValues.email !== "" ? (
+                    <>
+                      <p>이메일 형식을 지켜주세요</p>
+                      {emailInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {emailInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
+              </div>
+              <div className="input-container">
+                <input
+                  ref={passwordInputEl}
+                  id="password"
+                  type="password"
+                  className="auth-input"
+                  placeholder="비밀번호"
+                  value={loginValues.password}
+                  onChange={(e) => {
+                    passwordValidation(loginValues.password);
+                    setLoginValues({
+                      ...loginValues,
+                      password: e.target.value,
+                    });
+                  }}
+                />
+                <span className="input-container-error">
+                  {!passwordValidation(loginValues.password) &&
+                  loginValues.password !== "" ? (
+                    <>
+                      <p>
+                        비밀번호는 숫자,문자,특수문자 포함 형태의 8~15자리여야
+                        합니다.
+                      </p>
+                      {passwordInputEl.current?.classList.add(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {passwordInputEl.current?.classList.remove(
+                        "auth-input-outline"
+                      )}
+                    </>
+                  )}
+                </span>
+              </div>
+              <button className="btn-registration">로그인</button>
+            </form>
+          )}
+          <span
+            className="auth-container-view-toggle"
+            onClick={handleChangeView}
+          >
+            {toggleValue ? "가입하기" : "로그인하기"}
+          </span>
+        </div>
       </div>
       {showModal && (
         <Modal
