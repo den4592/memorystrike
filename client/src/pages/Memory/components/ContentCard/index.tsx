@@ -1,4 +1,4 @@
-import { useState, memo, useContext, useCallback } from "react";
+import { useState, memo, useContext, useCallback, useEffect } from "react";
 import "./index.scss";
 import { Link } from "react-router-dom";
 import EditContent from "../../../../assets/svgs/edit.svg";
@@ -58,8 +58,6 @@ const ContentCard = ({
 
   const handleEdit = useCallback(async () => {
     try {
-      setPrevText(contentText);
-      setPrevDesc(descriptionText);
       if (
         enableEdit === true &&
         (prevText !== contentText || prevDesc !== descriptionText)
@@ -93,10 +91,16 @@ const ContentCard = ({
     userData.userId,
   ]);
 
+  const handleOpenEditInput = useCallback(() => {
+    setEnableEdit(true);
+    setPrevText(contentText);
+    setPrevDesc(descriptionText);
+  }, []);
+
   return (
     <div className="content-card">
       <p className="content-card-label">카테고리</p>
-      <div className="content-card-text" onClick={() => setEnableEdit(true)}>
+      <div className="content-card-text" onClick={handleOpenEditInput}>
         <p className="content-card-text-inner">
           {enableEdit ? (
             <textarea
@@ -112,7 +116,7 @@ const ContentCard = ({
       <p className="content-card-label">설명</p>
       <div
         className="content-card-description-text  content-card-text"
-        onClick={() => setEnableEdit(true)}
+        onClick={handleOpenEditInput}
       >
         <p className="content-card-text-inner">
           {enableEdit ? (
