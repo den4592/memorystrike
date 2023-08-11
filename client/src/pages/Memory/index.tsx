@@ -53,16 +53,18 @@ const Memory = () => {
   }, [userData?.userId]);
 
   useEffect(() => {
-    if (index < fullText.length) {
-      setTimeout(() => {
-        setText(text + fullText[index]);
-        setIndex(index + 1);
-      }, 35);
+    if (showWelcomeMessage) {
+      if (index < fullText.length) {
+        setTimeout(() => {
+          setText(text + fullText[index]);
+          setIndex(index + 1);
+        }, 35);
+      }
+      if (buttonRef.current && index >= fullText.length) {
+        buttonRef.current.style.display = "block";
+      }
     }
-    if (buttonRef.current && index >= fullText.length) {
-      buttonRef.current.style.display = "block";
-    }
-  }, [index]);
+  }, [index, showWelcomeMessage]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
