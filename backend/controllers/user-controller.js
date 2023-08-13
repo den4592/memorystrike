@@ -2,6 +2,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
+const refreshTokens = {}; // Store refresh tokens (in-memory, in a real app use a database)
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -151,14 +153,24 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  //access token 및 refresh token 발급
-  let token;
+  let accessToken;
+  let refreshToken;
   try {
-    token = jwt.sign(
+    accessToken = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      "supersecret_dont_share",
-      { expiresIn: "12h" }
+      ACCESS_TOKEN_SECRET,
+      { expiresIn: "1h" }
     );
+    refreshToken = jwt.sign(
+      { userId: existingUser.id, email: existingUser.email },
+      REFRESH_TOKEN_SECRET
+    ); // No expiration
+    // Save the refresh token in an HttpOnly cookie
+    res.cookie("refreshToken", refreshToken, {
+      expiresIn: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    }); // 30 days
+    refreshTokens[existingUser.id] = refreshToken;
   } catch (err) {
     const error = new HttpError(
       "로그인 할 수 없습니다. 나중에 다시 시도해 주세요.",
@@ -166,11 +178,12 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
+  console.log(refreshTokens);
 
   res.json({
     userId: existingUser.id,
     email: existingUser.email,
-    token: token,
+    token: accessToken,
   });
 };
 

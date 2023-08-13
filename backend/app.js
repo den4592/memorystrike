@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -18,6 +19,7 @@ const userRoutes = require("./routes/user-routes");
 const topicsRoutes = require("./routes/topics-routes");
 const statisticRoutes = require("./routes/statistics-routes");
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {

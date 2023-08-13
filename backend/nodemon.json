@@ -2,6 +2,8 @@
   "env": {
     "MONGODB_ID": "den4592",
     "MONGODB_PASSWORD": "4592",
-    "MONGODB_COLLECTION": "memorystrike"
+    "MONGODB_COLLECTION": "memorystrike",
+    "ACCESS_TOKEN_SECRET": "access_token_secret",
+    "REFRESH_TOKEN_SECRET": "refresh_token_secret"
   }
 }
