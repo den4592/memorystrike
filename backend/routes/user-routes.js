@@ -20,6 +20,8 @@ router.post(
 
 router.post("/login", userController.login);
 
+router.post("/refresh", userController.refresh);
+
 router.post("/:uid", userController.changeFirstLoginStatus);
 
 module.exports = router;
