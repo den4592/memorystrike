@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
-const refreshTokens = {}; // Store refresh tokens (in-memory, in a real app use a database)
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -170,7 +169,6 @@ const login = async (req, res, next) => {
       expiresIn: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     }); // 30 days
-    refreshTokens[existingUser.id] = refreshToken;
   } catch (err) {
     const error = new HttpError(
       "로그인 할 수 없습니다. 나중에 다시 시도해 주세요.",
@@ -178,7 +176,6 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
-  console.log(refreshTokens);
 
   res.json({
     userId: existingUser.id,
@@ -187,8 +184,31 @@ const login = async (req, res, next) => {
   });
 };
 
+const refresh = async (req, res, next) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(403).json({ message: "Refresh token not provided" });
+  }
+
+  jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid refresh token" });
+    }
+
+    const userId = decoded.userId;
+
+    const accessToken = jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.json({ accessToken });
+  });
+};
+
 exports.getUsers = getUsers;
 exports.getUserById = getUserById;
 exports.changeFirstLoginStatus = changeFirstLoginStatus;
 exports.signup = signup;
 exports.login = login;
+exports.refresh = refresh;
