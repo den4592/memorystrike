@@ -58,6 +58,8 @@ const ContentCard = ({
 
   const handleEdit = useCallback(async () => {
     try {
+      setPrevText(contentText);
+      setPrevDesc(descriptionText);
       if (
         enableEdit === true &&
         (prevText !== contentText || prevDesc !== descriptionText)
