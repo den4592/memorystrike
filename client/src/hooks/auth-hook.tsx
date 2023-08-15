@@ -1,29 +1,36 @@
 import { useCallback, useEffect, useState } from "react";
+import { generateAccessTokenByRefreshToken } from "../api/generateAccessTokenByRefreshToken";
+import { getAccessTokenExpiration } from "../utils/tokenExpiration";
 
 let logoutTimer: string | number | NodeJS.Timeout | undefined;
 
 const useAuth = () => {
-  const [token, setToken] = useState<any>(false);
-  const [userId, setUserId] = useState<any>(false);
-  const [tokenExpirationDate, setTokenExpirationDate] = useState<Date | null>();
+  const [token, setToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<any>(null);
+  const [tokenExpirationDate, setTokenExpirationDate] = useState<Date | null>(
+    null
+  );
 
   const login = useCallback(
-    (uid: boolean, token: boolean, expirationDate?: Date) => {
-      setToken(token);
-      setUserId(uid);
-      const tokenExpirationDate =
-        expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60 * 12);
-      setTokenExpirationDate(tokenExpirationDate);
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({
-          userId: uid,
-          token: token,
-          expiration: tokenExpirationDate.toISOString(),
-        })
-      );
+    (uid: string | null, token: string | null) => {
+      if (token !== null && uid !== null) {
+        const tokenExpirationTime = new Date(
+          getAccessTokenExpiration(token)! * 1000
+        );
+        setToken(token);
+        setUserId(uid);
+        setTokenExpirationDate(tokenExpirationTime);
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            userId: uid,
+            isLoggedIn: true,
+            expiration: tokenExpirationTime?.toLocaleString(),
+          })
+        );
+      }
     },
-    []
+    [token]
   );
 
   const logout = useCallback(() => {
@@ -46,21 +53,20 @@ const useAuth = () => {
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData")!);
     if (
-      storedData &&
-      storedData.token &&
-      new Date(storedData.expiration) > new Date()
+      storedData?.isLoggedIn &&
+      new Date(storedData?.expiration) > new Date()
     ) {
-      login(
-        storedData.userId,
-        storedData.token,
-        new Date(storedData.expiration)
-      );
-    } else {
+      const getToken = async () => {
+        let res = await generateAccessTokenByRefreshToken();
+        login(storedData?.userId, res.data.accessToken);
+      };
+      getToken();
+    } else if (new Date(storedData?.expiration) < new Date()) {
       logout();
     }
-  }, [login, logout]);
+  }, [login, logout, token]);
 
-  return { token, login, logout, userId };
+  return { token, login, logout, userId, setToken, tokenExpirationDate };
 };
 
 export default useAuth;
