@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-
+const { ACCESS_TOKEN_SECRET } = process.env;
 const HttpError = require("../models/http-error");
 
 module.exports = (req, res, next) => {
@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     if (!token) {
       throw new Error("Authentication Failed");
     }
-    const decodedToken = jwt.verify(token, "supersecret_dont_share");
+    const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (err) {
