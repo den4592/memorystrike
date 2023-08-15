@@ -8,6 +8,7 @@ import {
 import "./index.scss";
 import Auth from "./auth";
 import { AuthContext } from "./shared/context/auth.context";
+import { AuthContextType } from "./shared/context/auth.context";
 import Sidebar from "./shared/components/Sidebar";
 import Memory from "./pages/Memory";
 import Statistics from "./pages/Statistics";
@@ -21,20 +22,22 @@ import { useDarkMode } from "./hooks/useDarkMode";
 function App() {
   const { token, login, logout, userId } = useAuth();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const storedData = JSON.parse(localStorage.getItem("userData")!);
+
+  const contextValue: AuthContextType = {
+    token,
+    userId,
+    login,
+    logout,
+  };
+
   return (
     <div className={`App ${isDarkMode && "dark-mode"}`}>
-      <AuthContext.Provider
-        value={{
-          isLoggedIn: !!token,
-          userId: userId,
-          token: token,
-          login: login,
-          logout: logout,
-        }}
-      >
+      <AuthContext.Provider value={contextValue}>
         <Router>
           <ScrollToTop />
-          {token ? (
+          {storedData?.isLoggedIn &&
+          new Date(storedData?.expiration) > new Date() ? (
             <Switch>
               <>
                 <div className="main">
