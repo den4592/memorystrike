@@ -198,7 +198,7 @@ const refresh = async (req, res, next) => {
 
     const userId = decoded.userId;
 
-    const accessToken = jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
+    const accessToken = jwt.sign({ userId }, ACCESS_TOKEN_SECRET, {
       expiresIn: "1h",
     });
 
