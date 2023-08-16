@@ -11,15 +11,13 @@ app.use(bodyParser.json());
 
 app.use(
   cors({
-    origin: [
-      "https://www.memorystrike.com",
-      "https://api.memorystrike.com/api",
-      "http://localhost:5173",
-    ], // 접근 권한을 부여하는 도메인
+    origin: ["https://memorystrike.com", "http://localhost:5173"], // 접근 권한을 부여하는 도메인
     credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
     optionsSuccessStatus: 200, // 응답 상태 200으로 설정
   })
 );
+
+app.set("trust proxy", 1);
 
 const contentsRoutes = require("./routes/contents-routes");
 const userRoutes = require("./routes/user-routes");
