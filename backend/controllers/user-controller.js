@@ -169,6 +169,7 @@ const login = async (req, res, next) => {
     res.cookie("refreshToken", refreshToken, {
       expiresIn: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      sameSite: "none",
       secure: true,
       domain: ".memorystrike.com",
     }); // 30 days
