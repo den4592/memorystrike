@@ -170,6 +170,7 @@ const login = async (req, res, next) => {
       expiresIn: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: true,
+      domain: ".memorystrike.com",
     }); // 30 days
 
     //setting cookie in cache memory
