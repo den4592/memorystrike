@@ -169,7 +169,9 @@ const login = async (req, res, next) => {
     res.cookie("refreshToken", refreshToken, {
       expiresIn: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      domain: "www.memorystrike.com", // 서브도메인을 포함한 도메인 설정
+      sameSite: "none", // 도메인 간 쿠키 공유를 위해 필요
+      secure: true, // HTTPS에서만 쿠키 전송 가능
+      domain: ".memorystrike.com", // 서브도메인을 포함한 도메인 설정
     }); // 30 days
 
     //setting cookie in cache memory
