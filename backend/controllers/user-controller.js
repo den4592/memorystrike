@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
+const refreshTokenCookieCache = new Map();
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -169,6 +170,9 @@ const login = async (req, res, next) => {
       expiresIn: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     }); // 30 days
+
+    //setting cookie in cache memory
+    refreshTokenCookieCache.set(refreshToken, refreshToken);
   } catch (err) {
     const error = new HttpError(
       "로그인 할 수 없습니다. 나중에 다시 시도해 주세요.",
@@ -185,7 +189,13 @@ const login = async (req, res, next) => {
 };
 
 const refresh = async (req, res, next) => {
-  const refreshToken = req.cookies.refreshToken;
+  let refreshToken;
+  if (refreshTokenCookieCache.has(req.cookies.refreshToken)) {
+    refreshToken = refreshTokenCookieCache.get(req.cookies.refreshToken);
+  } else {
+    refreshToken = req.cookies.refreshToken;
+    refreshTokenCookieCache.set(req.cookies.refreshToken, refreshToken);
+  }
 
   if (!refreshToken) {
     return res.status(403).json({ message: "Refresh token not provided" });
