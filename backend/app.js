@@ -6,6 +6,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { MONGODB_ID, MONGODB_PASSWORD, MONGODB_COLLECTION } = process.env;
 
+app.use(cookieParser());
+app.use(bodyParser.json());
+
 app.use(
   cors({
     origin: ["https://www.memorystrike.com", "http://localhost:5173"], // 접근 권한을 부여하는 도메인
@@ -18,9 +21,6 @@ const contentsRoutes = require("./routes/contents-routes");
 const userRoutes = require("./routes/user-routes");
 const topicsRoutes = require("./routes/topics-routes");
 const statisticRoutes = require("./routes/statistics-routes");
-
-app.use(cookieParser());
-app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.setHeader(
