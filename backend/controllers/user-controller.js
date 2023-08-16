@@ -171,6 +171,7 @@ const login = async (req, res, next) => {
       httpOnly: true,
       sameSite: "none",
       secure: true,
+      path: "/",
       domain: ".memorystrike.com",
     }); // 30 days
 
