@@ -172,9 +172,6 @@ const login = async (req, res, next) => {
       secure: true, // HTTPS에서만 쿠키 전송 가능
       domain: ".memorystrike.com", // 서브도메인을 포함한 도메인 설정
     }); // 30 days
-
-    //setting cookie in cache memory
-    refreshTokenCookieCache.set(refreshToken, refreshToken);
   } catch (err) {
     const error = new HttpError(
       "로그인 할 수 없습니다. 나중에 다시 시도해 주세요.",
