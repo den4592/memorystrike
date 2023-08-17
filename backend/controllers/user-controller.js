@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
-const refreshTokenCookieCache = new Map();
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -192,13 +191,7 @@ const login = async (req, res, next) => {
 };
 
 const refresh = async (req, res, next) => {
-  let refreshToken;
-  if (refreshTokenCookieCache.has(req.cookies.refreshToken)) {
-    refreshToken = refreshTokenCookieCache.get(req.cookies.refreshToken);
-  } else {
-    refreshToken = req.cookies.refreshToken;
-    refreshTokenCookieCache.set(req.cookies.refreshToken, refreshToken);
-  }
+  let refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
     return res.status(403).json({ message: "Refresh token not provided" });
