@@ -5,10 +5,14 @@ import { getStatistics } from "../../api/statistic/getStatistics";
 import { FilteredStatisticDates, StatisticDates } from "../../types/statistics";
 import { Topic } from "../../types/topics";
 import { CalendarDatum } from "@nivo/calendar";
+import { secondsToFullTime } from "../../utils/timeConverter";
 
 const Statistics = () => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
   const [loader, setLoader] = useState<boolean>(false);
+
+  //총 복습 시간
+  const [reviewTime, setReviewTime] = useState<string>("");
 
   //전체 일정 데이터 (2023-05-30, 2023-05-31)
   const [statisticDates, setStatisticDates] = useState<StatisticDates[]>([]);
@@ -26,11 +30,17 @@ const Statistics = () => {
 
   //전체 일정 데이터 받기
   const fetchStatistics = useCallback(async () => {
+    let durationTime: number = 0;
     try {
       setLoader(true);
       const res = await getStatistics(userData?.userId);
       setStatisticDates(res?.data.dates);
 
+      res?.data.dates.forEach((item: any) => {
+        durationTime += Number(item.duration);
+      });
+
+      setReviewTime(secondsToFullTime(durationTime));
       setDateDay(new Date().toISOString().split("T")[0]);
       setShuffledDay([]);
       setLoader(false);
@@ -126,7 +136,10 @@ const Statistics = () => {
         setDateDay={setDateDay}
         shuffledDay={shuffledDay}
         setShuffledDay={setShuffledDay}
+        reviewTime={reviewTime}
+        setReviewTime={setReviewTime}
       />
+
       {loader ? (
         <span className="loader"></span>
       ) : (
