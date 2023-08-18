@@ -8,6 +8,7 @@ import {
   StatisticDates,
 } from "../../../../types/statistics";
 import { Topic } from "../../../../types/topics";
+import { secondsToFullTime } from "../../../../utils/timeConverter";
 
 interface StatisticsChartProps {
   data: CalendarDatum[];
@@ -22,6 +23,8 @@ interface StatisticsChartProps {
     React.SetStateAction<StatisticDates[] | null | undefined>
   >;
   shuffledDay: StatisticDates[] | any;
+  reviewTime: string;
+  setReviewTime: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const StatisticsChart = ({
@@ -34,6 +37,8 @@ const StatisticsChart = ({
   setDateDay,
   shuffledDay,
   setShuffledDay,
+  reviewTime,
+  setReviewTime,
 }: StatisticsChartProps) => {
   const userData = JSON.parse(localStorage.getItem("userData")!);
   const [dayDateCount, setDayDateCount] = useState<Chart>({
@@ -47,6 +52,7 @@ const StatisticsChart = ({
       const res = await getStatisticsDay(userData.userId, dayDateCount.day);
       if (res?.status === 200) {
         setShuffledDay(res?.data);
+        setReviewTime(secondsToFullTime(Number(res?.data.duration)));
       }
       setLoader(false);
     } catch (err) {
@@ -133,13 +139,24 @@ const StatisticsChart = ({
       />
 
       {dateValue ? (
-        <p className="statistics-chart-date">
-          ~ {dateDay} : {dateValue}
-        </p>
+        <>
+          <p className="statistics-chart-review-time">
+            총 복습 시간 : {reviewTime}
+          </p>
+          <p className="statistics-chart-date">
+            <br />~ {dateDay} : {dateValue}
+          </p>
+        </>
       ) : (
-        <p className="statistics-chart-date">
-          {dayDateCount.day} : {dayDateCount.value}
-        </p>
+        <>
+          <p className="statistics-chart-review-time">
+            총 복습 시간 : {reviewTime}
+          </p>
+          <p className="statistics-chart-date">
+            <br />
+            {dayDateCount.day} : {dayDateCount.value}
+          </p>
+        </>
       )}
     </div>
   );
