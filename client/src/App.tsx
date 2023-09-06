@@ -18,6 +18,10 @@ import Footer from "./shared/components/Footer";
 import useAuth from "./hooks/auth-hook";
 import ScrollToTop from "./utils/ScrollToTop";
 import { useDarkMode } from "./hooks/useDarkMode";
+import ReactGA from "react-ga";
+
+const gaTrackingId = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
+ReactGA.initialize(gaTrackingId);
 
 function App() {
   const { token, login, logout, userId } = useAuth();
