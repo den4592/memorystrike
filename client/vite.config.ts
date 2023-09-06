@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import svgr from "vite-plugin-svgr";
 import path from "path";
+import { VitePluginRadar } from "vite-plugin-radar";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,7 +25,17 @@ export default defineConfig({
       },
     },
   },
-  plugins: [react(), viteTsconfigPaths(), svgr({ exportAsDefault: true })],
+  plugins: [
+    react(),
+    viteTsconfigPaths(),
+    VitePluginRadar({
+      // Google Analytics tag injection
+      analytics: {
+        id: "G-YYZXMK8WR1",
+      },
+    }),
+    svgr({ exportAsDefault: true }),
+  ],
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "./src") }],
   },
