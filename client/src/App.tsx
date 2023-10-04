@@ -23,10 +23,6 @@ function App() {
   const { token, login, logout, userId } = useAuth();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const storedData = JSON.parse(localStorage.getItem("userData")!);
-  console.log(storedData?.isLoggedIn);
-  console.log(new Date(storedData?.expiration));
-  console.log(new Date());
-  console.log(new Date(storedData?.expiration) > new Date());
 
   const contextValue: AuthContextType = {
     token,
@@ -40,8 +36,7 @@ function App() {
       <AuthContext.Provider value={contextValue}>
         <Router>
           <ScrollToTop />
-          {storedData?.isLoggedIn &&
-          new Date(storedData?.expiration) > new Date() ? (
+          {storedData?.isLoggedIn ? (
             <Switch>
               <>
                 <div className="main">

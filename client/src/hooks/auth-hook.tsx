@@ -26,6 +26,7 @@ const useAuth = () => {
           JSON.stringify({
             userId: uid,
             isLoggedIn: true,
+            token: token,
             expiration: tokenExpirationTime?.toLocaleString(),
           })
         );
@@ -58,15 +59,14 @@ const useAuth = () => {
       new Date(storedData?.expiration) > new Date()
     ) {
       const getToken = async () => {
-        let res = await generateAccessTokenByRefreshToken();
-        console.log(res);
-        login(storedData?.userId, res.data.accessToken);
+        // let res = await generateAccessTokenByRefreshToken();
+        login(storedData?.userId, storedData?.token);
       };
       getToken();
     } else if (new Date(storedData?.expiration) < new Date()) {
       logout();
     }
-  }, [token]);
+  }, [login, logout, token]);
 
   return { token, login, logout, userId, setToken, tokenExpirationDate };
 };
