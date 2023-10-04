@@ -30,12 +30,16 @@ const TopicCard = ({
   const [prevText, setPrevText] = useState<string>("");
   const [prevDesc, setPrevDesc] = useState<string>("");
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  const storedData = JSON.parse(localStorage.getItem("userData")!);
 
   const handleDelete = useCallback(
     async (topicId: string) => {
       try {
         setLoader(true);
-        const deleteTopicResponse = await deleteTopic(topicId, auth.token);
+        const deleteTopicResponse = await deleteTopic(
+          topicId,
+          storedData?.token
+        );
         if (deleteTopicResponse?.status === 200) {
           setUpdateTopics(!updateTopics);
         }
@@ -59,7 +63,7 @@ const TopicCard = ({
           topic: topicText,
           description: descriptionText,
         };
-        const res = await editTopic(params, id, auth.token);
+        const res = await editTopic(params, id, storedData?.token);
         if (res?.status === 200) {
           setUpdateTopics(!updateTopics);
         }

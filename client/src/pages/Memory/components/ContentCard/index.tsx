@@ -37,6 +37,7 @@ const ContentCard = ({
   const [prevText, setPrevText] = useState<string>("");
   const [prevDesc, setPrevDesc] = useState<string>("");
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  const storedData = JSON.parse(localStorage.getItem("userData")!);
 
   const date = new Date(time).toLocaleString("ko-KR");
 
@@ -44,7 +45,7 @@ const ContentCard = ({
     async (contentId: string) => {
       try {
         setLoader(true);
-        const res = await deleteContent(contentId, auth.token);
+        const res = await deleteContent(contentId, userData?.token);
         if (res?.status === 200) {
           setUpdateContents(!updateContents);
         }
@@ -70,7 +71,7 @@ const ContentCard = ({
           creator: userData.userId,
         };
 
-        const res = await editContent(params, id, auth.token);
+        const res = await editContent(params, id, userData?.token);
         if (res?.status === 200) {
           setUpdateContents(!updateContents);
         }

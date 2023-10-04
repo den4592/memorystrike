@@ -26,7 +26,7 @@ const CreateContent = ({
         description: descriptionText,
         creator: userData.userId,
       };
-      const res = await createContent(params, auth.token);
+      const res = await createContent(params, userData?.token);
       if (res?.status === 200) {
         setContentText("");
         setDescriptionText("");

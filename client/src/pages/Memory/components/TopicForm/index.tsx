@@ -18,6 +18,7 @@ const TopicForm = ({
   const auth = useContext(AuthContext);
   const [topicText, setTopicText] = useState<string>("");
   const [descriptionText, setDescriptionText] = useState<string>("");
+  const storedData = JSON.parse(localStorage.getItem("userData")!);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +34,7 @@ const TopicForm = ({
         contentId: contentId,
       };
 
-      const res = await createTopic(params, auth.token);
+      const res = await createTopic(params, storedData?.token);
       if (res?.status === 200) {
         setTopicText("");
         setDescriptionText("");
