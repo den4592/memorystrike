@@ -18,7 +18,6 @@ import Footer from "./shared/components/Footer";
 import useAuth from "./hooks/auth-hook";
 import ScrollToTop from "./utils/ScrollToTop";
 import { useDarkMode } from "./hooks/useDarkMode";
-import ReactGA from "react-ga";
 
 function App() {
   const { token, login, logout, userId } = useAuth();
@@ -42,6 +41,7 @@ function App() {
         <Router>
           <ScrollToTop />
           {storedData?.isLoggedIn &&
+          storedData &&
           new Date(storedData?.expiration) > new Date() ? (
             <Switch>
               <>
