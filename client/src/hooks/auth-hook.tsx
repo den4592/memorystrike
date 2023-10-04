@@ -66,7 +66,7 @@ const useAuth = () => {
     } else if (new Date(storedData?.expiration) < new Date()) {
       logout();
     }
-  }, [login, logout, token]);
+  }, [token]);
 
   return { token, login, logout, userId, setToken, tokenExpirationDate };
 };
