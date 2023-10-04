@@ -7,8 +7,9 @@ module.exports = (req, res, next) => {
     return next();
   }
   try {
+    console.log(req.headers.authorization);
     const token = req.headers.authorization.slice(6); //Bearer 'Token'
-
+    console.log(token);
     if (!token) {
       throw new Error("Authentication Failed");
     }
