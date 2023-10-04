@@ -24,6 +24,7 @@ function App() {
   const { token, login, logout, userId } = useAuth();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const storedData = JSON.parse(localStorage.getItem("userData")!);
+  console.log(storedData, new Date());
 
   const contextValue: AuthContextType = {
     token,
