@@ -150,7 +150,7 @@ const ShuffledTopics = () => {
         date: getCurrentDate().split("T")[0],
       };
 
-      const res = await createStatistic(params, auth.token);
+      const res = await createStatistic(params, userData?.token);
       if (res?.status === 200) {
         setChangeView(!changeView);
       }
