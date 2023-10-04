@@ -18,6 +18,7 @@ const Memory = () => {
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
   const toggleRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<any>(null);
+  console.log("test!");
 
   const [text, setText] = useState("");
   const [fullText, setFullText] = useState(
