@@ -41,7 +41,6 @@ function App() {
         <Router>
           <ScrollToTop />
           {storedData?.isLoggedIn &&
-          storedData &&
           new Date(storedData?.expiration) > new Date() ? (
             <Switch>
               <>
@@ -51,7 +50,6 @@ function App() {
                       isDarkMode={isDarkMode}
                       setIsDarkMode={toggleDarkMode}
                     />
-
                     <Route exact path="/memory" component={() => <Memory />} />
                     <Route
                       exact

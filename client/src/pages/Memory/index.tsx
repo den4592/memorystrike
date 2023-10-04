@@ -37,17 +37,18 @@ const Memory = () => {
   );
   const [index, setIndex] = useState(0);
 
-  const handleGetUser = useCallback(async () => {
+  const handleGetUser = async () => {
     try {
       const res = await getUser(userData.userId);
-
+      //확인 필요
+      console.log(res);
       if (res.data.user.isFirstLogin === true) {
         setShowWelcomeMessage(true);
       }
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  };
 
   useEffect(() => {
     handleGetUser();
