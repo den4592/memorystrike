@@ -13,6 +13,7 @@ const useAuth = () => {
 
   const login = useCallback(
     (uid: string | null, token: string | null) => {
+      console.log("token :", token, "uid:", uid);
       if (token !== null && uid !== null) {
         const tokenExpirationTime = new Date(
           getAccessTokenExpiration(token)! * 1000
@@ -58,6 +59,7 @@ const useAuth = () => {
     ) {
       const getToken = async () => {
         let res = await generateAccessTokenByRefreshToken();
+        console.log(res, "accessToken");
         login(storedData?.userId, res.data.accessToken);
       };
       getToken();
