@@ -126,6 +126,8 @@ const Auth = () => {
           passwordValidation(loginValues.password)
         ) {
           res = await logIn(loginValues);
+          console.log(loginValues);
+          console.log(res);
           if (res.status === 200) {
             auth.login(res.data.userId, res.data.token);
             history.push("/memory");
