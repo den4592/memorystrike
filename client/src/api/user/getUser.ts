@@ -1,9 +1,9 @@
-import { httpClient } from "../index";
+import { httpClientForCredentials } from "../index";
 
 export const getUser = async (userId: string) => {
   let response;
   try {
-    response = await httpClient.get(
+    response = await httpClientForCredentials.get(
       `${import.meta.env.VITE_SERVER_URL}/user/${userId}`
     );
   } catch (err) {
