@@ -127,8 +127,6 @@ const Auth = () => {
         ) {
           res = await logIn(loginValues);
           if (res.status === 200) {
-            console.log(loginValues);
-            console.log(res.data.userId, res.data.token);
             auth.login(res.data.userId, res.data.token);
             history.push("/memory");
           } else {
