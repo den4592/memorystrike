@@ -40,7 +40,7 @@ const Memory = () => {
   const handleGetUser = useCallback(async () => {
     try {
       const res = await getUser(userData.userId);
-      console.log(res);
+
       if (res.data.user.isFirstLogin === true) {
         setShowWelcomeMessage(true);
       }
