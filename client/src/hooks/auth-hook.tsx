@@ -59,6 +59,7 @@ const useAuth = () => {
     ) {
       const getToken = async () => {
         let res = await generateAccessTokenByRefreshToken();
+        console.log(res);
         login(storedData?.userId, res.data.accessToken);
       };
       getToken();
