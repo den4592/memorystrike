@@ -40,8 +40,7 @@ function App() {
       <AuthContext.Provider value={contextValue}>
         <Router>
           <ScrollToTop />
-          {storedData?.isLoggedIn &&
-          new Date(storedData?.expiration) > new Date() ? (
+          {storedData?.isLoggedIn ? (
             <Switch>
               <>
                 <div className="main">
