@@ -39,7 +39,7 @@ const Memory = () => {
 
   const handleGetUser = async () => {
     try {
-      const res = await getUser(userData.userId);
+      const res = await getUser(userData?.userId);
       //확인 필요
       console.log(res);
       if (res.data.user.isFirstLogin === true) {
