@@ -127,6 +127,7 @@ const Auth = () => {
         ) {
           res = await logIn(loginValues);
           // res 값 확인
+          console.log(res);
           if (res.status === 200) {
             auth.login(res.data.userId, res.data.token);
             history.push("/memory");
